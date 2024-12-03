@@ -14,3 +14,5 @@ func (rt *_router) Handler() http. Handler {
 	rt.router.POST("/session", rt.doLogin)
 	rt.router.PUT("session/:id/userName", rt.setMyUsername)
 }
+
+
