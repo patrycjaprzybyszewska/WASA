@@ -1,0 +1,502 @@
+openapi: 3.0.3
+info:
+  title: WASAText
+  description: |-
+    WASAText will allow You to send and receive messages one-on-one conversation or in groups. You can send easily from your PC text, pictures and GIFS!
+  version: "1"
+tags:
+    - name: Message
+      description: Everything connected to messages; sending, commenting, forwarding, deleting.
+    - name: Login
+      description: Everything connected to an user; logging, setting username and photo.
+    - name: Chat
+      description: Everything connected to chat; adding other member to groupchatleaving groupchat, setting photo, setting name, getting messages.
+
+  
+paths:
+  /message:
+    post:
+      tags: ["Message"]
+      summary: Send a new message.
+      description: |
+        Send a new message to another user or a groupchat, each message has it own message ID.
+      operationId: sendMessage
+      security:
+       - bearerAuth: []
+      requestBody:
+        description: Content of a message that is being sent.
+        required: true
+        content:
+          application/json: 
+            schema:
+             $ref: "#/components/schemas/Message"
+      responses:
+        '201':
+          description: Message is sent correctly.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Message"
+        '400':
+            description: Message cannot be sent, missing informations
+          
+              
+  /message/{messageId}:           
+    delete:
+      tags: ["Message"]
+      summary: Deletes a message.
+      description:  |
+        For proper response there must be provided correct ID of a message otherwise error will be generated.
+      operationId: deleteMessage
+      parameters:
+        - name: messageId
+          in: path
+          description: ID of message to be deleted.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Message is deleted correctly.
+        "404":
+          description: Message is not found.
+            
+            
+    put: 
+      tags: ["Message"]
+      summary: Creates a new comment to a message.
+      description: |
+        Adding a comment - reaction to an existing message by message ID.
+      security:
+       - bearerAuth: []
+      operationId: commentMessage
+      parameters:
+        - name: messageId
+          in: path
+          description: ID of message that is being commented.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Comment detail
+        required: true
+        content: 
+          application/json:
+            schema: 
+                $ref: "#/components/schemas/Comment"
+                  
+      responses:
+        '201' :
+          description: |
+            New comment to a message is created correctly.
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/Comment"
+                  
+        "404":
+          description: |
+            Message to comment is not found.
+  /message/forward/{messageId}/{userId}:
+    post:
+      tags: ["Message"]
+      description: Forwards message to antoher user
+      summary: |
+        "Forwards created message by its ID to another user or a groupchat"
+      security:
+       - bearerAuth: []
+      operationId: forwardMessage
+      parameters:
+        - name: messageId
+          in: path
+          description: ID of message that is being forwarded.
+          required: true
+          schema:
+            type: integer
+        - name: userId
+          in: path
+          description: ID of user that is being forwarded to.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: |
+            Message is forwarded correctly.
+        '404':
+          description: |
+            Forwarded message does not exist.
+  /message/comment/{commentId}:
+    delete:
+      tags: ["Message"]
+      description: Deletes a comment.
+      summary: |
+        Deletes a comment by comment ID added to another message.
+      operationId: uncommentMessage
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of comment that is being commented.
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '204':
+          description: |
+            Comment is deleted correctly.
+        "404":
+          description: |
+            Comment not found.
+  /session:
+    post:
+      tags: ["Login"]
+      summary: Logs in the user
+      description: |-
+        If the user does not exist, it will be created,
+        and an identifier is returned.
+        If the user exists, the user identifier is returned.
+      operationId: doLogin
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Maria
+                  pattern: 'ˆ.*?$'
+                  minLength: 3
+                  maxLength: 16
+        required: true
+      responses:
+        '201':
+          description: User log-in action successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                    example: 012345
+  /session/{userId}/userName:
+    put:
+      tags: ["Login"]
+      summary: Change an username.
+      description: |
+        Username of a user can be changed.
+      security:
+       - bearerAuth: []
+      operationId: setMyUsername
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user that username is being set.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content: 
+          application/json:
+              schema:
+                properties:
+                 name:
+                  type: string
+                  example: Maria
+                  pattern: 'ˆ.*?$'
+                  minLength: 3
+                  maxLength: 16
+                  
+      responses: 
+        '201':
+          description: Username has been changed
+        
+           
+                  
+  /session/{userId}/userPhoto:                
+    put:
+      tags: ["Login"]
+      summary: Changes an photo of user.
+      description: |
+        Photo of an user can be changed.
+      operationId: setMyPhoto
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user that photo to set.
+        required: true
+        schema:
+          type: integer
+
+      requestBody: 
+        content:
+          multipart/form-data:
+            schema: 
+              type: string
+              format: binary
+      responses: 
+        '201':
+          description: Photo has been changed
+          content:
+            multipart/form-data:
+              schema:
+                properties:
+                 photo:
+                  type: string
+                  format: binary
+                  example: "https://gif.jpg"
+                
+                 
+  /conversation/{conversationId}:
+    get:
+      tags: ["Chat"]
+      operationId: getConversation
+      summary: Gets the messages.
+      description: |
+       Gets the messages from particular conversation/groupchat.
+      security:
+       - bearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          description: ID of conversation that is being retrieved.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of messages
+          content:
+             application/json:
+              schema:
+                type: array
+                items:  
+                  $ref: "#/components/schemas/Message" 
+  /conversation:
+    get:
+      tags: ["Chat"]
+      operationId: getMyConversations
+      summary: Gets all the coversations of a user.
+      description: |
+       Gets all the groupchats/coversations one to one from user.
+      responses:
+        "200":
+          description: List of all conversations of a user.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Chat" 
+  /groupchat/{userId}:
+    put:
+      tags: ["Chat"]
+      operationId: addToGroup
+      summary: Adds another user to groupchat.
+      description: |
+        Adds an another user by its ID into a groupchat.
+      security:
+       - bearerAuth: []  
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user that username is being set.
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: Update an existing chat users.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
+      responses:
+        '201':
+          description: User ID has been added sucsfully.
+          content:
+            application/json:
+              schema: 
+               type: object
+               items: 
+                $ref: "#/components/schemas/Chat"
+                
+  /groupchat/{chatId}:  
+    delete:
+      tags: ["Chat"]
+      operationId: leaveGroup
+      summary: Allows user to leave the groupchat
+      description: |
+        Deletes id of a user from a groupchat, allows him to leave the chat.
+      parameters:
+        - name: chatId
+          in: path
+          description: Id of a groupchat that user wants to leave
+          required: true
+          schema:
+            type: integer
+            example: 09890
+      responses:
+        "404":
+          description: Groupchat not found.
+        "204":
+          description: Groupchat left properly.
+  /groupchat/{chatId}/groupName:     
+    put: 
+      tags: ["Chat"]
+      operationId: setGroupName
+      summary: allows user to change a groupchat name
+      description: |
+        User can change a groupname by chatID.
+      security:
+       - bearerAuth: []
+      parameters:
+        - name: chatId
+          in: path
+          description: Id of a groupchat that user wants to change name.
+          required: true
+          schema:
+            type: integer 
+      requestBody:
+        description: Update an existing chat name
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
+      responses: 
+        '200':
+          description: groupchat name has been changed correctly
+        '404':
+          description: groupchat not found
+        '422' :
+           description: Validation exception
+  /groupchat/{chatId}/groupPhoto:               
+    put: 
+      tags: ["Chat"]
+      operationId: setGroupPhoto
+      summary: allows user to change a photo of a groupchat
+      security:
+       - bearerAuth: []
+      parameters:
+        - name: chatId
+          in: path
+          description: Id of a groupchat that user wants to change photo.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existing chat photo.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
+      responses: 
+        '200':
+          description: Chat photo has been changed correctly.
+        '404':
+          description: Chat not found.
+        '422' :
+           description: Validation exception        
+      
+      
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    
+  schemas:
+    Message:
+      required:
+        - messageId
+        - content
+        - userId
+      title: Message
+      description: "This object represents a single message"
+      type: object
+      properties:
+        messageDate:
+          description:  Date that message has been sent.
+          type: string
+          pattern: 'ˆ.*?$'
+          example: 11.02.2022
+          minLength: 10
+          maxLength: 10
+        messageTime:
+          description: Time that message has been sent.
+          type: string
+          example: 11:12
+          pattern: 'ˆ.*?$'
+          maxLength: 5
+          minLength: 5
+        messageId:
+          description: Unique meassage identifier.
+          type: integer
+          example: 12390739
+          readOnly: true
+        state:
+          description: This shows status of a message if it is delivered, or read.
+          type: string
+          enum: ["delivered", "read"]
+          example: read
+        content:
+            oneOf:
+              - type: string
+                description: This shows a content of a message
+                example: "HI!"
+              - type: string
+                description: This shows a url to a photo that is being send
+                example: "https://photo.jpg"
+              - type: string
+                description: This shows a url to a gif that is being send
+                example: "https://gif.jpg"
+        userId:
+            type: integer
+            example: 012345
+    Comment:
+      required:
+      - messageId
+      - content
+      title: Comment
+      description: "This represents a comment - reaction to a message"
+      type: object
+      properties:
+        commentId:
+          description: Unique comment identifier.
+          type: integer
+          example: 903820
+          readOnly: true
+        commentContent:
+          description: Content - reaction of comment that is created.
+          type: string
+          enum: [";)", ":(", ":*", ":0", "<3"]
+    Chat:
+      required:
+      - messageId
+      - userId
+      title: Conversation
+      description: This object represents a converstaion
+      type: object
+      properties: 
+        chatId:
+          type: integer
+          description: unique ID for every chat
+          example: 991334
+        chatPhoto:
+          type: string
+          description: Path to photo of the chat
+          example: "https://photo.jpg"
+        chatName:
+          type: string
+          description: Name of the chat
+          example: "Family"
+          pattern: 'ˆ.*?$'
+          minLength: 3
+          maxLength: 16
+  
+    
