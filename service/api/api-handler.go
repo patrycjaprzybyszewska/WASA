@@ -13,6 +13,11 @@ func (rt *_router) Handler() http. Handler {
 	rt.router.DELETE("/message/comment/:id", rt.deleteComment)
 	rt.router.POST("/session", rt.doLogin)
 	rt.router.PUT("session/:id/userName", rt.setMyUsername)
+	
+	rt.router.PUT("/groupchat/:id", rt.addToGroup)
+	rt.router.DELETE("groupchat:chatId", rt.leaveGroup)
+	rt.router.PUT("groupchat/:chatId/groupName", rt.setGroupName)
+	rt.router.PUT("groupchat/:chatId/groupPhoto", rt.setGroupPhoto)
 }
 
 
