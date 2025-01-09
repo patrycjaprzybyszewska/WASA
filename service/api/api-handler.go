@@ -5,19 +5,16 @@ import (
 	"net/http"
 )
 
-func (rt *_router) Handler() http. Handler {
-	rt.router.POST("/message", rt.sendMessage)
-	rt.router.DELETE("/message/:id", rt.deleteMessage)
-	rt.routrt.PUT("/message/:id", rt.commentMessage)
-	rt.router.POST("/message/:id", rt.forwardMessage)
-	rt.router.DELETE("/message/comment/:id", rt.deleteComment)
-	rt.router.POST("/session", rt.doLogin)
-	rt.router.PUT("session/:id/userName", rt.setMyUsername)
-	
-	rt.router.PUT("/groupchat/:id", rt.addToGroup)
-	rt.router.DELETE("groupchat:chatId", rt.leaveGroup)
-	rt.router.PUT("groupchat/:chatId/groupName", rt.setGroupName)
-	rt.router.PUT("groupchat/:chatId/groupPhoto", rt.setGroupPhoto)
+func (rt *_router) Handler() http.Handler {
+	// Register routes
+	rt.router.GET("/", rt.getHelloWorld)
+	rt.router.GET("/context", rt.wrap(rt.getContextReply))
+
+	// Special routes
+	rt.router.GET("/liveness", rt.liveness)
+
+	return rt.router
+
 }
 
 
