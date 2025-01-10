@@ -4,7 +4,7 @@ import (
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/gofrs/uuid"
 	"github.com/julienschmidt/httprouter"
-	"github.com/sirups6en/logrus"
+	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
