@@ -1,5 +1,7 @@
 package database
-
+import (
+	"database/sql"
+)
 
 func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	res, err := db.c.Exec("INSERT INTO users(name, userphoto) VALUES (?,?)", u.UserName)
@@ -7,7 +9,8 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 		var user User
 		if err := db.c.QueryRow(`SELECT UserId, username FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName); err != nil {
 			if err == sql.ErrNoRows {
-				return user, ErrUserDoesNotExist
+				w.WriteHeader(http.StatusBadRequest)
+				return user
 			}
 		}
 		return user, nil
