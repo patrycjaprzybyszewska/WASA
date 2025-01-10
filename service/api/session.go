@@ -7,7 +7,7 @@ import (
 
 )
 
-func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
+func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext){
 	w.Header().Set("content-Type", "application/json")
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
