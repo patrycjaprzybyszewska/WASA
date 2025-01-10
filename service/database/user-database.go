@@ -8,9 +8,8 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	if err != nil{
 		var user User
 		if err := db.c.QueryRow(`SELECT UserId, username FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName); err != nil {
-			if err == sql.ErrNoRows {
-				w.WriteHeader(http.StatusBadRequest)
-				return user
+			if err == sql.ErrNoRows{
+				return user, err
 			}
 		}
 		return user, nil
