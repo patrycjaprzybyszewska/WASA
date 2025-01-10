@@ -1,12 +1,10 @@
 package api
 
 import (
-	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"encoding/json"
 	"errors"
-	"net/http"
 
 )
 
