@@ -10,7 +10,7 @@ import (
 
 )
 
-func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext){
+func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
 	w.Header().Set("content-Type", "application/json")
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
@@ -18,7 +18,7 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 		return
 	}
 
-	dbuser, err := rt.db.CreateUser(user.ToDatabase())
+	dbuser, err := rt.db.CreateLogin(user.ToDatabase())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
