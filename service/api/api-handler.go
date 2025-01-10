@@ -15,6 +15,6 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.POST("/session", rt.wrap(rt.doLogin))
 	return rt.router
 
-}
+}a
 
 
