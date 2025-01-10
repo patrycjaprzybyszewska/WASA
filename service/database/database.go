@@ -36,7 +36,7 @@ import (
 	"fmt"
 )
 type User struct {
-	UserId 		int64 	`json:"userID"`
+	UserId 		uint64 	`json:"userID"`
 	UserName 	string 	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
