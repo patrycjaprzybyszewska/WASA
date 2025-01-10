@@ -12,7 +12,7 @@ func (rt *_router) Handler() http.Handler {
 
 	// Special routes
 	rt.router.GET("/liveness", rt.liveness)
-	rt.router.POST("/session", rt.doLogin)
+	rt.router.POST("/session", rt.wrap(doLogin))
 	return rt.router
 
 }
