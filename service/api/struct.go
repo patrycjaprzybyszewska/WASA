@@ -1,14 +1,14 @@
 package api
 
 import (
-	"time"
+
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 )
 
 
 type User struct{
-	UserId 		int64 	`json:"userID"`
-	UserName 	int	`json:"name"`
+	UserId 		uint64 	`json:"userID"`
+	UserName 	string	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
 
