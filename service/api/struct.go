@@ -7,7 +7,7 @@ import (
 
 
 type User struct {
-	UserId 		int 	`json:"userID"`
+	UserId 		int64 	`json:"userID"`
 	UserName 	int	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
