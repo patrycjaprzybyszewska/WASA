@@ -72,7 +72,7 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 
 
 ///dodac autoryzacje
-	dbuser, err := rt.db.Setphoto(user.ToDatabase(), requestBody.Name)
+	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), requestBody.Name)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
