@@ -9,6 +9,12 @@ import (
 )
 
 func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext){
+	authHeader := r.Header.Get("Authorization")
+    if authHeader == "" {
+        w.WriteHeader(http.StatusUnauthorized)
+        _ = json.NewEncoder(w).Encode("Authorization header missing")
+        return
+    }
 	w.Header().Set("content-Type", "application/json")
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
