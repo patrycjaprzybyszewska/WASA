@@ -17,6 +17,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.PUT("/session/:userId/userName", rt.wrap(rt.setMyUsername))
 	//MESSAGES
 	rt.router.PUT("/message", rt.wrap(rt.sendMessage))
+	rt.router.DELETE("/message/:messageId", rt.wrap(rt.deleteMessage))
 	return rt.router
 
 }

@@ -55,6 +55,7 @@ type AppDatabase interface {
 	CreateLogin(User) (User, error)
 
 	Sendmessage(Message) (Message, error)
+	Removemessage(uint64) error
 	Ping() error
 }
 

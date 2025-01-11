@@ -24,3 +24,14 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	return m, nil
 }
 
+
+
+func (db *appdbimpl) Removemessage(messageId uint64) {
+	_, err := db.c.Exec(`DELETE FROM messages WHERE messageId=?`, messageId)
+	if err != nil {
+		return err
+	}
+	return nil
+
+
+}

@@ -6,6 +6,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"encoding/json"
+	"strconv"
 	"time"
 )
 
@@ -40,3 +41,26 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	_ = json.NewEncoder(w).Encode(message)
 ////201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
 }
+
+func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	
+	messageIdStr := ps.ByName("messageId")
+    messageId, err := strconv.ParseInt(messageIdStr, 10, 64)
+    if err != nil {
+        http.Error(w, "Invalid message ID", http.StatusBadRequest)
+        return
+    }
+	
+    dbmessage, err := rt.db.DeleteMessage(messageId)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            http.Error(w, "Message not found", http.StatusNotFound)
+        } else {
+          
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
+        return
+    }
+
+    w.WriteHeader(http.StatusNoContent)
+}////204 no content 404, i need mess id, add auth
