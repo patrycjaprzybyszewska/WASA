@@ -23,7 +23,7 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	return u, nil
 }
 
-func (db *appdbimpl) SetUserName(u User, username string) (User, error) {
+func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 	res, err := db.c.Exec(`UPDATE users SET UserName=? WHERE UserId=?`, username, u.UserId)
 	if err != nil {
 		return u, err
