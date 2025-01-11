@@ -68,7 +68,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if errors.Is(err, sql.ErrNoRows) {
 		usersDatabase := `CREATE TABLE users (
 			UserId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			UserName TEXT NOT NULL 
+			UserName TEXT NOT NULL, 
 			UserPhoto BLOB	
 			);`
 		_, err = db.Exec(usersDatabase)
