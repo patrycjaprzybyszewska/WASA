@@ -15,9 +15,13 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.POST("/session", rt.wrap(rt.doLogin)) // to vheck if it ckecks if user is logged
 	//user
 	rt.router.PUT("/session/:userId/userName", rt.wrap(rt.setMyUsername))
+	
+	rt.router.PUT("/session/:userId/userPhoto", rt.wrap(rt.setMyPhoto))
+
 	//MESSAGES
 	rt.router.PUT("/message", rt.wrap(rt.sendMessage))
 	rt.router.DELETE("/message/:messageId", rt.wrap(rt.deleteMessage))
+	
 	return rt.router
 
 }

@@ -37,3 +37,16 @@ func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 	return u, nil
 }
 
+func (db *appdbimpl) SetUsername(u User, photo string) (User, error) {
+	res, err := db.c.Exec(`UPDATE users SET UserPhoto=? WHERE UserId=?`, photo, u.UserId)
+	if err != nil {
+		return u, err
+	}
+	affected, err := res.RowsAffected()
+	if err != nil {
+		return u, err
+	} else if affected == 0 {
+		return u, err
+	}
+	return u, nil
+}

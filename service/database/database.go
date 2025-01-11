@@ -52,6 +52,7 @@ type Message struct{
 type AppDatabase interface {
 	GetName() (string, error)
 	SetUsername(User, string) (User, error)
+	SetUserphoto(User, string) (User, error)
 	CreateLogin(User) (User, error)
 
 	Sendmessage(Message) (Message, error)

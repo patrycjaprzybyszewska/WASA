@@ -47,3 +47,38 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 }
 
 ///to set username i need to get id, username change it into database, response 201
+
+
+
+func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+
+	userId, err := strconv.ParseUint(ps.ByName("userId"), 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	var user User
+	user.UserId = userId
+	var requestBody struct {
+		Name string `json:"name"`
+	}
+	
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}	
+
+
+
+///dodac autoryzacje
+	dbuser, err := rt.db.Setphoto(user.ToDatabase(), requestBody.Name)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	user.FromDatabase(dbuser)
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(user)
+}
