@@ -2,6 +2,7 @@ package api
 
 
 import (
+	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
@@ -51,7 +52,7 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
         return
     }
 	
-    dbmessage, err := rt.db.DeleteMessage(messageId)
+    dbmessage, err := rt.db.Removemessage(messageId)
     if err != nil {
         if err == sql.ErrNoRows {
             http.Error(w, "Message not found", http.StatusNotFound)
