@@ -7,12 +7,19 @@ import (
 
 
 type User struct{
-	UserId 		uint64 	`json:"userID"`
+	UserId 		uint64 	`json:"userId"`
 	UserName 	string	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
 
-
+type Message struct{
+	MessageId   uint64 `json:"messageId"`
+	UserId      uint64 `json:"userId"`
+	Content     string `json:"content"`
+	MessageDate string `json:"messageDate"`
+	State       string `json:"state"`
+	MessageTime string `json:"messageTime"`
+}
 func (u *User) FromDatabase(user database.User){
 	u.UserId = user.UserId
 	u.UserName = user.UserName
@@ -24,5 +31,25 @@ func (u *User) ToDatabase() database.User{
 		UserId: u.UserId,
 		UserPhoto: u.UserPhoto,
 		UserName: u.UserName,
+	}
+}
+
+func(m *Message) MessageFromDatabase(message database.Message){
+	m.MessageId = message.MessageId
+	m.UserId = message.UserId
+	m.Content = message.Content
+	m.MessageDate = message.MessageDate
+	m.State = message.State
+	m.MessageTime = message.MessageTime
+}
+
+func (m *Message) MessToDatabase() database.Message {
+	return database.Message{
+		MessageId:  	m.MessageId,
+		UserId:	 		m.UserId,
+		Content:		m.Content,
+		MessageDate:	m.MessageDate,
+		State:			m.State,
+		MessageTime: 	m.MessageTime,
 	}
 }

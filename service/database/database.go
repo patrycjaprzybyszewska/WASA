@@ -40,11 +40,21 @@ type User struct {
 	UserName 	string 	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
+type Message struct{
+	MessageId   uint64 `json:"messageId"`
+	UserId      uint64 `json:"userId"`
+	Content     string `json:"content"`
+	MessageDate string `json:"messageDate"`
+	State       string `json:"state"`
+	MessageTime string `json:"messageTime"`
+}
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	GetName() (string, error)
 	SetUsername(User, string) (User, error)
 	CreateLogin(User) (User, error)
+
+	Sendmessage(Message) (Message, error)
 	Ping() error
 }
 
@@ -71,10 +81,24 @@ func New(db *sql.DB) (AppDatabase, error) {
 			UserName TEXT NOT NULL, 
 			UserPhoto BLOB	
 			);`
+			messagesDatabase := `CREATE TABLE messages (
+			messageId INTEGER NOT NULL PRIMARY KEY,
+			content TEXT,
+			messageDate TEXT,
+			messageTime TEXT,
+			state TEXT,
+			userId INTEGER,
+			FOREIGN KEY (userId) REFERENCES users(userId)
+			);`
 		_, err = db.Exec(usersDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
+		_, err = db.Exec(messagesDatabase)
+		if err != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err)
+		}
+		
 	}
 
 	return &appdbimpl{

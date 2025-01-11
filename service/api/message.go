@@ -1,0 +1,44 @@
+package api
+
+
+import (
+	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
+	"github.com/julienschmidt/httprouter"
+	"net/http"
+	"encoding/json"
+	"strconv"
+	"time"
+)
+
+func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+	var message Message
+	var user User
+
+	err := json.NewDecoder(r.Body).Decode(&message)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if message.Content == "" || message.UserId == 0 {
+		http.Error(w, "Missing required fields: content or userId", http.StatusBadRequest)
+		return
+	}
+
+	currentTime := time.Now()
+	message.MessageDate = currentTime.Format("2006-01-02") // Format YYYY-MM-DD
+	message.MessageTime = currentTime.Format("15:04")      // Format HH:MM
+	message.State = "delivered"
+
+	dbmessage, err := rt.db.Sendmessage(message.MessageToDatabase())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	message.MessageFromDatabase(dbmessage)
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(message)
+////201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
+}
