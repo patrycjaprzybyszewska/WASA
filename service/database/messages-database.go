@@ -26,7 +26,7 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 
 
 
-func (db *appdbimpl) Removemessage(messageId uint64) {
+func (db *appdbimpl) Removemessage(messageId uint64) error {
 	_, err := db.c.Exec(`DELETE FROM messages WHERE messageId=?`, messageId)
 	if err != nil {
 		return err
