@@ -52,15 +52,11 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
         return
     }
 	
-    dbmessage, err := rt.db.Removemessage(uint64(messageId))
+    err := rt.db.Removemessage(uint64(messageId))
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
         }
-       
-    
-
-
 
     w.WriteHeader(http.StatusNoContent)
 }////204 no content 404, i need mess id, add auth
