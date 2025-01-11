@@ -36,14 +36,14 @@ import (
 	"fmt"
 )
 type User struct {
-	UserId 		uint64 	`json:"userID"`
+	UserId 		uint64 	`json:"userId"`
 	UserName 	string 	`json:"name"`
 	UserPhoto 	string 	`json:"userPhoto"`
 }
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	GetName() (string, error)
-	SetName(name string) error
+	SetUserName(User string) (User error)
 	CreateLogin(User) (User, error)
 	Ping() error
 }
@@ -64,7 +64,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	}
 	// Check if table exists. If not, the database is empty, and we need to create the structure
 	var tableName string
-	err = db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='example_table';`).Scan(&tableName)
+	err = db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&tableName)
 	if errors.Is(err, sql.ErrNoRows) {
 		usersDatabase := `CREATE TABLE users (
 			UserId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
