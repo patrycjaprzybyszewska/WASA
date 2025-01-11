@@ -36,6 +36,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	
 
 	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
@@ -54,14 +55,13 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
 	
     dbmessage, err := rt.db.Removemessage(uint64(messageId))
     if err != nil {
-        if err == sql.ErrNoRows {
-            http.Error(w, "Message not found", http.StatusNotFound)
-        } else {
-          
-            http.Error(w, err.Error(), http.StatusInternalServerError)
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
         }
-        return
+       
     }
+
+
 
     w.WriteHeader(http.StatusNoContent)
 }////204 no content 404, i need mess id, add auth
