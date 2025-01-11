@@ -43,7 +43,7 @@ func(m *Message) MessageFromDatabase(message database.Message){
 	m.MessageTime = message.MessageTime
 }
 
-func (m *Message) MessToDatabase() database.Message {
+func (m *Message) MessageToDatabase() database.Message {
 	return database.Message{
 		MessageId:  	m.MessageId,
 		UserId:	 		m.UserId,

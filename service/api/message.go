@@ -6,14 +6,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"encoding/json"
-	"strconv"
 	"time"
 )
 
 func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var message Message
-	var user User
 
 	err := json.NewDecoder(r.Body).Decode(&message)
 	if err != nil {
