@@ -64,15 +64,22 @@ func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 		return c, err
 	}
 	
-	// Get the last inserted ID (CommentId) from the database
 	commentId, err := result.LastInsertId()
 	if err != nil {
 		return c, err
 	}
 
-	// Set the generated CommentId to the comment struct and return it
 	c.CommentId = uint64(commentId)
 	return c, nil
 }
 
 
+func (db *appdbimpl) Removemessage(commentId uint64) error {
+	_, err := db.c.Exec(`DELETE FROM comments WHERE commentId=?`, commentId)
+	if err != nil {
+		return err
+	}
+	return nil
+
+
+}

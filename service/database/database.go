@@ -65,6 +65,7 @@ type AppDatabase interface {
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
 	Commentmessage(Comment) (Comment, error)
+	Removecomment(uint64) error
 	Ping() error
 }
 
