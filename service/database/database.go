@@ -47,6 +47,7 @@ type Message struct{
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
 	MessageTime string `json:"messageTime"`
+	ChatId      uint64 `json:"ChatId"`
 }
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
@@ -54,7 +55,7 @@ type AppDatabase interface {
 	SetUsername(User, string) (User, error)
 	SetUserphoto(User, string) (User, error)
 	CreateLogin(User) (User, error)
-
+	GetMessageById(uint64) (Message, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
 	Ping() error

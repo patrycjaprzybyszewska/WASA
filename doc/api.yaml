@@ -99,7 +99,7 @@ paths:
         "404":
           description: |
             Message to comment is not found.
-  /message/forward/{messageId}/{userId}:
+  /message/forward/{messageId}/{chatId}:
     post:
       tags: ["Message"]
       description: Forwards message to antoher user
@@ -115,9 +115,9 @@ paths:
           required: true
           schema:
             type: integer
-        - name: userId
+        - name: chatId
           in: path
-          description: ID of user that is being forwarded to.
+          description: ID of chat that is being forwarded to.
           required: true
           schema:
             type: integer
@@ -438,6 +438,11 @@ components:
           description: Unique meassage identifier.
           type: integer
           example: 12390739
+          readOnly: true
+        chatId:
+          description: Id of chat that message is sent to.
+          type: integer
+          example: 39393
           readOnly: true
         state:
           description: This shows status of a message if it is delivered, or read.

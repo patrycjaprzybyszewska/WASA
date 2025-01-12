@@ -20,7 +20,8 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	if message.Content == "" || message.UserId == 0 {
+	
+	if message.Content == "" || message.UserId == 0 || message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or userId", http.StatusBadRequest)
 		return
 	}
@@ -60,3 +61,49 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
 
     w.WriteHeader(http.StatusNoContent)
 }////204 no content 404, i need mess id, add auth
+
+func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	messageIdStr := ps.ByName("messageId")
+	messageId, err := strconv.ParseUint(messageIdStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid message ID", http.StatusBadRequest)
+		return
+	}
+
+	// Parsowanie ciała żądania, aby uzyskać docelowego użytkownika
+	var requestBody struct {
+		TargetChatId uint64 `json:"targeChatId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}
+
+	if requestBody.TargetChatId == 0 {
+		http.Error(w, "Target user ID must be provided", http.StatusUnprocessableEntity)
+		return
+	}
+
+	dbmessage, err := rt.db.GetMessageById(messageId)
+	if err != nil {
+		http.Error(w, "Message not found", http.StatusNotFound)
+		return
+	}
+
+	var message Message
+	currentTime := time.Now()
+	message.MessageDate = currentTime.Format("2006-01-02")
+	message.MessageTime = currentTime.Format("15:04")
+	message.State = "send"
+
+	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
+	if err != nil {
+		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
+		return
+	}
+	message.MessageFromDatabase(dbmessage)
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(message)
+}
+//201 404 

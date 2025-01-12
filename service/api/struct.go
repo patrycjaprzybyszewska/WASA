@@ -19,6 +19,7 @@ type Message struct{
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
 	MessageTime string `json:"messageTime"`
+	ChatId      uint64 `json:"chatId"`
 }
 func (u *User) FromDatabase(user database.User){
 	u.UserId = user.UserId
