@@ -63,8 +63,8 @@ paths:
         "404":
           description: Message is not found.
             
-            
-    put: 
+  /message/comment/{messageId}:              
+    post: 
       tags: ["Message"]
       summary: Creates a new comment to a message.
       description: |
@@ -128,7 +128,7 @@ paths:
         '404':
           description: |
             Forwarded message does not exist.
-  /message/comment/{commentId}:
+  /comment/{commentId}:
     delete:
       tags: ["Message"]
       description: Deletes a comment.
