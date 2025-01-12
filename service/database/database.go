@@ -99,7 +99,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			userId INTEGER,
 			FOREIGN KEY (userId) REFERENCES users(userId)
 			);`
-			commentsDatabase := `CREATE TABLE comm (
+			commentsDatabase := `CREATE TABLE comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
