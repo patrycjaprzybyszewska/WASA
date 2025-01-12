@@ -63,14 +63,14 @@ func (m *Message) MessageToDatabase() database.Message {
 }
 
 func(c *Comment) CommentFromDatabase(comment database.Comment){
-	m.MessageId = commment.MessageId
-	m.Content = comment.Content
-	m.CommentId = comment.CommentId//mozliwe ze teho tu nie trzeba
+	c.MessageId = commment.MessageId
+	c.Content = comment.Content
+	c.CommentId = comment.CommentId//mozliwe ze teho tu nie trzeba
 
 }
 
 func (c *Comment) CommentToDatabase() database.Comment {
-	return database.Message{
+	return database.Comment{
 		MessageId:  	c.MessageId,
 		CommentId:	 	c.CommentId,
 		Content:		c.Content,
