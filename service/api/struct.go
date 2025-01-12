@@ -22,11 +22,12 @@ type Message struct{
 	ChatId      uint64 `json:"chatId"`
 }
 
-func Comment struct{
+type Comment struct{
 	CommentId uint64  `json:"commentId"`
 	MessageId uint64 `json:"messageId"`
-	Content uint64 `json:"content"`
+	Content   string  `json:"content"`
 }
+
 func (u *User) FromDatabase(user database.User){
 	u.UserId = user.UserId
 	u.UserName = user.UserName
