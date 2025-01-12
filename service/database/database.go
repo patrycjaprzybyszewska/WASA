@@ -51,8 +51,8 @@ type Message struct{
 }
 func Comment struct{
 	CommentId uint64  `json:"commentId"`
-	MessageId uint64 `json:"messageId"`
-	Content uint64 `json:"content"`
+	MessageId uint64  `json:"messageId"`
+	Content   uint64  `json:"content"`
 }
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
