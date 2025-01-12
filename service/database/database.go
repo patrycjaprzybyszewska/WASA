@@ -63,7 +63,7 @@ type AppDatabase interface {
 	GetMessageById(uint64) (Message, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
-	Commentmessage(Comment) (comment, error)
+	Commentmessage(Comment) (Comment, error)
 	Ping() error
 }
 
@@ -103,7 +103,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
-				);`
+			);`
 		_, err = db.Exec(usersDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
