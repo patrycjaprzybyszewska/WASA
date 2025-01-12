@@ -55,13 +55,23 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	return message, nil
 }
 
-func (db *appdbimpl) Setcomment(c Comment) (Comment, error) {
+func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 
-	query := `INSERT INTO comments (messageId, userId, content) 
-	VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO comments (messageId,  content) 
+	VALUES (?, ?)`
+	result, err := db.c.Exec(query, c.MessageId, c.Content)
 	if err != nil {
 		return c, err
 	}
+	
+	// Get the last inserted ID (CommentId) from the database
+	commentId, err := result.LastInsertId()
+	if err != nil {
+		return c, err
+	}
+
+	// Set the generated CommentId to the comment struct and return it
+	c.CommentId = uint64(commentId)
 	return c, nil
 }
 
