@@ -49,11 +49,12 @@ type Message struct{
 	MessageTime string `json:"messageTime"`
 	ChatId      uint64 `json:"ChatId"`
 }
-func Comment struct{
+type Comment struct{
 	CommentId uint64  `json:"commentId"`
-	MessageId uint64  `json:"messageId"`
-	Content   uint64  `json:"content"`
+	MessageId uint64 `json:"messageId"`
+	Content   string  `json:"content"`
 }
+
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	GetName() (string, error)
