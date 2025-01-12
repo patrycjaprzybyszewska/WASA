@@ -113,7 +113,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
-		_, err = db.Exec(commentsDatabaseDatabase)
+		_, err = db.Exec(commentsDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
