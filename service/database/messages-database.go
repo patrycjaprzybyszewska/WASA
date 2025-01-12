@@ -74,7 +74,7 @@ func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 }
 
 
-func (db *appdbimpl) Removemessage(commentId uint64) error {
+func (db *appdbimpl) Removecomment(commentId uint64) error {
 	_, err := db.c.Exec(`DELETE FROM comments WHERE commentId=?`, commentId)
 	if err != nil {
 		return err
