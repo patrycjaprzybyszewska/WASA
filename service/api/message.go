@@ -124,7 +124,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 	err = json.NewDecoder(r.Body).Decode(&comment)
-	if err != nil || comment.Content == "" || comment.MessageId {
+	if err != nil || comment.Content == "" || comment.MessageId == 0 {
 		http.Error(w, "Invalid or empty comment content", http.StatusBadRequest)
 		return
 	}
