@@ -69,8 +69,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-
-	// Parsowanie ciała żądania, aby uzyskać docelowego użytkownika
 	var requestBody struct {
 		TargetChatId uint64 `json:"targeChatId"`
 	}
@@ -107,3 +105,38 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	_ = json.NewEncoder(w).Encode(message)
 }
 //201 404 
+
+
+func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+	var comment Comment
+
+	
+	messageIdStr := ps.ByName("messageId")
+	messageId, err := strconv.ParseUint(messageIdStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid message ID", http.StatusBadRequest)
+		return
+	}
+	_, err = rt.db.GetMessageById(messageId)
+	if err != nil {
+		http.Error(w, "Message not found", http.StatusNotFound)
+		return
+	}
+	err = json.NewDecoder(r.Body).Decode(&comment)
+	if err != nil || comment.Content == "" {
+		http.Error(w, "Invalid or empty comment content", http.StatusBadRequest)
+		return
+	}
+	comment.MessageId = messageId
+	dbcomment, err := rt.db.Commentmessage(comment.CommentToDatabase())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	comment.CommentFromDatabase(dbcomment)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(comment)
+
+}///201 404

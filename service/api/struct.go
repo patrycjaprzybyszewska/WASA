@@ -21,6 +21,12 @@ type Message struct{
 	MessageTime string `json:"messageTime"`
 	ChatId      uint64 `json:"chatId"`
 }
+
+func Comment struct{
+	CommentId uint64  `json:"commentId"`
+	MessageId uint64 `json:"messageId"`
+	Content uint64 `json:"content"`
+}
 func (u *User) FromDatabase(user database.User){
 	u.UserId = user.UserId
 	u.UserName = user.UserName
@@ -52,5 +58,20 @@ func (m *Message) MessageToDatabase() database.Message {
 		MessageDate:	m.MessageDate,
 		State:			m.State,
 		MessageTime: 	m.MessageTime,
+	}
+}
+
+func(c *Comment) CommentFromDatabase(comment database.Comment){
+	m.MessageId = commment.MessageId
+	m.Content = comment.Content
+	m.CommentId = comment.CommentId//mozliwe ze teho tu nie trzeba
+
+}
+
+func (c *Comment) CommentToDatabase() database.Comment {
+	return database.Message{
+		MessageId:  	c.MessageId,
+		CommentId:	 	c.CommentId,
+		Content:		c.Content,
 	}
 }

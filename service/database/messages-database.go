@@ -55,4 +55,14 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	return message, nil
 }
 
+func (db *appdbimpl) Setcomment(c Comment) (Comment, error) {
+
+	query := `INSERT INTO comments (messageId, userId, content) 
+	VALUES (?, ?, ?, ?, ?)`
+	if err != nil {
+		return c, err
+	}
+	return c, nil
+}
+
 

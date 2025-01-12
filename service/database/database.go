@@ -49,6 +49,11 @@ type Message struct{
 	MessageTime string `json:"messageTime"`
 	ChatId      uint64 `json:"ChatId"`
 }
+func Comment struct{
+	CommentId uint64  `json:"commentId"`
+	MessageId uint64 `json:"messageId"`
+	Content uint64 `json:"content"`
+}
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	GetName() (string, error)
@@ -58,6 +63,7 @@ type AppDatabase interface {
 	GetMessageById(uint64) (Message, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
+	Commentmessage(Comment) (comment, error)
 	Ping() error
 }
 
@@ -93,6 +99,11 @@ func New(db *sql.DB) (AppDatabase, error) {
 			userId INTEGER,
 			FOREIGN KEY (userId) REFERENCES users(userId)
 			);`
+			commentsDatabase := `CREATE TABLE comm (
+			commentId INTEGER NOT NULL PRIMARY KEY,
+			content TEXT,
+			FOREIGN KEY (messageId) REFERENCES messages(messageId)
+				);`
 		_, err = db.Exec(usersDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
@@ -101,6 +112,11 @@ func New(db *sql.DB) (AppDatabase, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
+		_, err = db.Exec(commentsDatabaseDatabase)
+		if err != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err)
+		}
+		
 		
 	}
 
