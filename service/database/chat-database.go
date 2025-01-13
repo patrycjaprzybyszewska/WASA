@@ -77,7 +77,7 @@ func (db *appdbimpl) SetGroupName(ChatName uint64, chatId uint64) error {
 }
 
 
-func (db *appdbimpl) GetAllChats() ([]Chat, error) {
+func (db *appdbimpl) GetChats() ([]Chat, error) {
     var chats []Chat
 
     query := `
