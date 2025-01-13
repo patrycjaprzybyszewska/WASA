@@ -106,7 +106,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		);`		
 		chatsDatabase := `CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
-			chatUsers INTEGER
+			chatUsers INTEGER,
 			chatName TEXT,
 			chatPhoto TEXT,
 			FOREIGN KEY (chatUsers) REFERENCES users(userId)
@@ -123,7 +123,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		commentsDatabase := `CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
-			messageId INTEGER
+			messageId INTEGER,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
 		);`		
 
