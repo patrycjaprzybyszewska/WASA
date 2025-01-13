@@ -104,7 +104,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			UserName TEXT NOT NULL, 
 			UserPhoto STRING	
 			);`
-			messagesDatabase := `CREATE TABLE messages (
+		messagesDatabase := `CREATE TABLE messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageDate TEXT,
@@ -113,12 +113,12 @@ func New(db *sql.DB) (AppDatabase, error) {
 			userId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
 			);`
-			commentsDatabase := `CREATE TABLE comments (
+		commentsDatabase := `CREATE TABLE comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
 			);`
-			chatsDatabase := `CREATE TABLE chats (
+		chatsDatabase := `CREATE TABLE chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatName TEXT,
 			chatPhoto TEXT,
