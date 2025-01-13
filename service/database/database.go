@@ -55,18 +55,11 @@ type Comment struct{
 	Content   string  `json:"content"`
 }
 
-type Chats struct{
-	ChatIds		 []Chat 	`json:"chatIds"`
-	ChatName 	 string `json:"chatName"`
-	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
-	ChatUsers	[]User `json:"chatUsers`
-}
-
 type Chat struct{
 	ChatId		 uint64 `json:"chatId"`
 	ChatName 	 string `json:"chatName"`
 	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
-	ChatUsers	[]User `json:"chatUsers`
+	ChatUsers	 uint64 `json:"chatUsers`
 }
 
 // AppDatabase is the high level interface for the DB
@@ -127,13 +120,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			chatPhoto BLOB,
 			FOREIGN KEY (userId) REFERENCES chat_users(userId)
 			);`
-			chat_users := `CREATE TABLE chat_users (
-   			chatId INTEGER NOT NULL,
-   			userId INTEGER NOT NULL,
-   			PRIMARY KEY (chatId, userId),
-  			FOREIGN KEY (chatId) REFERENCES chats(chatId),
-   			FOREIGN KEY (userId) REFERENCES users(UserId)
-			);`
+
 		_, err = db.Exec(usersDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)

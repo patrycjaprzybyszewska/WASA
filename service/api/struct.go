@@ -33,12 +33,6 @@ type Chat struct{
 	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
 	ChatUsers	[] User `json:"chatUsers`
 }
-type Chats struct{
-	ChatIds		 []Chat 	`json:"chatIds"`
-	ChatName 	 string `json:"chatName"`
-	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
-	ChatUsers	[]User `json:"chatUsers`
-}
 
 type Chat struct{
 	ChatId		 int 	`json:"chatId"`
