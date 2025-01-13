@@ -87,30 +87,43 @@ type appdbimpl struct {
 
 // New returns a new instance of AppDatabase based on the SQLite connection `db`.
 // `db` is required - an error will be returned if `db` is `nil`.
-func New(db *sql.DB) (AppDatabase, error) {
-	if db == nil {
-		return nil, errors.New("database is required when building a AppDatabase")
-	}
-	_, err := db.Exec("PRAGMA foreign_keys = ON")
-	if err != nil {
-		return nil, err
-	}
-	// Check if table exists. If not, the database is empty, and we need to create the structure
-	var tableName string
-	err = db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&tableName)
-	if errors.Is(err, sql.ErrNoRows) {
-		usersDatabase := `CREATE TABLE IF NOT EXISTS users (
+
+	func New(db *sql.DB) (AppDatabase, error) {
+		if db == nil {
+			return nil, errors.New("database is required when building a AppDatabase")
+		}
+		_, err := db.Exec("PRAGMA foreign_keys = ON")
+		if err != nil {
+			return nil, err
+		}
+	
+		sqlStmt := `
+		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName TEXT NOT NULL, 
 			userPhoto STRING	
-			);`		
-		chatsDatabase := `CREATE TABLE IF NOT EXISTS chats (
+		);`
+		_, err = db.Exec(sqlStmt)
+		if err != nil {
+			return nil, fmt.Errorf("error creating 'users' table: %w", err)
+		}
+
+		sqlStmt = `
+		CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatUsers INTEGER,
 			chatName TEXT,
-			chatPhoto TEXT
-			);`
-		messagesDatabase := `CREATE TABLE IF NOT EXISTS messages (
+			chatPhoto TEXT,
+			FOREIGN KEY (chatUsers) REFERENCES users(userId)
+		);`
+		_, err = db.Exec(sqlStmt)
+		if err != nil {
+			return nil, fmt.Errorf("error creating 'chats' table: %w", err)
+		}
+	
+
+		sqlStmt = `
+		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageDate TEXT,
@@ -118,40 +131,29 @@ func New(db *sql.DB) (AppDatabase, error) {
 			state TEXT,
 			chatId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
-			);`
-		commentsDatabase := `CREATE TABLE IF NOT EXISTS comments (
+		);`
+		_, err = db.Exec(sqlStmt)
+		if err != nil {
+			return nil, fmt.Errorf("error creating 'messages' table: %w", err)
+		}
+	
+	
+		sqlStmt = `
+		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageId INTEGER,
-			FOREIGN KEY (messageId) REFERENCES messages(messageId)
-			);`		
-
-		_, err = db.Exec(usersDatabase)
-		if err != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err)
-		}
-		_, err = db.Exec(chatsDatabase)
-		if err != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err)
-		}
-		_, err = db.Exec(messagesDatabase)
-		if err != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err)
-		}
-		_, err = db.Exec(commentsDatabase)
-		if err != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err)
-		}
-
-		
-		
+			FOREIGN KEY (messageId) REFERENCES mesages(messageId)
+	);`
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'comments' table: %w", err)
 	}
 
 	return &appdbimpl{
 		c: db,
 	}, nil
 }
-
 func (db *appdbimpl) Ping() error {
 	return db.c.Ping()
 }
