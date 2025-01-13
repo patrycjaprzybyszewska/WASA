@@ -88,3 +88,78 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
 }
+
+func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+    w.Header().Set("Content-Type", "application/json")
+
+   
+    chatIdStr := ps.ByName("chatId")
+    chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
+    if err != nil {
+        http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+        return
+    }
+
+   
+    var requestBody struct {
+        ChatName uint64 `json:"chatName"`
+    }
+
+    err = json.NewDecoder(r.Body).Decode(&requestBody)
+    if err != nil || requestBody.ChatName == 0 {
+        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+        return
+    }
+
+
+    err = rt.db.SetGroupName(requestBody.ChatName, chatId)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            http.Error(w, "Chat or user not found", http.StatusNotFound)
+            return
+        }
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+ 
+    w.WriteHeader(http.StatusCreated)
+    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+}
+func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+    w.Header().Set("Content-Type", "application/json")
+
+   
+    chatIdStr := ps.ByName("chatId")
+    chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
+    if err != nil {
+        http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+        return
+    }
+
+   
+    var requestBody struct {
+        ChatPhoto string `json:"chatPhoto"`
+    }
+
+    err = json.NewDecoder(r.Body).Decode(&requestBody)
+    if err != nil || requestBody.ChatPhoto == 0 {
+        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+        return
+    }
+
+
+    err = rt.db.SetGroupPhoto(requestBody.ChatPhoto, chatId)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            http.Error(w, "Chat or user not found", http.StatusNotFound)
+            return
+        }
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+ 
+    w.WriteHeader(http.StatusCreated)
+    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+}

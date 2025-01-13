@@ -74,6 +74,8 @@ type AppDatabase interface {
 	Commentmessage(Comment) (Comment, error)
 	AddUserToChat(uint64, uint64) error 
 	LeaveGroup(uint64, uint64) error 
+	SetGroupName(uint64, uint64) error 
+	SetGroupPhoto(uint64, uint64) error 
 	Removecomment(uint64) error
 	Ping() error
 }
@@ -118,7 +120,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			chatsDatabase := `CREATE TABLE chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatName TEXT,
-			chatPhoto BLOB,
+			chatPhoto TEXT,
 			FOREIGN KEY (userId) REFERENCES chat_users(userId)
 			);`
 

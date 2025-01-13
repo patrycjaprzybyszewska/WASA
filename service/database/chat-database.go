@@ -43,3 +43,35 @@ func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
   
 	return nil
 }
+func (db *appdbimpl) SetGroupPhoto(ChatPhoto uint64, chatId uint64) error {
+  
+	var err error
+
+	res, err := db.c.Exec(`UPDATE chats SET GroupPhoto=? WHERE ChatId=?`, ChatPhoto, chatId)
+	if err != nil {
+		return u, err
+	}
+	affected, err := res.RowsAffected()
+	if err != nil {
+		return u, err
+	} else if affected == 0 {
+		return err
+	}
+	return nil
+}
+func (db *appdbimpl) SetGroupName(ChatName uint64, chatId uint64) error {
+  
+	var err error
+
+	res, err := db.c.Exec(`UPDATE chats SET GroupName=? WHERE ChatId=?`, ChatName, chatId)
+	if err != nil {
+		return u, err
+	}
+	affected, err := res.RowsAffected()
+	if err != nil {
+		return u, err
+	} else if affected == 0 {
+		return err
+	}
+	return nil
+}
