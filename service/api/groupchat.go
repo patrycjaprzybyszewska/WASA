@@ -143,7 +143,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
     }
 
     err = json.NewDecoder(r.Body).Decode(&requestBody)
-    if err != nil || requestBody.ChatPhoto == 0 {
+    if err != nil{
         http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
         return
     }
