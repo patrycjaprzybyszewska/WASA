@@ -7,6 +7,28 @@ import (
 
 func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 ////trzeba dodac tworzenie czatu tutaj
+	var existingChatId uint64
+	err := db.c.QueryRow(`SELECT chatId FROM chats WHERE chatId = ?`, m.ChatId).Scan(&existingChatId)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+		
+			res, err := db.c.Exec(`INSERT INTO chats (chatName, chatPhoto) VALUES (?, ?)`, "New Chat", "")
+			if err != nil {
+				return m, fmt.Errorf("error creating new chat: %w", err)
+			}
+
+			lastInsertID, err := res.LastInsertId()
+			if err != nil {
+				return m, fmt.Errorf("error fetching new chat ID: %w", err)
+			}
+
+			m.ChatId = uint64(lastInsertID)
+		} else {
+		// Inny błąd podczas sprawdzania czatu
+			return m, fmt.Errorf("error checking chat existence: %w", err)
+		}
+	}
+	
 	res, err := db.c.Exec(`INSERT INTO messages (chatId, content, messageDate, messageTime, state) 
                         VALUES (?, ?, ?, ?, ?)`, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
 

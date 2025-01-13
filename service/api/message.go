@@ -29,8 +29,8 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 
 	currentTime := time.Now()
-	message.MessageDate = currentTime.Format("2006-01-02") // Format YYYY-MM-DD
-	message.MessageTime = currentTime.Format("15:04")      // Format HH:MM
+	message.MessageDate = currentTime.Format("2006-01-02") 
+	message.MessageTime = currentTime.Format("15:04")      
 	message.State = "delivered"
 
 	dbmessage, err := rt.db.Sendmessage(message.MessageToDatabase())
