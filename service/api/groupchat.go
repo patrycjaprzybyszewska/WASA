@@ -50,19 +50,6 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
 }
 
-package api
-
-
-import (
-	"github.com/julienschmidt/httprouter"
-	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
-	"net/http"
-	"encoding/json"
-	"strconv"
-	"errors"
-	"database/sql"
-)
-
 
 func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
