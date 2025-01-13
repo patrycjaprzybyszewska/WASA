@@ -24,18 +24,12 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 			}
 
 			m.ChatId = uint64(lastInsertID)
-		} else {
-		// Inny błąd podczas sprawdzania czatu
-			return m, fmt.Errorf("error checking chat existence: %w", err)
-		}
+		} 
 	}
 	
 	res, err := db.c.Exec(`INSERT INTO messages (chatId, content, messageDate, messageTime, state) 
                         VALUES (?, ?, ?, ?, ?)`, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
 
-	if err != nil {
-		return m, fmt.Errorf("error inserting message: %w", err)
-	}
 
 	
 	lastInsertID, err := res.LastInsertId()
