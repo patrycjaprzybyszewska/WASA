@@ -102,7 +102,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		usersDatabase := `CREATE TABLE users (
 			UserId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			UserName TEXT NOT NULL, 
-			UserPhoto BLOB	
+			UserPhoto STRING	
 			);`
 			messagesDatabase := `CREATE TABLE messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
