@@ -27,6 +27,25 @@ type Comment struct{
 	MessageId uint64 `json:"messageId"`
 	Content   string  `json:"content"`
 }
+type Chat struct{
+	ChatId		 int 	`json:"chatId"`
+	ChatName 	 string `json:"chatName"`
+	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
+	ChatUsers	[] User `json:"chatUsers`
+}
+type Chats struct{
+	ChatIds		 []Chat 	`json:"chatIds"`
+	ChatName 	 string `json:"chatName"`
+	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
+	ChatUsers	[]User `json:"chatUsers`
+}
+
+type Chat struct{
+	ChatId		 int 	`json:"chatId"`
+	ChatName 	 string `json:"chatName"`
+	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
+	ChatUsers	[]User `json:"chatUsers`
+}
 
 func (u *User) FromDatabase(user database.User){
 	u.UserId = user.UserId

@@ -24,6 +24,9 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.PUT("/message/forward/:messageId/:chatId", rt.wrap(rt.forwardMessage))
 	rt.router.PUT("/message/comment/:messageId", rt.wrap(rt.commentMessage))
 	rt.router.DELETE("/comment/:commentId", rt.wrap(rt.uncommentMessage))
+	
+	//chat
+	rt.router.PUT("/groupchat/:userId", rt.wrap(rt.addToGroup))
 	return rt.router
 
 }
