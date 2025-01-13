@@ -103,13 +103,13 @@ func New(db *sql.DB) (AppDatabase, error) {
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName TEXT NOT NULL, 
 			userPhoto STRING	
-		);`		
+			);`		
 		chatsDatabase := `CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatUsers INTEGER,
 			chatName TEXT,
 			chatPhoto TEXT
-		);`
+			);`
 		messagesDatabase := `CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
@@ -118,13 +118,13 @@ func New(db *sql.DB) (AppDatabase, error) {
 			state TEXT,
 			chatId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
-		);`
+			);`
 		commentsDatabase := `CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageId INTEGER,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
-		);`		
+			);`		
 
 		_, err = db.Exec(usersDatabase)
 		if err != nil {
