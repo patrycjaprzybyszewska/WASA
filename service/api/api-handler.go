@@ -26,8 +26,8 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.DELETE("/comment/:commentId", rt.wrap(rt.uncommentMessage))
 	
 	//chat
-	rt.router.PUT("/groupchat/:userId", rt.wrap(rt.addToGroup))
-	rt.router.DELETE("/groupchat/leave/:chatId/:userId", rt.wrap(rt.leaveGroup))
+	rt.router.PUT("/groupchat/add/:userId", rt.wrap(rt.addToGroup))
+	rt.router.DELETE("/groupchat/:chatId/leave/:userId", rt.wrap(rt.leaveGroup))
 	rt.router.PUT("/groupchat/:chatId/groupName", rt.wrap(rt.setGroupName))
 	rt.router.PUT("/groupchat/:chatId/groupPhoto", rt.wrap(rt.setGroupPhoto))
 
