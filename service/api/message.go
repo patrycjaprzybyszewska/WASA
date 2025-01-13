@@ -158,3 +158,25 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 
     w.WriteHeader(http.StatusNoContent)
 }//204 404
+
+
+func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+	chatId := ps.ByName("chatId")
+
+	if chatId == "" {
+		http.Error(w, "chatId is required", http.StatusBadRequest)
+		return
+	}
+
+	conversation, err := rt.db.GetConversation(chatId)
+	if err != nil {
+		// Jeśli wystąpił błąd, zwróć odpowiedni komunikat
+		http.Error(w, fmt.Sprintf("Error fetching conversation: %v", err), http.StatusInternalServerError)
+		return
+	}
+   
+
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(conversation)
+}

@@ -74,7 +74,8 @@ type AppDatabase interface {
 	AddUserToChat(uint64, uint64) error 
 	LeaveGroup(uint64, uint64) error 
 	SetGroupName(uint64, uint64) error 
-	SetGroupPhoto(string, uint64) error 
+	SetGroupPhoto(string, uint64) error
+	GetConversation(uint64) ([]Message, error)
 	Removecomment(uint64) error
 	Ping() error
 }

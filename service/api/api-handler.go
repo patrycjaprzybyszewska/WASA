@@ -25,7 +25,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.PUT("/message/comment/:messageId", rt.wrap(rt.commentMessage))
 	rt.router.DELETE("/comment/:commentId", rt.wrap(rt.uncommentMessage))
 
-	//rt.router.GET("/message/", rt.wrap(rt.getConversation))
+	rt.router.GET("/message/conversation/:chatId", rt.wrap(rt.getConversation))
 
 
 	//chat

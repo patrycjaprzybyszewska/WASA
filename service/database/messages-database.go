@@ -83,3 +83,31 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 
 
 }
+
+func (db *appdbimpl) GetConversation(chatId string) ([]Message, error) {
+
+	rows, err := db.c.Query(`SELECT messageId, content, messageDate, messageTime, state 
+								FROM messages 
+								WHERE chatId = ? 
+								ORDER BY messageDate, messageTime`, chatId)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching messages: %w", err)
+	}
+	defer rows.Close()
+
+	
+	var conversation []Message
+
+	for rows.Next() {
+		var message Message
+		if err := rows.Scan(&message.MessageId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State); err != nil {
+			return nil, fmt.Errorf("error scanning row: %w", err)
+		}
+		conversation = append(conversation, message)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %w", err)
+	}
+	return conversation, nil
+}
+
