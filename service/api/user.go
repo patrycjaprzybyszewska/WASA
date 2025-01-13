@@ -28,10 +28,7 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}	
 
-	if len(requestBody.Name) < 3 || len(requestBody.Name) > 16 {
-		http.Error(w, "Username must be between 3 and 16 characters", http.StatusUnprocessableEntity)
-		return
-	}
+
 
 
 ///dodac autoryzacje
