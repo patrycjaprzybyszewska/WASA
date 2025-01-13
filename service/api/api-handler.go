@@ -6,11 +6,11 @@ import (
 )
 
 func (rt *_router) Handler() http.Handler {
-	// Register routes
+
 	rt.router.GET("/", rt.getHelloWorld)
 	rt.router.GET("/context", rt.wrap(rt.getContextReply))
 
-	// Special routes
+	
 	rt.router.GET("/liveness", rt.liveness)
 	rt.router.POST("/session", rt.wrap(rt.doLogin)) // to vheck if it ckecks if user is logged
 	//user
@@ -26,7 +26,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.DELETE("/comment/:commentId", rt.wrap(rt.uncommentMessage))
 	
 	//chat
-	rt.router.PUT("/groupchat/add/:userId", rt.wrap(rt.addToGroup))
+	rt.router.PUT("/groupchat/:chatId/add/:userId", rt.wrap(rt.addToGroup))
 	rt.router.DELETE("/groupchat/:chatId/leave/:userId", rt.wrap(rt.leaveGroup))
 	rt.router.PUT("/groupchat/:chatId/groupName", rt.wrap(rt.setGroupName))
 	rt.router.PUT("/groupchat/:chatId/groupPhoto", rt.wrap(rt.setGroupPhoto))
