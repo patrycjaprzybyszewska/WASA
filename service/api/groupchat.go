@@ -34,7 +34,7 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
     }
 
 
-    err = rt.db.AddUserToChat(chatId, requestBody.UserId)
+    dbchat, err := rt.db.AddUserToChat(chatId, requestBody.UserId)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
