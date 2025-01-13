@@ -68,7 +68,7 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
     }
 
     err = json.NewDecoder(r.Body).Decode(&requestBody)
-    if err != nil || requestBody.UserId == 0 {
+    if err != nil {
         http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
         return
     }
