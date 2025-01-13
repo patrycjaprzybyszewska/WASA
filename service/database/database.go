@@ -108,8 +108,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatUsers INTEGER,
 			chatName TEXT,
-			chatPhoto TEXT,
-			FOREIGN KEY (chatUsers) REFERENCES users(userId)
+			chatPhoto TEXT
 		);`
 		messagesDatabase := `CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
