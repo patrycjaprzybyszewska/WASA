@@ -164,7 +164,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	chatIdStr := ps.ByName("chatId")
-	chatId, err := strconv.ParseInt(chatIdStr, 10, 64)
+	chatId, err := strconv.ParseUInt(chatIdStr, 10, 64)
 
 	conversation, err := rt.db.GetConversation(chatId)
 	if err != nil {
