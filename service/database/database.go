@@ -47,7 +47,6 @@ type Message struct{
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
 	MessageTime string `json:"messageTime"`
-	ChatId      uint64 `json:"ChatId"`
 }
 type Comment struct{
 	CommentId uint64  `json:"commentId"`

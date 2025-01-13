@@ -14,12 +14,12 @@ type User struct{
 
 type Message struct{
 	MessageId   uint64 `json:"messageId"`
-	UserId      uint64 `json:"userId"`
+	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
 	MessageTime string `json:"messageTime"`
-	ChatId      uint64 `json:"chatId"`
+
 }
 
 type Comment struct{
