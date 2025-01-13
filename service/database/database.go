@@ -73,6 +73,7 @@ type AppDatabase interface {
 	Removemessage(uint64) error
 	Commentmessage(Comment) (Comment, error)
 	AddUserToChat(uint64, uint64) error 
+	LeaveGroup(uint64, uint64) error 
 	Removecomment(uint64) error
 	Ping() error
 }

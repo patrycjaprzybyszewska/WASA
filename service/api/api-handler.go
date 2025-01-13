@@ -27,6 +27,7 @@ func (rt *_router) Handler() http.Handler {
 	
 	//chat
 	rt.router.PUT("/groupchat/:userId", rt.wrap(rt.addToGroup))
+	rt.router.DELETE("/groupchat/leave/:chatId/:userId", rt.wrap(rt.leaveGroup))
 	return rt.router
 
 }

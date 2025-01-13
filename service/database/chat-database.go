@@ -24,3 +24,22 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
     }
 	return nil
 }
+func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
+    var chatExists bool
+	var err error
+    err = db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM chats WHERE chatId = ?)", chatId).Scan(&chatExists)
+    if err != nil {
+        return fmt.Errorf("error checking chat existence: %w", err)
+    }
+    if !chatExists {
+        return fmt.Errorf("chat with ID %d does not exist", chatId)
+    }
+
+	_, err = db.c.Exec(
+        `DELETE FROM chats WHERE chatId = ? AND userId = ? `, chatId, userId)
+        if err != nil {
+            return fmt.Errorf("error removing user from chat: %w", err)
+        }
+  
+	return nil
+}
