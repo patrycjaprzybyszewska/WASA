@@ -100,32 +100,38 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err = db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&tableName)
 	if errors.Is(err, sql.ErrNoRows) {
 		usersDatabase := `CREATE TABLE users (
-			UserId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			UserName TEXT NOT NULL, 
-			UserPhoto STRING	
-			);`
+			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			userName TEXT NOT NULL, 
+			userPhoto STRING	
+		);`		
+		chatsDatabase := `CREATE TABLE chats (
+			chatId INTEGER NOT NULL PRIMARY KEY,
+			chatUsers INTEGER
+			chatName TEXT,
+			chatPhoto TEXT,
+			FOREIGN KEY (chatUsers) REFERENCES users(userId)
+		);`
 		messagesDatabase := `CREATE TABLE messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageDate TEXT,
 			messageTime TEXT,
 			state TEXT,
-			userId INTEGER,
+			chatId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
-			);`
+		);`
 		commentsDatabase := `CREATE TABLE comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
+			messageId INTEGER
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
-			);`
-		chatsDatabase := `CREATE TABLE chats (
-			chatId INTEGER NOT NULL PRIMARY KEY,
-			chatName TEXT,
-			chatPhoto TEXT,
-			FOREIGN KEY (userId) REFERENCES chat_users(userId)
-			);`
+		);`		
 
 		_, err = db.Exec(usersDatabase)
+		if err != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err)
+		}
+		_, err = db.Exec(chatsDatabase)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
@@ -137,10 +143,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
 		}
-		_, err = db.Exec(chatsDatabase)
-		if err != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err)
-		}
+
 		
 		
 	}
