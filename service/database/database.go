@@ -99,19 +99,19 @@ func New(db *sql.DB) (AppDatabase, error) {
 	var tableName string
 	err = db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&tableName)
 	if errors.Is(err, sql.ErrNoRows) {
-		usersDatabase := `CREATE TABLE users (
+		usersDatabase := `CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName TEXT NOT NULL, 
 			userPhoto STRING	
 		);`		
-		chatsDatabase := `CREATE TABLE chats (
+		chatsDatabase := `CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatUsers INTEGER
 			chatName TEXT,
 			chatPhoto TEXT,
 			FOREIGN KEY (chatUsers) REFERENCES users(userId)
 		);`
-		messagesDatabase := `CREATE TABLE messages (
+		messagesDatabase := `CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageDate TEXT,
@@ -120,7 +120,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			chatId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
 		);`
-		commentsDatabase := `CREATE TABLE comments (
+		commentsDatabase := `CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageId INTEGER
