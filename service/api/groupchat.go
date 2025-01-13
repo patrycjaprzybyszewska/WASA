@@ -163,3 +163,22 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
 }
+
+func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+    w.Header().Set("Content-Type", "application/json")
+
+    chats, err := rt.db.GetChats()
+    if err != nil {
+        http.Error(w, "Unable to fetch conversations", http.StatusInternalServerError)
+        return
+    }
+
+    if len(chats) == 0 {
+        w.WriteHeader(http.StatusNotFound)
+        _ = json.NewEncoder(w).Encode([]Chat{})
+        return
+    }
+
+    w.WriteHeader(http.StatusOK)
+    _ = json.NewEncoder(w).Encode(chats)
+}

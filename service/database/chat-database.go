@@ -75,3 +75,37 @@ func (db *appdbimpl) SetGroupName(ChatName uint64, chatId uint64) error {
 	}
 	return nil
 }
+
+
+func (db *appdbimpl) GetAllChats() ([]Chat, error) {
+    var chats []Chat
+
+    query := `
+        SELECT c.chatId, c.chatName, c.chatPhoto 
+        FROM chats c
+    `
+    
+    rows, err := db.c.Query(query)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var chat Chat
+        
+        err := rows.Scan(&chat.ChatId, &chat.ChatName, &chat.ChatPhoto)
+        if err != nil {
+            return nil, err
+        }
+        
+        chats = append(chats, chat)
+    }
+    
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return chats, nil
+}
+
