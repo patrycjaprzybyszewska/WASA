@@ -42,7 +42,7 @@ type User struct {
 }
 type Message struct{
 	MessageId   uint64 `json:"messageId"`
-	UserId      uint64 `json:"userId"`
+	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
@@ -110,7 +110,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			messageTime TEXT,
 			state TEXT,
 			userId INTEGER,
-			FOREIGN KEY (userId) REFERENCES users(userId)
+			FOREIGN KEY (chatId) REFERENCES chats(chatId)
 			);`
 			commentsDatabase := `CREATE TABLE comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,

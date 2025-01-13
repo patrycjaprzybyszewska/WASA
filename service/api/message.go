@@ -21,8 +21,8 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 
 	
-	if message.Content == "" || message.UserId == 0 || message.ChatId == 0 {
-		http.Error(w, "Missing required fields: content or userId", http.StatusBadRequest)
+	if message.Content == "" ||  message.ChatId == 0 {
+		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
 	}
 

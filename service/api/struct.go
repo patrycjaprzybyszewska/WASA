@@ -50,7 +50,7 @@ func (u *User) ToDatabase() database.User{
 
 func(m *Message) MessageFromDatabase(message database.Message){
 	m.MessageId = message.MessageId
-	m.UserId = message.UserId
+	m.ChatId = message.ChatId
 	m.Content = message.Content
 	m.MessageDate = message.MessageDate
 	m.State = message.State
@@ -60,7 +60,7 @@ func(m *Message) MessageFromDatabase(message database.Message){
 func (m *Message) MessageToDatabase() database.Message {
 	return database.Message{
 		MessageId:  	m.MessageId,
-		UserId:	 		m.UserId,
+		ChatId:	 		m.ChatId,
 		Content:		m.Content,
 		MessageDate:	m.MessageDate,
 		State:			m.State,
