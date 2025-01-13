@@ -165,14 +165,9 @@ func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps ht
 	w.Header().Set("Content-Type", "application/json")
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseInt(chatIdStr, 10, 64)
-	if chatId == "" {
-		http.Error(w, "chatId is required", http.StatusBadRequest)
-		return
-	}
 
 	conversation, err := rt.db.GetConversation(chatId)
 	if err != nil {
-		// Jeśli wystąpił błąd, zwróć odpowiedni komunikat
 		http.Error(w, fmt.Sprintf("Error fetching conversation: %v", err), http.StatusInternalServerError)
 		return
 	}
