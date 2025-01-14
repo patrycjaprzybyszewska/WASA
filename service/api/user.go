@@ -48,7 +48,6 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 	}
 	var user User
 	user.UserId = userId
-
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
