@@ -24,7 +24,7 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-	username := ps.ByName("name")
+	username = ps.ByName("name")
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
