@@ -48,13 +48,13 @@ func (db *appdbimpl) SetGroupPhoto(ch Chat, chatPhoto string) (Chat, error) {
 
 	res, err := db.c.Exec(`UPDATE chats SET ChatPhoto=?, ChatName=? WHERE ChatId=?`, chatPhoto, ch.ChatName, ch.ChatId)
 	if err != nil {
-		return err
+		return ch, err
 	}
 	affected, err := res.RowsAffected()
 	if err != nil {
-		return err
+		return ch, err
 	} else if affected == 0 {
-		return err
+		return ch, err
 	}
 	return ch, nil
 }
@@ -64,13 +64,13 @@ func (db *appdbimpl) SetGroupName(ch Chat, chatName string) (Chat, error) {
 
 	res, err := db.c.Exec(`UPDATE chats SET ChatName=?, ChatPhoto=? WHERE ChatId=?`, chatName, ch.ChatPhoto, ch.ChatId)
 	if err != nil {
-		return err
+		return ch, err
 	}
 	affected, err := res.RowsAffected()
 	if err != nil {
-		return err
+		return ch, err
 	} else if affected == 0 {
-		return err
+		return ch, err
 	}
 	return ch, nil
 }
