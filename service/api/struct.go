@@ -1,7 +1,8 @@
 package api
 
 import (
-
+	"regexp"
+	"strconv"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 )
 
@@ -94,3 +95,12 @@ func (ch *Chat) ChatFromDatabase(chat database.Chat) {
     ch.ChatName = chat.ChatName
     ch.ChatPhoto = chat.ChatPhoto
 }
+ func auth(authid string) (uint64, error) {
+	re := regexp.MustCompile(`\d+`)
+	stringToken := re.FindAllString(authid)
+	authid, err := strconv.ParseUint(stringToken, 10, 64)
+    if err != nil {
+        return 0, err
+    }
+    return authid, nil
+ }

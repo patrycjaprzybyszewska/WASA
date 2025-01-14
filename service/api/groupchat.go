@@ -155,7 +155,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
         return
     }
     chat.ChatFromDatabase(dbchat)
- //sprawdzic czt czat istnieje
+
     w.WriteHeader(http.StatusCreated)
     _ = json.NewEncoder(w).Encode(chat)
 }
