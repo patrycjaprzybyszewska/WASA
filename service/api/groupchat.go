@@ -23,19 +23,15 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
         return
     }
 
-   
-    var requestBody struct {
-        UserId uint64 `json:"userId"`
-    }
-
-    err = json.NewDecoder(r.Body).Decode(&requestBody)
-    if err != nil || requestBody.UserId == 0 {
-        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+    userIdStr := ps.ByName("userId")
+    userId, err := strconv.ParseUint(userIdStr, 10, 64)
+    if err != nil {
+        http.Error(w, "Invalid chat ID", http.StatusBadRequest)
         return
     }
 
 
-    err = rt.db.AddUserToChat(chatId, requestBody.UserId)
+    err = rt.db.AddUserToChat(chatId, userId)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
