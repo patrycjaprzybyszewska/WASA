@@ -89,6 +89,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
 	message.State = "send"
+	message.Config = dbmessage.Content
 	message.ChatId = chatId
 	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
