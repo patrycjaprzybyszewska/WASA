@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"io/ioutil"
-	"log"
+	"fmt"
 )
 
 func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
