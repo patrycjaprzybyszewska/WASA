@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"encoding/json"
 	"strconv"
+	"io/ioutil"
+	"log"
 )
 
 func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -27,10 +29,7 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-
-
-
-
+	log.Printf("Otrzymane ciało żądania: %s", string(requestBody.Name))
 ///dodac autoryzacje
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), requestBody.Name)
 	if err != nil {
