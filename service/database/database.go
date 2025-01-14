@@ -140,7 +140,7 @@ type appdbimpl struct {
 		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
-			senderId TEXT
+			senderId INTEGER,
 			content TEXT,
 			messageDate TEXT,
 			messageTime TEXT,
