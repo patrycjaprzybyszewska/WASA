@@ -62,7 +62,20 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 		return
 	}
 	var user User
-	
+	authHeader := r.Header.Get("Authorization")
+    if authHeader == "" {
+        http.Error(w, "Missing authorization", http.StatusUnauthorized)
+        return
+    }
+	authid, err := auth(authHeader)
+    if err != nil {
+        http.Error(w, "Invalid token", http.StatusUnauthorized)
+        return
+	}
+	if authid != userId {
+		http.Error(w, "bad autorization", http.StatusUnauthorized)
+		return
+	}
 	user.UserId = userId
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
@@ -74,7 +87,7 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
         return
     }
 	user.UserName = userName
-///dodac autoryzacje
+
 	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), user.UserPhoto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

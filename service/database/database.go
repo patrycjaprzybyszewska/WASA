@@ -42,6 +42,7 @@ type User struct {
 }
 type Message struct{
 	MessageId   uint64 `json:"messageId"`
+	SenderId	unit64 `json:"senderId"`
 	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
 	MessageDate string `json:"messageDate"`
@@ -139,6 +140,7 @@ type appdbimpl struct {
 		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
+			senderId TEXT
 			content TEXT,
 			messageDate TEXT,
 			messageTime TEXT,

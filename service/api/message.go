@@ -14,14 +14,24 @@ import (
 
 func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
+	authHeader := r.Header.Get("Authorization")
 	var message Message
 	err := json.NewDecoder(r.Body).Decode(&message)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-
-	
+	authHeader := r.Header.Get("Authorization")
+    if authHeader == "" {
+        http.Error(w, "Missing authorization", http.StatusUnauthorized)
+        return
+    }
+	authid, err := auth(authHeader)
+    if err != nil {
+        http.Error(w, "Invalid token", http.StatusUnauthorized)
+        return
+	}
+	message.SenderId = authid
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
@@ -84,6 +94,18 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	}
 
 	var message Message
+	authHeader := r.Header.Get("Authorization")
+    if authHeader == "" {
+        http.Error(w, "Missing authorization", http.StatusUnauthorized)
+        return
+    }
+	authid, err := auth(authHeader)
+    if err != nil {
+        http.Error(w, "Invalid token", http.StatusUnauthorized)
+        return
+	}
+	message.SenderId = authid
+	
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")

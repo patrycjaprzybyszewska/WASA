@@ -15,6 +15,7 @@ type User struct{
 
 type Message struct{
 	MessageId   uint64 `json:"messageId"`
+	SenderId	unit64 `json:"senderId"`
 	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
 	MessageDate string `json:"messageDate"`
@@ -50,6 +51,7 @@ func (u *User) ToDatabase() database.User{
 
 func(m *Message) MessageFromDatabase(message database.Message){
 	m.MessageId = message.MessageId
+	m.SenderId = message.SenderId
 	m.ChatId = message.ChatId
 	m.Content = message.Content
 	m.MessageDate = message.MessageDate
@@ -60,6 +62,7 @@ func(m *Message) MessageFromDatabase(message database.Message){
 func (m *Message) MessageToDatabase() database.Message {
 	return database.Message{
 		MessageId:  	m.MessageId,
+		SenderId:       m.SenderId,
 		ChatId:	 		m.ChatId,
 		Content:		m.Content,
 		MessageDate:	m.MessageDate,
