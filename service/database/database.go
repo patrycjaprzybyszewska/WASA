@@ -138,6 +138,7 @@ type appdbimpl struct {
 		}
 	
 		sqlStmt = `
+		DELETE TABLE messages
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			senderId INTEGER,
