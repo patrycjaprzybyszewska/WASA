@@ -20,12 +20,11 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	var user User
 	user.UserId = userId
 
-	if err := json.NewDecoder(r.Body).Decode(&username); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-	username = ps.ByName("name")
-	dbuser, err := rt.db.SetUsername(user.ToDatabase(), username)
+	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
