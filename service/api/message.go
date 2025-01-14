@@ -118,11 +118,6 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Message to comment not found", http.StatusNotFound)
 		return
 	}
-	err := json.NewDecoder(r.Body).Decode(&message)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
 
 	err = json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
