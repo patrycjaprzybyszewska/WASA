@@ -71,16 +71,16 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-	var requestBody struct {
-		TargetChatId uint64 `json:"targeChatId"`
-	}
 
+	type requestBody struct{
+		chatId uint64  `json:"chatId"`
+	}
 	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
 
-	if requestBody.TargetChatId == 0 {
+	if requestBody.chatId == 0 {
 		http.Error(w, "Target user ID must be provided", http.StatusUnprocessableEntity)
 		return
 	}
@@ -96,7 +96,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
 	message.State = "send"
-
+	message.ChatId = requestBody.chatId
 	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
