@@ -70,7 +70,7 @@ type AppDatabase interface {
 	GetUserNameById(uint64) (string, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
-	GetCommentById(uint64) (Message, error)
+	GetCommentById(uint64) (Comment, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
 	Commentmessage(Comment) (Comment, error)
