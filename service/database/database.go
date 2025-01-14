@@ -114,7 +114,7 @@ type appdbimpl struct {
 		CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER PRIMARY KEY,
 			chatName STRING,
-			chatPhoto STRING,
+			chatPhoto STRING
 		);`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
