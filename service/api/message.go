@@ -14,7 +14,7 @@ import (
 
 func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	authHeader := r.Header.Get("Authorization")
+
 	var message Message
 	err := json.NewDecoder(r.Body).Decode(&message)
 	if err != nil {
@@ -105,7 +105,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
         return
 	}
 	message.SenderId = authid
-	
+
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
