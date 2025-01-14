@@ -66,7 +66,7 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
     }
 
 
-    err = rt.db.LeaveGroup(chatId, requestBody.UserId)
+    err = rt.db.LeaveGroup(chatId, userId)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
