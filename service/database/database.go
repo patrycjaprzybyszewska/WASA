@@ -103,7 +103,6 @@ type appdbimpl struct {
 		}
 	
 		sqlStmt := `
-		DROP TABLE users;
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
@@ -115,7 +114,6 @@ type appdbimpl struct {
 		}
 
 		sqlStmt = `
-		DROP TABLE chats;
 		CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER PRIMARY KEY,
 			chatName STRING,
@@ -127,7 +125,6 @@ type appdbimpl struct {
 		}
 	
 		sqlStmt = `
-		DROP TABLE chat_users;
 		CREATE TABLE IF NOT EXISTS chat_users (
   			chatId INTEGER,
   			userId INTEGER,
@@ -141,7 +138,6 @@ type appdbimpl struct {
 		}
 	
 		sqlStmt = `
-		DROP TABLE messages;
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			senderId INTEGER,
@@ -159,7 +155,6 @@ type appdbimpl struct {
 	
 	
 		sqlStmt = `
-		DROP TABLE comments;
 		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content STRING,
