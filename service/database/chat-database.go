@@ -16,7 +16,7 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
     }
 
 	_, err = db.c.Exec(
-        "INSERT INTO chats (chatId, userId) VALUES (?, ?)",
+        "INSERT INTO chats (chatId, chatusers) VALUES (?, ?)",
         chatId, userId,
     )
     if err != nil {
