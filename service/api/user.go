@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"strconv"
-	"io/ioutil"
-	"fmt"
 )
 
 func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -21,13 +19,8 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	}
 	var user User
 	user.UserId = userId
-	bodyBytes, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Failed to read request body", http.StatusInternalServerError)
-		return
-	}
+
 	// Log the raw request body for debugging
-	fmt.Println("Request Body: ", string(bodyBytes))
 
 	var requestBody struct {
 		Name string `json:"name"`
