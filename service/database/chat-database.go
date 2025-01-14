@@ -109,18 +109,18 @@ func (db *appdbimpl) GetChats() ([]Chat, error) {
 }
 
 func (db *appdbimpl) GetChatPhotoById(chatId uint64) (string, error) {
-    var userPhoto string
+    var chatPhoto string
     err := db.c.QueryRow(`SELECT ChatPhoto FROM chats WHERE ChatId = ?`, chatId).Scan(&chatPhoto)
     if err != nil {
         return "", err
     }
-    return userPhoto, nil
+    return chatPhoto, nil
 }
-func (db *appdbimpl) GetChatNameById(userId uint64) (string, error) {
-    var userName string
+func (db *appdbimpl) GetChatNameById(chatId uint64) (string, error) {
+    var chatName string
     err := db.c.QueryRow(`SELECT ChatName FROM chats WHERE ChatId = ?`, chatId).Scan(&chatName)
     if err != nil {
         return "", err
     }
-    return userName, nil
+    return chatName, nil
 }
