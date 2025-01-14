@@ -146,6 +146,12 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
         return
     }
 	//sprawdzic czy kom istnieje
+	_, err = rt.db.GetCommentById(commentId)
+	if err != nil {
+		http.Error(w, "Message to comment not found", http.StatusNotFound)
+		return
+	}
+
     err = rt.db.Removecomment(uint64(commentId))
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)

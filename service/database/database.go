@@ -70,6 +70,7 @@ type AppDatabase interface {
 	GetUserNameById(uint64) (string, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
+	GetCommentById(uint64) (Message, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
 	Commentmessage(Comment) (Comment, error)
@@ -141,7 +142,6 @@ type appdbimpl struct {
 	
 	
 		sqlStmt = `
-		DROP TABLE comments;
 		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content STRING,

@@ -60,7 +60,7 @@ func (db *appdbimpl) Removemessage(messageId uint64) error {
 func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	var message Message
 
-	// Zapytanie SQL do pobrania wiadomości na podstawie messageId
+	
 	query := `SELECT messageId, chatId, content, messageDate, messageTime, state, chatId FROM messages WHERE messageId = ?`
 	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId)
 	if err != nil {
@@ -118,7 +118,7 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
 
 	for rows.Next() {
 		var message Message
-		if err := rows.Scan(&message.MessageId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State); err != nil {
+		if err := rows.Scan(&message.MessageId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State,  &message.ChatId); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 		conversation = append(conversation, message)
@@ -129,3 +129,17 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
 	return conversation, nil
 }
 
+
+func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
+	var comment Comment
+	query := `SELECT commentId, messageId, content FROM comments WHERE commentId = ?`
+	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return Comment{}, fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
+		}
+		return Comment{}, fmt.Errorf("could not get comment: %v", err)
+	}
+
+	return comment, nil
+}
