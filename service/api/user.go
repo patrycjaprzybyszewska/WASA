@@ -21,6 +21,14 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	}
 	var user User
 	user.UserId = userId
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Failed to read request body", http.StatusInternalServerError)
+		return
+	}
+	// Log the raw request body for debugging
+	fmt.Println("Request Body: ", string(bodyBytes))
+
 	var requestBody struct {
 		Name string `json:"name"`
 	}
@@ -29,7 +37,7 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-	log.Printf("Otrzymane ciało żądania: %s", string(requestBody.Name))
+
 ///dodac autoryzacje
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), requestBody.Name)
 	if err != nil {
