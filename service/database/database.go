@@ -58,7 +58,6 @@ type Chat struct{
 	ChatId		 uint64 `json:"chatId"`
 	ChatName 	 string `json:"chatName"`
 	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
-	ChatUsers	 uint64 `json:"chatUsers"`
 }
 
 // AppDatabase is the high level interface for the DB
@@ -113,19 +112,28 @@ type appdbimpl struct {
 
 		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS chats (
-		    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-			chatId INTEGER,
-			chatUsers INTEGER,
+			chatId INTEGER PRIMARY KEY,
 			chatName STRING,
 			chatPhoto STRING,
-			FOREIGN KEY (chatUsers) REFERENCES users(userId)
 		);`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error creating 'chats' table: %w", err)
 		}
 	
-
+		sqlStmt = `
+		CREATE TABLE IF NOT EXISTS chat_users (
+  			chatId INTEGER,
+  			userId INTEGER,
+   			PRIMARY KEY (chatId, userId),
+   			FOREIGN KEY (chatId) REFERENCES chats(chatId),
+    		FOREIGN KEY (userId) REFERENCES users(userId)
+		);`
+		_, err = db.Exec(sqlStmt)
+		if err != nil {
+			return nil, fmt.Errorf("error creating 'chat_users' table: %w", err)
+		}
+	
 		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,

@@ -15,10 +15,11 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
         return fmt.Errorf("chat with ID %d does not exist", chatId)
     }
   
-	_, err = db.c.Exec("INSERT INTO chats (chatId, chatUsers) VALUES (?, ?)", chatId, userId)
-    if err != nil {
-        return fmt.Errorf("error adding user to chat: %w", err)
-    }
+	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId) VALUES (?, ?)", chatId, userId)
+	if err != nil {
+		return fmt.Errorf("error adding user to chat: %w", err)
+	}
+
 	return nil
 }
 func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
@@ -33,7 +34,7 @@ func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
     }
 
 	_, err = db.c.Exec(
-        `DELETE FROM chats WHERE chatId = ? AND userId = ? `, chatId, userId)
+        `DELETE FROM chat_users WHERE chatId = ? AND userId = ? `, chatId, userId)
         if err != nil {
             return fmt.Errorf("error removing user from chat: %w", err)
         }

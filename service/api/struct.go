@@ -31,7 +31,6 @@ type Chat struct{
 	ChatId		 uint64 `json:"chatId"`
 	ChatName 	 string `json:"chatName"`
 	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
-	ChatUsers	 uint64 `json:"chatUsers`
 }
 
 func (u *User) FromDatabase(user database.User){
