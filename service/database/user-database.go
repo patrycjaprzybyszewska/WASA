@@ -22,15 +22,25 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	return user, nil
 
 }
+func (db *appdbimpl) GetUserPhotoById(userId uint64) (string, error) {
+    var userPhoto string
+    err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userPhoto)
+    if err != nil {
+        return "", err
+    }
+    return userPhoto, nil
+}
+func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
+    var userName string
+    err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userName)
+    if err != nil {
+        return "", err
+    }
+    return userName, nil
 
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 
-	var currentUser User
-    err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE UserId = ?`, u.UserId).Scan(&currentUser.UserId, &currentUser.UserName, &currentUser.UserPhoto)
-    if err != nil {
-        return u, err
-    }
-	res, err := db.c.Exec(`UPDATE users SET UserName=?, UserPhoto =? WHERE UserId=?`, username, currentUser.UserPhoto, u.UserId)
+	res, err := db.c.Exec(`UPDATE users SET UserName=?, UserPhoto=? WHERE UserId=?`, username, u.UserPhoto, u.UserId)
 	if err != nil {
 		return u, err
 	}
@@ -44,12 +54,7 @@ func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 }
 
 func (db *appdbimpl) SetUserphoto(u User, photo string) (User, error) {
-	var currentUser User
-    err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE UserId = ?`, u.UserId).Scan(&currentUser.UserId, &currentUser.UserName, &currentUser.UserPhoto)
-    if err != nil {
-        return u, err
-    }
-	res, err := db.c.Exec(`UPDATE users SET UserName=?, UserPhoto =? WHERE UserId=?`, currentUser.UserName, photo, u.UserId)
+	res, err := db.c.Exec(`UPDATE users SET UserPhoto=?, UserName=? WHERE UserId=?`, photo, u.UserName, u.UserId)
 	if err != nil {
 		return u, err
 	}

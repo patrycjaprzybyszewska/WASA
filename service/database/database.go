@@ -66,6 +66,8 @@ type AppDatabase interface {
 	GetName() (string, error)
 	SetUsername(User, string) (User, error)
 	SetUserphoto(User, string) (User, error)
+	GetUserPhotoById(uint64) (string, error)
+	GetUserNameById(uint64) (string, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
 	Sendmessage(Message) (Message, error)

@@ -18,7 +18,12 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	}
 	var user User
 	user.UserId = userId
-
+	userPhoto, err := rt.db.GetUserPhotoById(userId)
+    if err != nil {
+        http.Error(w, "No picture", http.StatusInternalServerError)
+        return
+    }
+    user.UserPhoto = userPhoto
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
@@ -47,12 +52,18 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 		return
 	}
 	var user User
+	
 	user.UserId = userId
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-
+	userName, err := rt.db.GetUserNameById(userId)
+    if err != nil {
+        http.Error(w, "No name", http.StatusInternalServerError)
+        return
+    }
+	user.UserName = userName
 ///dodac autoryzacje
 	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), user.UserPhoto)
 	if err != nil {
