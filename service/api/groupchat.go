@@ -118,7 +118,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
     chat.ChatFromDatabase(dbchat)
  //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
-    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+	_ = json.NewEncoder(w).Encode(chat)
 }
 func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
@@ -157,7 +157,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
     chat.ChatFromDatabase(dbchat)
  //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
-    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+    _ = json.NewEncoder(w).Encode(chat)
 }
 
 func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
