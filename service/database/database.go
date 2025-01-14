@@ -114,6 +114,7 @@ type appdbimpl struct {
 		sqlStmt = `
 		DROP TABLE CHATS;
 		CREATE TABLE IF NOT EXISTS chats (
+		    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 			chatId INTEGER,
 			chatUsers INTEGER,
 			chatName STRING,
