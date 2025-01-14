@@ -143,7 +143,7 @@ type appdbimpl struct {
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content TEXT,
 			messageId INTEGER,
-			FOREIGN KEY (messageId) REFERENCES mesages(messageId)
+			FOREIGN KEY (messageId) REFERENCES messages(messageId)
 	);`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
