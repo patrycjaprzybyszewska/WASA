@@ -26,6 +26,10 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
         http.Error(w, "Invalid token", http.StatusUnauthorized)
         return
 	}
+	if authid != userId {
+		http.Error(w, "bad autorization", http.StatusUnauthorized)
+		return
+	}
 	var user User
 	user.UserId = userId
 	userPhoto, err := rt.db.GetUserPhotoById(userId)

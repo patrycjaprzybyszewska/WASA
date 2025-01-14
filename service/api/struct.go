@@ -95,9 +95,9 @@ func (ch *Chat) ChatFromDatabase(chat database.Chat) {
     ch.ChatName = chat.ChatName
     ch.ChatPhoto = chat.ChatPhoto
 }
- func auth(authid string) (uint64, error) {
+ func auth(authHeader string) (uint64, error) {
 	re := regexp.MustCompile(`\d+`)
-	stringToken := re.FindAllString(authid)
+	stringToken := re.FindString(authHeader)
 	authid, err := strconv.ParseUint(stringToken, 10, 64)
     if err != nil {
         return 0, err
