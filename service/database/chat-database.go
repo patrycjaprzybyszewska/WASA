@@ -41,11 +41,12 @@ func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
   
 	return nil
 }
-func (db *appdbimpl) SetGroupPhoto(ChatPhoto string, chatId uint64) error {
+
+func (db *appdbimpl) SetGroupPhoto(ch Chat, chatPhoto string) (Chat, error) {
   
 	var err error
 
-	res, err := db.c.Exec(`UPDATE chats SET GroupPhoto=? WHERE ChatId=?`, ChatPhoto, chatId)
+	res, err := db.c.Exec(`UPDATE chats SET ChatPhoto=?, ChatName=? WHERE ChatId=?`, chatPhoto, ch.ChatName, ch.chatId)
 	if err != nil {
 		return err
 	}
@@ -57,11 +58,11 @@ func (db *appdbimpl) SetGroupPhoto(ChatPhoto string, chatId uint64) error {
 	}
 	return nil
 }
-func (db *appdbimpl) SetGroupName(ChatName uint64, chatId uint64) error {
+func (db *appdbimpl) SetGroupName(ch Chat, chatName string) (Chat, error) {
   
 	var err error
 
-	res, err := db.c.Exec(`UPDATE chats SET GroupName=? WHERE ChatId=?`, ChatName, chatId)
+	res, err := db.c.Exec(`UPDATE chats SET ChatName=?, ChatPhoto=? WHERE ChatId=?`, chatName, ch.ChatPhoto, ch.chatId)
 	if err != nil {
 		return err
 	}
@@ -107,3 +108,19 @@ func (db *appdbimpl) GetChats() ([]Chat, error) {
     return chats, nil
 }
 
+func (db *appdbimpl) GetChatPhotoById(chatId uint64) (string, error) {
+    var userPhoto string
+    err := db.c.QueryRow(`SELECT ChatPhoto FROM chats WHERE ChatId = ?`, chatId).Scan(&chatPhoto)
+    if err != nil {
+        return "", err
+    }
+    return userPhoto, nil
+}
+func (db *appdbimpl) GetChatNameById(userId uint64) (string, error) {
+    var userName string
+    err := db.c.QueryRow(`SELECT ChatName FROM chats WHERE ChatId = ?`, chatId).Scan(&chatName)
+    if err != nil {
+        return "", err
+    }
+    return userName, nil
+}

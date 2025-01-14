@@ -80,3 +80,17 @@ func (c *Comment) CommentToDatabase() database.Comment {
 		Content:		c.Content,
 	}
 }
+
+
+func (ch *Chat) ChatToDatabase() database.Chat {
+    return database.Chat{
+        ChatId:    ch.ChatId,
+        ChatName:  ch.ChatName,
+        ChatPhoto: ch.ChatPhoto,
+    }
+}
+func (ch *Chat) ChatFromDatabase(chat database.Chat) {
+    ch.ChatId = chat.ChatId
+    ch.ChatName = chat.ChatName
+    ch.ChatPhoto = chat.ChatPhoto
+}

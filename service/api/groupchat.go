@@ -43,7 +43,7 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 
  
     w.WriteHeader(http.StatusCreated)
-    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+    _, _ = w.Write([]byte(`{"message": "User ID has been added sucesfullly"}`))
 }
 
 
@@ -58,14 +58,10 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
         return
     }
 
-   
-    var requestBody struct {
-        UserId uint64 `json:"userId"`
-    }
-
-    err = json.NewDecoder(r.Body).Decode(&requestBody)
+    userIdStr := ps.ByName("userId")
+    userId, err := strconv.ParseUint(userIdStr, 10, 64)
     if err != nil {
-        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+        http.Error(w, "Invalid user ID", http.StatusBadRequest)
         return
     }
 
@@ -82,7 +78,7 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
 
  
     w.WriteHeader(http.StatusCreated)
-    _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
+    _, _ = w.Write([]byte(`{"message": "User removed from chat successfully"}`))
 }
 
 func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -96,19 +92,21 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
         return
     }
 
-   
-    var requestBody struct {
-        ChatName uint64 `json:"chatName"`
-    }
-
-    err = json.NewDecoder(r.Body).Decode(&requestBody)
-    if err != nil || requestBody.ChatName == 0 {
-        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+    var chat Chat
+    err = json.NewDecoder(r.Body).Decode(&chat)
+    if err != nil {
+        http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
     }
+	chatPhoto, err := rt.db.GetChatPhotoById(chatId)
+    if err != nil {
+        http.Error(w, "No name", http.StatusInternalServerError)
+        return
+    }
+	chat.ChatPhoto = chatPhoto
+    chat.ChatId = chatId
 
-
-    err = rt.db.SetGroupName(requestBody.ChatName, chatId)
+    dbchat, err = rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatName)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
@@ -117,8 +115,8 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-
- 
+    chat.FromDatabase(dbchat)
+ //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
 }
@@ -133,19 +131,21 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
         return
     }
 
-   
-    var requestBody struct {
-        ChatPhoto string `json:"chatPhoto"`
-    }
-
-    err = json.NewDecoder(r.Body).Decode(&requestBody)
-    if err != nil{
-        http.Error(w, "Invalid request body or missing userId", http.StatusBadRequest)
+    var chat Chat
+    err = json.NewDecoder(r.Body).Decode(&chat)
+    if err != nil {
+        http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
     }
+	chatName, err := rt.db.GetChatNameById(chatId)
+    if err != nil {
+        http.Error(w, "No name", http.StatusInternalServerError)
+        return
+    }
+	chat.ChatName = chatName
+    chat.ChatId = chatId
 
-
-    err = rt.db.SetGroupPhoto(requestBody.ChatPhoto, chatId)
+    dbchat, err = rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatPhoto)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
@@ -154,8 +154,8 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-
- 
+    chat.FromDatabase(dbchat)
+ //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
 }

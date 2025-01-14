@@ -67,6 +67,8 @@ type AppDatabase interface {
 	SetUserphoto(User, string) (User, error)
 	GetUserPhotoById(uint64) (string, error)
 	GetUserNameById(uint64) (string, error)
+	GetChatPhotoById(uint64) (string, error)
+	GetChatNameById(uint64) (string, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
 	GetCommentById(uint64) (Comment, error)
@@ -75,8 +77,8 @@ type AppDatabase interface {
 	Commentmessage(Comment) (Comment, error)
 	AddUserToChat(uint64, uint64) error 
 	LeaveGroup(uint64, uint64) error 
-	SetGroupName(uint64, uint64) error 
-	SetGroupPhoto(string, uint64) error
+	SetGroupName(Chat, string) (Chat, error)
+	SetGroupPhoto(Chat, string) (Chat, error)
 	GetConversation(uint64) ([]Message, error)
 	GetChats()([]Chat, error)
 	Removecomment(uint64) error
