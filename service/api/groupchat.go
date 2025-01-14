@@ -115,7 +115,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    chat.FromDatabase(dbchat)
+    chat.ChatFromDatabase(dbchat)
  //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
@@ -154,7 +154,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    chat.FromDatabase(dbchat)
+    chat.ChatFromDatabase(dbchat)
  //sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
     _, _ = w.Write([]byte(`{"message": "User added to chat successfully"}`))
