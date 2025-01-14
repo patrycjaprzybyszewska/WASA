@@ -106,7 +106,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 	chat.ChatPhoto = chatPhoto
     chat.ChatId = chatId
 
-    dbchat, err = rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatName)
+    dbchat, err := rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatName)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
@@ -145,7 +145,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
 	chat.ChatName = chatName
     chat.ChatId = chatId
 
-    dbchat, err = rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatPhoto)
+    dbchat, err := rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatPhoto)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             http.Error(w, "Chat or user not found", http.StatusNotFound)
