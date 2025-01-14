@@ -20,19 +20,12 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	var user User
 	user.UserId = userId
 
-	// Log the raw request body for debugging
-
-	var requestBody struct {
-		Name string `json:"name"`
-	}
-	
-	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&username); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-
-///dodac autoryzacje
-	dbuser, err := rt.db.SetUsername(user.ToDatabase(), requestBody.Name)
+	username := ps.ByName("name")
+	dbuser, err := rt.db.SetUsername(user.ToDatabase(), username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -5,7 +5,7 @@ import (
 
 func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	var user User
-	err := db.c.QueryRow(`SELECT UserId, UserName FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName); 
+	err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName, &user.UserPhoto); 
 	if err != nil {
 		if err == sql.ErrNoRows{
 			res, err := db.c.Exec("INSERT INTO users(UserName, UserPhoto) VALUES (?,?)", u.UserName, u.UserPhoto)
