@@ -141,6 +141,7 @@ type appdbimpl struct {
 	
 	
 		sqlStmt = `
+		DROP TABLE comments;
 		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content STRING,

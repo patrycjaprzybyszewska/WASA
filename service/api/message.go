@@ -80,7 +80,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 
 	dbmessage, err := rt.db.GetMessageById(messageId)
 	if err != nil {
-		http.Error(w, "Message not found", http.StatusNotFound)
+		http.Error(w, "Forwarded message does not exist", http.StatusNotFound)
 		return
 	}
 
@@ -107,7 +107,6 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	w.Header().Set("Content-Type", "application/json")
 	var comment Comment
 
-	
 	messageIdStr := ps.ByName("messageId")
 	messageId, err := strconv.ParseUint(messageIdStr, 10, 64)
 	if err != nil {
@@ -116,11 +115,17 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	}
 	_, err = rt.db.GetMessageById(messageId)
 	if err != nil {
-		http.Error(w, "Message not found", http.StatusNotFound)
+		http.Error(w, "Message to comment not found", http.StatusNotFound)
 		return
 	}
+	err := json.NewDecoder(r.Body).Decode(&message)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
 	err = json.NewDecoder(r.Body).Decode(&comment)
-	if err != nil || comment.Content == "" || comment.MessageId == 0 {
+	if err != nil {
 		http.Error(w, "Invalid or empty comment content", http.StatusBadRequest)
 		return
 	}
