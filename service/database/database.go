@@ -100,7 +100,7 @@ type appdbimpl struct {
 		sqlStmt := `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			userName TEXT NOT NULL, 
+			userName STRING NOT NULL, 
 			userPhoto STRING	
 		);`
 		_, err = db.Exec(sqlStmt)
@@ -112,8 +112,8 @@ type appdbimpl struct {
 		CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER NOT NULL PRIMARY KEY,
 			chatUsers INTEGER,
-			chatName TEXT,
-			chatPhoto TEXT,
+			chatName STRING,
+			chatPhoto STRING,
 			FOREIGN KEY (chatUsers) REFERENCES users(userId)
 		);`
 		_, err = db.Exec(sqlStmt)
@@ -141,7 +141,7 @@ type appdbimpl struct {
 		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
-			content TEXT,
+			content STRING,
 			messageId INTEGER,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
 	);`
