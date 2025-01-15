@@ -61,8 +61,8 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	var message Message
 
 	
-	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state, chatId FROM messages WHERE messageId = ?`
-	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId)
+	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
+	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return Message{}, fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
