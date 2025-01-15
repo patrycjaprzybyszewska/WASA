@@ -235,20 +235,22 @@ paths:
 
       requestBody: 
         content:
-          multipart/form-data:
+          application/json:
             schema: 
-              type: string
-              format: binary
+                properties:
+                 photo:
+                  type: string
+                  example: "photo.jpg"
+
       responses: 
         '201':
           description: Photo has been changed
           content:
-            multipart/form-data:
+            application/json:
               schema:
                 properties:
                  photo:
                   type: string
-                  format: binary
                   example: "https://gif.jpg"
                 
                  
@@ -293,7 +295,7 @@ paths:
                 type: array
                 items: 
                   $ref: "#/components/schemas/Chat" 
-  /groupchat/{userId}:
+  /groupchat/{chatId}/add/{userId}:
     put:
       tags: ["Chat"]
       operationId: addToGroup
@@ -306,6 +308,12 @@ paths:
       - name: userId
         in: path
         description: ID of user that username is being set.
+        required: true
+        schema:
+          type: integer
+      - name: chatId
+        in: path
+        description: ID of chat that user id added to.
         required: true
         schema:
           type: integer
@@ -326,7 +334,7 @@ paths:
                items: 
                 $ref: "#/components/schemas/Chat"
                 
-  /groupchat/{chatId}:  
+  /groupchat/{chatId}/leave/{userId}:  
     delete:
       tags: ["Chat"]
       operationId: leaveGroup
@@ -337,6 +345,13 @@ paths:
         - name: chatId
           in: path
           description: Id of a groupchat that user wants to leave
+          required: true
+          schema:
+            type: integer
+            example: 09890
+        - name: userId
+          in: path
+          description: Id of a user
           required: true
           schema:
             type: integer
@@ -415,11 +430,16 @@ components:
       required:
         - messageId
         - content
-        - userId
+        - chatId
       title: Message
       description: "This object represents a single message"
       type: object
       properties:
+        senderId:
+          description: Id of message sender.
+          type: integer
+          example: 12390739
+          readOnly: true
         messageDate:
           description:  Date that message has been sent.
           type: string

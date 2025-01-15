@@ -100,7 +100,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
     }
 	chatPhoto, err := rt.db.GetChatPhotoById(chatId)
     if err != nil {
-        http.Error(w, "No name", http.StatusInternalServerError)
+        http.Error(w, "No photo", http.StatusInternalServerError)
         return
     }
 	chat.ChatPhoto = chatPhoto
@@ -139,7 +139,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
     }
 	chatName, err := rt.db.GetChatNameById(chatId)
     if err != nil {
-        http.Error(w, "No name", http.StatusInternalServerError)
+        http.Error(w, "No chat name", http.StatusInternalServerError)
         return
     }
 	chat.ChatName = chatName

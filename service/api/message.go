@@ -57,7 +57,7 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
 	
     err = rt.db.Removemessage(uint64(messageId))
     if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+        http.Error(w, err.Error(), http.StatusNotFound)
 		return
         }
 
@@ -118,7 +118,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var comment Comment
-
 	messageIdStr := ps.ByName("messageId")
 	messageId, err := strconv.ParseUint(messageIdStr, 10, 64)
 	if err != nil {
@@ -129,12 +128,6 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	if err != nil {
 		http.Error(w, "Message to comment not found", http.StatusNotFound)
 		return
-	}
-	authHeader := r.Header.Get("Authorization")
-	err := auth(authHeader)
-	if err != nil {
-        http.Error(w, "Invalid token", http.StatusUnauthorized)
-        return
 	}
 	err = json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
