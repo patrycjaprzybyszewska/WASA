@@ -22,7 +22,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 	authHeader := r.Header.Get("Authorization")
-	user, err := auth(authHeader)
+	userId, err := auth(authHeader)
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
