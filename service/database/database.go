@@ -105,8 +105,7 @@ type appdbimpl struct {
 		DROP TABLE comments;
 		DROP TABLE messages;
 		DROP TABLE chat_users;
-		DROP TABLE chats;
-		DROP TABLE users;`
+		DROP TABLE chats;`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error", err)
