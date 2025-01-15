@@ -131,7 +131,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 	authHeader := r.Header.Get("Authorization")
-	authid, err := auth(authHeader)
+	err := auth(authHeader)
 	if err != nil {
         http.Error(w, "Invalid token", http.StatusUnauthorized)
         return
