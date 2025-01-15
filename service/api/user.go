@@ -63,10 +63,6 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 	}
 	var user User
 	authHeader := r.Header.Get("Authorization")
-    if authHeader == "" {
-        http.Error(w, "Missing authorization", http.StatusUnauthorized)
-        return
-    }
 	authid, err := auth(authHeader)
     if err != nil {
         http.Error(w, "Invalid token", http.StatusUnauthorized)
