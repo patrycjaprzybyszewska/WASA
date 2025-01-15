@@ -132,10 +132,9 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	}
 	authHeader := r.Header.Get("Authorization")
 	authid, err := auth(authHeader)
-	_, err = rt.db.GetUserById(authid)
 	if err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
-		return
+        http.Error(w, "Invalid token", http.StatusUnauthorized)
+        return
 	}
 	err = json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
