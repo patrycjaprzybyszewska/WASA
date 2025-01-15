@@ -21,17 +21,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	authHeader := r.Header.Get("Authorization")
-    if authHeader == "" {
-        http.Error(w, "Missing authorization", http.StatusUnauthorized)
-        return
-    }
-	authid, err := auth(authHeader)
-    if err != nil {
-        http.Error(w, "Invalid token", http.StatusUnauthorized)
-        return
-	}
-
+	message.SenderId := r.Header.Get("Authorization")
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
