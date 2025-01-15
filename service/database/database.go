@@ -112,7 +112,7 @@ type appdbimpl struct {
 			return nil, fmt.Errorf("error", err)
 		}
 
-		sqlStmt := `
+		sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
