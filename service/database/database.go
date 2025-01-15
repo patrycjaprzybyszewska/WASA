@@ -102,11 +102,11 @@ type appdbimpl struct {
 			return nil, err
 		}
 		sqlStmt := `
-		DROP TABLE users;
-		DROP TABLE chats;
-		DROP TABLE chat_users;
+		DROP TABLE comments;
 		DROP TABLE messages;
-		DROP TABLE comments;`
+		DROP TABLE chat_users;
+		DROP TABLE chats;
+		DROP TABLE users;`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error", err)
