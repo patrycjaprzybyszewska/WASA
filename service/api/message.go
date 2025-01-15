@@ -21,12 +21,12 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	message.SenderId := r.Header.Get("Authorization")
+	userId := r.Header.Get("Authorization")
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
 	}
-
+	message.SenderId = userId
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02") 
 	message.MessageTime = currentTime.Format("15:04")      
