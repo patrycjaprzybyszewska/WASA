@@ -68,9 +68,10 @@ func (db *appdbimpl) SetUserphoto(u User, photo string) (User, error) {
 }
 
 func (db *appdbimpl) GetUserById(userId uint64) err {
-    err := db.c.QueryRow(`SELECT FROM users WHERE UserId = ?`, userId)
+	var user User 
+    err := db.c.QueryRow(`SELECT * FROM users WHERE UserId = ?`, userId).Scan(&user) 
     if err != nil {
-        return  err
+        return err
     }
     return nil
 }
