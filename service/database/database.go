@@ -102,7 +102,6 @@ type appdbimpl struct {
 			return nil, err
 		}
 		sqlStmt := `
-		DROP TABLE comments;
 		DROP TABLE messages;
 		DROP TABLE chat_users;
 		DROP TABLE chats;`
