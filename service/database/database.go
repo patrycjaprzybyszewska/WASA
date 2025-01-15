@@ -101,16 +101,8 @@ type appdbimpl struct {
 		if err != nil {
 			return nil, err
 		}
-		sqlStmt := `
-		DROP TABLE messages;
-		DROP TABLE chat_users;
-		DROP TABLE chats;`
-		_, err = db.Exec(sqlStmt)
-		if err != nil {
-			return nil, fmt.Errorf("error", err)
-		}
 
-		sqlStmt = `
+		sqlStmt := `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
