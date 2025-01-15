@@ -31,7 +31,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
         http.Error(w, "Invalid token", http.StatusUnauthorized)
         return
 	}
-	message.SenderId = authid
+
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Missing required fields: content or chatId", http.StatusBadRequest)
 		return
