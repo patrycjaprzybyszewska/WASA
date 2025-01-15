@@ -130,7 +130,13 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Message to comment not found", http.StatusNotFound)
 		return
 	}
-
+	authHeader := r.Header.Get("Authorization")
+	authid, err := auth(authHeader)
+	err = rt.db.GetUserById(messageId)
+	if err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
 	err = json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
 		http.Error(w, "Invalid or empty comment content", http.StatusBadRequest)

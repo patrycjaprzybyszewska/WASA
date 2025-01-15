@@ -66,3 +66,11 @@ func (db *appdbimpl) SetUserphoto(u User, photo string) (User, error) {
 	}
 	return u, nil
 }
+
+func (db *appdbimpl) GetUserById(userId uint64) err {
+    err := db.c.QueryRow(`SELECT FROM users WHERE UserId = ?`, userId)
+    if err != nil {
+        return  err
+    }
+    return nil
+}
