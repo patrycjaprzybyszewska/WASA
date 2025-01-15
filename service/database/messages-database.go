@@ -28,7 +28,7 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	}
 	
 	res, err := db.c.Exec(`INSERT INTO messages (senderId, chatId, content, messageDate, messageTime, state) 
-                        VALUES (?, ?, ?, ?, ?)`, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
+                        VALUES (?, ?, ?, ?, ?, ?)`, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
 
 
 	
