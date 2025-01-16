@@ -250,7 +250,7 @@ paths:
               schema:
                $ref: "#/components/schemas/User"
                  
-  /conversation/{conversationId}:
+  /conversation/{chatId}:
     get:
       tags: ["Chat"]
       operationId: getConversation
