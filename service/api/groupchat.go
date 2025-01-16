@@ -50,9 +50,7 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
 
-   
-    chatIdStr := ps.ByName("chatId")
-    chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
+    chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid chat ID", http.StatusBadRequest)
         return
@@ -84,27 +82,25 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
 func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
 
-   
-    chatIdStr := ps.ByName("chatId")
-    chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
+    var chat Chat
+    chat.ChatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid chat ID", http.StatusBadRequest)
         return
     }
 
-    var chat Chat
+ 
     err = json.NewDecoder(r.Body).Decode(&chat)
     if err != nil {
         http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
     }
-	chatPhoto, err := rt.db.GetChatPhotoById(chatId)
+	chat.ChatPhoto, err := rt.db.GetChatPhotoById(chatId)
     if err != nil {
         http.Error(w, "No photo", http.StatusInternalServerError)
         return
     }
-	chat.ChatPhoto = chatPhoto
-    chat.ChatId = chatId
+	
 
     dbchat, err := rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatName)
     if err != nil {
@@ -122,28 +118,25 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 }
 func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
-
+    var chat Chat
    
-    chatIdStr := ps.ByName("chatId")
-    chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
+    chat.ChatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid chat ID", http.StatusBadRequest)
         return
     }
 
-    var chat Chat
     err = json.NewDecoder(r.Body).Decode(&chat)
     if err != nil {
         http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
     }
-	chatName, err := rt.db.GetChatNameById(chatId)
+	chat.ChatName, err := rt.db.GetChatNameById(chatId)
     if err != nil {
         http.Error(w, "No chat name", http.StatusInternalServerError)
         return
     }
-	chat.ChatName = chatName
-    chat.ChatId = chatId
+
 
     dbchat, err := rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatPhoto)
     if err != nil {

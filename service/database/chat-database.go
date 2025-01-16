@@ -111,7 +111,7 @@ func (db *appdbimpl) GetChatPhotoById(chatId uint64) (string, error) {
 	var chatPhoto string
 	err := db.c.QueryRow(`SELECT ChatPhoto FROM chats WHERE ChatId = ?`, chatId).Scan(&chatPhoto)
 	if err != nil {
-		return "", fmt.Errorf("No chat found", err)
+		return "", errors.New("No chat found")
 	}
 	return chatPhoto, nil
 }
@@ -119,7 +119,7 @@ func (db *appdbimpl) GetChatNameById(chatId uint64) (string, error) {
 	var chatName string
 	err := db.c.QueryRow(`SELECT ChatName FROM chats WHERE ChatId = ?`, chatId).Scan(&chatName)
 	if err != nil {
-		return "", fmt.Errorf("No chat found", err)
+		return "", errors.New("No chat found")
 	}
 	return chatName, nil
 }

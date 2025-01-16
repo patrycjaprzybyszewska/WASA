@@ -58,7 +58,7 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 		if err == sql.ErrNoRows {
 			return Message{}, fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
 		}
-		return Message{}, fmt.Errorf("could not get message: %v", err)
+		return Message{}, fmt.Errorf("could not get message: %w", err)
 	}
 
 	return message, nil
@@ -125,7 +125,7 @@ func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
 		if err == sql.ErrNoRows {
 			return Comment{}, fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
 		}
-		return Comment{}, fmt.Errorf("could not get comment: %v", err)
+		return Comment{}, fmt.Errorf("could not get comment: %w", err)
 	}
 
 	return comment, nil
