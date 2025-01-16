@@ -88,12 +88,12 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
 		return
 	}
-\
+
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
-	user.UserName, err := rt.db.GetUserNameById(user.UserId)
+	user.UserName, err = rt.db.GetUserNameById(user.UserId)
 	if err != nil {
 		http.Error(w, "No name", http.StatusInternalServerError)
 		return
