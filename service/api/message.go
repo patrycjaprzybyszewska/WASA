@@ -46,7 +46,11 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 }
 
 func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
     messageId, err := strconv.ParseInt(ps.ByName("messageId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid message ID", http.StatusBadRequest)
@@ -113,6 +117,11 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 
 func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
 	var comment Comment
 	messageId, err := strconv.ParseUint(ps.ByName("messageId"), 10, 64)
 	if err != nil {
@@ -142,7 +151,11 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 } // 201 404
 
 func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
     commentId, err := strconv.ParseInt(ps.ByName("commentId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid comment ID", http.StatusBadRequest)
@@ -167,6 +180,11 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
 
