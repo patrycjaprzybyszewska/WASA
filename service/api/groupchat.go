@@ -81,6 +81,11 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
 
 func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
     w.Header().Set("Content-Type", "application/json")
+    authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
 
     var chat Chat
     chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
