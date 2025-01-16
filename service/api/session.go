@@ -29,11 +29,7 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var user User
-	user.UserId, err = strconv.ParseUint(ps.ByName("userId"), 10, 64)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing authorization", http.StatusUnauthorized)
@@ -44,7 +40,12 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
-	if authid != userId {
+	user.UserId, err = strconv.ParseUint(ps.ByName("userId"), 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if authid != user.UserId {
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
 		return
 	}
@@ -54,8 +55,7 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 	}
 	
 	user.UserPhoto, err = rt.db.GetUserPhotoById(userId)
-
-
+	
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
