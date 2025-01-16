@@ -76,7 +76,7 @@ func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprou
 
  
     w.WriteHeader(http.StatusCreated)
-    _, _ = w.Write([]byte(`{"message": "User removed from chat successfully"}`))
+    _, _ = w.Write([]byte(`{"message": "Chat left properly"}`))
 }
 
 func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -113,8 +113,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
         return
     }
     chat.ChatFromDatabase(dbchat)
- // sprawdzic czt czat istnieje
-    w.WriteHeader(http.StatusCreated)
+    w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(chat)
 }
 func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -151,7 +150,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
     }
     chat.ChatFromDatabase(dbchat)
 
-    w.WriteHeader(http.StatusCreated)
+    w.WriteHeader(http.StatusOK)
     _ = json.NewEncoder(w).Encode(chat)
 }
 
