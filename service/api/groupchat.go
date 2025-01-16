@@ -95,6 +95,11 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
     var chat Chat
+    err = json.NewDecoder(r.Body).Decode(&chat)
+    if err != nil {
+        http.Error(w, "Invalid request body ", http.StatusBadRequest)
+        return
+    }
     chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
     if err != nil {
         http.Error(w, "Invalid chat ID", http.StatusBadRequest)
@@ -102,18 +107,13 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
     }
 
     chat.ChatId = chatId
-    err = json.NewDecoder(r.Body).Decode(&chat)
-    if err != nil {
-        http.Error(w, "Invalid request body ", http.StatusBadRequest)
-        return
-    }
-	photo, err := rt.db.GetChatPhotoById(chatId)
+
+    chat.ChatPhoto, err = rt.db.GetChatPhotoById(chatId)
     if err != nil {
         http.Error(w, "No photo", http.StatusInternalServerError)
         return
     }
-	
-    chat.ChatPhoto = photo
+    
 
     dbchat, err := rt.db.SetGroupName(chat.ChatToDatabase(), chat.ChatName)
     if err != nil {
