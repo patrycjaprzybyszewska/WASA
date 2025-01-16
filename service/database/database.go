@@ -35,30 +35,31 @@ import (
 	"errors"
 	"fmt"
 )
+
 type User struct {
-	UserId 		uint64 	`json:"userId"`
-	UserName 	string 	`json:"name"`
-	UserPhoto 	string 	`json:"userPhoto"`
+	UserId    uint64 `json:"userId"`
+	UserName  string `json:"name"`
+	UserPhoto string `json:"userPhoto"`
 }
-type Message struct{
+type Message struct {
 	MessageId   uint64 `json:"messageId"`
-	SenderId	uint64 `json:"senderId"`
+	SenderId    uint64 `json:"senderId"`
 	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
 	MessageDate string `json:"messageDate"`
 	State       string `json:"state"`
 	MessageTime string `json:"messageTime"`
 }
-type Comment struct{
-	CommentId uint64  `json:"commentId"`
+type Comment struct {
+	CommentId uint64 `json:"commentId"`
 	MessageId uint64 `json:"messageId"`
-	Content   string  `json:"content"`
+	Content   string `json:"content"`
 }
 
-type Chat struct{
-	ChatId		 uint64 `json:"chatId"`
-	ChatName 	 string `json:"chatName"`
-	ChatPhoto 	 string `json:"chatPhoto"` // trzeba dodac uzytkownikow
+type Chat struct {
+	ChatId    uint64 `json:"chatId"`
+	ChatName  string `json:"chatName"`
+	ChatPhoto string `json:"chatPhoto"` // trzeba dodac uzytkownikow
 }
 
 // AppDatabase is the high level interface for the DB
@@ -76,12 +77,12 @@ type AppDatabase interface {
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error
 	Commentmessage(Comment) (Comment, error)
-	AddUserToChat(uint64, uint64) error 
-	LeaveGroup(uint64, uint64) error 
+	AddUserToChat(uint64, uint64) error
+	LeaveGroup(uint64, uint64) error
 	SetGroupName(Chat, string) (Chat, error)
 	SetGroupPhoto(Chat, string) (Chat, error)
 	GetConversation(uint64) ([]Message, error)
-	GetChats()([]Chat, error)
+	GetChats() ([]Chat, error)
 	Removecomment(uint64) error
 	Ping() error
 }
@@ -93,38 +94,38 @@ type appdbimpl struct {
 // New returns a new instance of AppDatabase based on the SQLite connection `db`.
 // `db` is required - an error will be returned if `db` is `nil`.
 
-	func New(db *sql.DB) (AppDatabase, error) {
-		if db == nil {
-			return nil, errors.New("database is required when building a AppDatabase")
-		}
-		_, err := db.Exec("PRAGMA foreign_keys = ON")
-		if err != nil {
-			return nil, err
-		}
+func New(db *sql.DB) (AppDatabase, error) {
+	if db == nil {
+		return nil, errors.New("database is required when building a AppDatabase")
+	}
+	_, err := db.Exec("PRAGMA foreign_keys = ON")
+	if err != nil {
+		return nil, err
+	}
 
-		sqlStmt := `
+	sqlStmt := `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
 			userPhoto STRING	
 		);`
-		_, err = db.Exec(sqlStmt)
-		if err != nil {
-			return nil, fmt.Errorf("error creating 'users' table: %w", err)
-		}
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'users' table: %w", err)
+	}
 
-		sqlStmt = `
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS chats (
 			chatId INTEGER PRIMARY KEY,
 			chatName STRING,
 			chatPhoto STRING
 		);`
-		_, err = db.Exec(sqlStmt)
-		if err != nil {
-			return nil, fmt.Errorf("error creating 'chats' table: %w", err)
-		}
-	
-		sqlStmt = `
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'chats' table: %w", err)
+	}
+
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS chat_users (
   			chatId INTEGER,
   			userId INTEGER,
@@ -132,12 +133,12 @@ type appdbimpl struct {
    			FOREIGN KEY (chatId) REFERENCES chats(chatId),
     		FOREIGN KEY (userId) REFERENCES users(userId)
 		);`
-		_, err = db.Exec(sqlStmt)
-		if err != nil {
-			return nil, fmt.Errorf("error creating 'chat_users' table: %w", err)
-		}
-	
-		sqlStmt = `
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'chat_users' table: %w", err)
+	}
+
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
 			senderId INTEGER,
@@ -148,13 +149,12 @@ type appdbimpl struct {
 			chatId INTEGER,
 			FOREIGN KEY (chatId) REFERENCES chats(chatId)
 		);`
-		_, err = db.Exec(sqlStmt)
-		if err != nil {
-			return nil, fmt.Errorf("error creating 'messages' table: %w", err)
-		}
-	
-	
-		sqlStmt = `
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'messages' table: %w", err)
+	}
+
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS comments (
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content STRING,

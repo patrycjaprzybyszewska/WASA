@@ -1,18 +1,18 @@
 package database
+
 import (
 	"database/sql"
 	"errors"
 	"fmt"
 )
 
-
 func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
-// trzeba dodac tworzenie czatu tutaj
+	// trzeba dodac tworzenie czatu tutaj
 	var existingChatId uint64
 	err := db.c.QueryRow(`SELECT chatId FROM chats WHERE chatId = ?`, m.ChatId).Scan(&existingChatId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-		
+
 			res, err := db.c.Exec(`INSERT INTO chats (chatName, chatPhoto) VALUES (?, ?)`, "New Chat", "")
 			if err != nil {
 				return m, fmt.Errorf("error creating new chat: %w", err)
@@ -24,26 +24,21 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 			}
 
 			m.ChatId = uint64(lastInsertID)
-		} 
+		}
 	}
-	
+
 	res, err := db.c.Exec(`INSERT INTO messages (senderId, chatId, content, messageDate, messageTime, state) 
                         VALUES (?, ?, ?, ?, ?, ?)`, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
 
-
-	
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {
 		return m, fmt.Errorf("error fetching last insert ID: %w", err)
 	}
 
-
 	m.MessageId = uint64(lastInsertID)
 
 	return m, nil
 }
-
-
 
 func (db *appdbimpl) Removemessage(messageId uint64) error {
 	_, err := db.c.Exec(`DELETE FROM messages WHERE messageId=?`, messageId)
@@ -52,15 +47,11 @@ func (db *appdbimpl) Removemessage(messageId uint64) error {
 	}
 	return nil
 
-
 }
-
-
 
 func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	var message Message
 
-	
 	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
 	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
@@ -81,7 +72,7 @@ func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 	if err != nil {
 		return c, err
 	}
-	
+
 	commentId, err := result.LastInsertId()
 	if err != nil {
 		return c, err
@@ -91,14 +82,12 @@ func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 	return c, nil
 }
 
-
 func (db *appdbimpl) Removecomment(commentId uint64) error {
 	_, err := db.c.Exec(`DELETE FROM comments WHERE commentId=?`, commentId)
 	if err != nil {
 		return err
 	}
 	return nil
-
 
 }
 
@@ -113,12 +102,11 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
 	}
 	defer rows.Close()
 
-	
 	var conversation []Message
 
 	for rows.Next() {
 		var message Message
-		if err := rows.Scan(&message.MessageId, &message.SenderId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State,  &message.ChatId); err != nil {
+		if err := rows.Scan(&message.MessageId, &message.SenderId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 		conversation = append(conversation, message)
@@ -128,7 +116,6 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
 	}
 	return conversation, nil
 }
-
 
 func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
 	var comment Comment

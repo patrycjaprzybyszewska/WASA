@@ -1,13 +1,14 @@
 package database
+
 import (
 	"database/sql"
 )
 
 func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	var user User
-	err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName, &user.UserPhoto); 
+	err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName, &user.UserPhoto)
 	if err != nil {
-		if err == sql.ErrNoRows{
+		if err == sql.ErrNoRows {
 			res, err := db.c.Exec("INSERT INTO users(UserName, UserPhoto) VALUES (?,?)", u.UserName, u.UserPhoto)
 
 			lastInsertID, err := res.LastInsertId()
@@ -23,20 +24,20 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 
 }
 func (db *appdbimpl) GetUserPhotoById(userId uint64) (string, error) {
-    var userPhoto string
-    err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userPhoto)
-    if err != nil {
-        return "", err
-    }
-    return userPhoto, nil
+	var userPhoto string
+	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userPhoto)
+	if err != nil {
+		return "", err
+	}
+	return userPhoto, nil
 }
 func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
-    var userName string
-    err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userName)
-    if err != nil {
-        return "", err
-    }
-    return userName, nil
+	var userName string
+	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userName)
+	if err != nil {
+		return "", err
+	}
+	return userName, nil
 }
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 
