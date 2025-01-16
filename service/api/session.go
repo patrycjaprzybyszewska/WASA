@@ -29,7 +29,7 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var user User
-	userId, err := strconv.ParseUint(ps.ByName("userId"), 10, 64)
+	user.UserId, err = strconv.ParseUint(ps.ByName("userId"), 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -52,9 +52,9 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
-	user.UserId = userId
-	userPhoto, err := rt.db.GetUserPhotoById(userId)
-	user.UserPhoto = userPhoto
+	
+	user.UserPhoto, err = rt.db.GetUserPhotoById(userId)
+
 
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
