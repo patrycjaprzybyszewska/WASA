@@ -6,7 +6,7 @@ import (
 
 func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	var user User
-	err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE username = ?`, u.UserName).Scan(&user.UserId, &user.UserName, &user.UserPhoto)
+	err := db.c.QueryRow(`SELECT UserId, UserName, UserPhoto FROM users WHERE userName = ?`, u.UserName).Scan(&user.UserId, &user.UserName, &user.UserPhoto)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			res, err := db.c.Exec("INSERT INTO users(UserName, UserPhoto) VALUES (?,?)", u.UserName, u.UserPhoto)
@@ -25,7 +25,7 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 }
 func (db *appdbimpl) GetUserPhotoById(userId uint64) (string, error) {
 	var userPhoto string
-	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userPhoto)
+	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE userId = ?`, userId).Scan(&userPhoto)
 	if err != nil {
 		return "", err
 	}
@@ -33,7 +33,7 @@ func (db *appdbimpl) GetUserPhotoById(userId uint64) (string, error) {
 }
 func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	var userName string
-	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE UserId = ?`, userId).Scan(&userName)
+	err := db.c.QueryRow(`SELECT UserPhoto FROM users WHERE userId = ?`, userId).Scan(&userName)
 	if err != nil {
 		return "", err
 	}
@@ -41,7 +41,7 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 }
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 
-	res, err := db.c.Exec(`UPDATE users SET UserName=?, UserPhoto=? WHERE UserId=?`, username, u.UserPhoto, u.UserId)
+	res, err := db.c.Exec(`UPDATE users SET UserName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
 	if err != nil {
 		return u, err
 	}
