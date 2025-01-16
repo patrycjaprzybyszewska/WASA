@@ -72,32 +72,32 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var user User
-	userId, err := strconv.ParseUint(ps.ByName("userId"), 10, 64)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+
 	authHeader := r.Header.Get("Authorization")
 	authid, err := auth(authHeader)
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
-	if authid != userId {
+	user.UserId, err = strconv.ParseUint(ps.ByName("userId"), 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if authid != user.UserId {
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
 		return
 	}
-	user.UserId = userId
+\
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
-	name, err := rt.db.GetUserNameById(userId)
+	user.UserName, err := rt.db.GetUserNameById(user.UserId)
 	if err != nil {
 		http.Error(w, "No name", http.StatusInternalServerError)
 		return
 	}
-	user.UserName = name
 	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), user.UserPhoto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
