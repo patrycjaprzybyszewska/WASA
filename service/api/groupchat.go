@@ -135,7 +135,7 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
 	}
     w.Header().Set("Content-Type", "application/json")
     var chat Chat
-    err = json.NewDecoder(r.Body).Decode(&chat)
+    err := json.NewDecoder(r.Body).Decode(&chat)
     if err != nil {
         http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
