@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 <script>
 export default {}
+const userId = localStorage.getItem("userId");
 </script>
 
 <template>
@@ -30,9 +31,9 @@ export default {}
 
 						</li>
 						<li class="nav-item">
-							<RouterLink to="/link1" class="nav-link">
+							<RouterLink :to="/user + 'userId'" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#layout"/></svg>
-								Menu item 1
+								User
 							</RouterLink>
 						</li>
 						<li class="nav-item">

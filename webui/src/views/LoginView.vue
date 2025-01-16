@@ -32,7 +32,7 @@
           try {
             let response = await this.$axios.post("/session", { userId: this.userId, username: this.name });
             //.profile = response.data;
-            localStorage.setItem("token", this.userId);
+            localStorage.setItem("userId", this.userId);
             localStorage.setItem("name", this.name);
             this.$router.push({ path: '/session' });
           } catch (e) {
