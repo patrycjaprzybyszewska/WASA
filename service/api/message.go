@@ -21,11 +21,12 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	message.SenderId, err := auth(r.Header.Get("Authorization"))
+	userId, err := auth(r.Header.Get("Authorization"))
 	if message.Content == "" ||  message.ChatId == 0 {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
+	message.SenderId = userId
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02") 
 	message.MessageTime = currentTime.Format("15:04")      
@@ -85,12 +86,13 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
         http.Error(w, "Missing authorization", http.StatusUnauthorized)
         return
     }
-	message.SenderId, err := auth(authHeader)
+	userId, err := auth(authHeader)
     if err != nil {
         http.Error(w, "Invalid token", http.StatusUnauthorized)
         return
 	}
 
+	message.SenderId = userId
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
