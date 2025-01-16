@@ -95,11 +95,12 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}	
-	user.UserName, err := rt.db.GetUserNameById(userId)
+	name, err := rt.db.GetUserNameById(userId)
     if err != nil {
         http.Error(w, "No name", http.StatusInternalServerError)
         return
     }
+	user.UserName = name
 	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), user.UserPhoto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
