@@ -69,12 +69,14 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
 } // 204 no content 404, i need mess id, add auth
 
 func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	var message Message
+	
 	messageId, err := strconv.ParseUint(ps.ByName("messageId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-	chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
+	message.ChatId, err = strconv.ParseUint(ps.ByName("chatId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
@@ -86,25 +88,23 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 
-	var message Message
+
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing authorization", http.StatusUnauthorized)
 		return
 	}
-	userId, err := auth(authHeader)
+	message.SenderId, err = auth(authHeader)
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
 
-	message.SenderId = userId
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
 	message.State = "send"
 	message.Content = dbmessage.Content
-	message.ChatId = chatId
 	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
