@@ -63,6 +63,20 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 
 	return message, nil
 }
+func (db *appdbimpl) CheckMessageById(messageId uint64) error {
+	var message Message
+
+	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
+	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
+		}
+		return fmt.Errorf("could not get message: %w", err)
+	}
+
+	return nil
+}
 
 func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 
@@ -129,4 +143,17 @@ func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
 	}
 
 	return comment, nil
+}
+func (db *appdbimpl) CheckCommentById(commentId uint64) error {
+	var comment Comment
+	query := `SELECT commentId, messageId, content FROM comments WHERE commentId = ?`
+	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
+		}
+		return fmt.Errorf("could not get comment: %w", err)
+	}
+
+	return nil
 }

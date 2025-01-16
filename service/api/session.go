@@ -48,13 +48,14 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
 		return
 	}
-	user.UserId = userId
-	userPhoto, err := rt.db.GetUserPhotoById(userId)
-	user.UserPhoto = userPhoto
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
+	user.UserId = userId
+	userPhoto, err := rt.db.GetUserPhotoById(userId)
+	user.UserPhoto = userPhoto
+
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

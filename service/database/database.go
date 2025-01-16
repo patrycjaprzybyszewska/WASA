@@ -73,6 +73,8 @@ type AppDatabase interface {
 	GetChatNameById(uint64) (string, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
+	CheckMessageById(uint64) error
+	CheckCommentById(uint64) error
 	GetCommentById(uint64) (Comment, error)
 	Sendmessage(Message) (Message, error)
 	Removemessage(uint64) error

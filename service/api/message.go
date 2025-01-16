@@ -20,7 +20,11 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	userId, err := auth(r.Header.Get("Authorization"))
+	userId, authErr := auth(r.Header.Get("Authorization"))
+	if authErr != nil {
+		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
+		return
+	}
 	if message.Content == "" || message.ChatId == 0 {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
@@ -126,7 +130,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-	_, err = rt.db.GetMessageById(messageId)
+	err = rt.db.CheckMessageById(messageId)
 	if err != nil {
 		http.Error(w, "Message to comment not found", http.StatusNotFound)
 		return
@@ -160,7 +164,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 		return
 	}
 	// sprawdzic czy kom istnieje
-	_, err = rt.db.GetCommentById(uint64(commentId))
+	err = rt.db.CheckCommentById(uint64(commentId))
 	if err != nil {
 		http.Error(w, "Comment not found", http.StatusNotFound)
 		return
