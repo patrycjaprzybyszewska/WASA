@@ -54,7 +54,7 @@ func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 	
-	user.UserPhoto, err = rt.db.GetUserPhotoById(userId)
+	user.UserPhoto, err = rt.db.GetUserPhotoById(user.UserId)
 	
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
