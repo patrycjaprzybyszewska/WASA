@@ -95,7 +95,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
     var chat Chat
-    err = json.NewDecoder(r.Body).Decode(&chat)
+    err := json.NewDecoder(r.Body).Decode(&chat)
     if err != nil {
         http.Error(w, "Invalid request body ", http.StatusBadRequest)
         return
