@@ -189,7 +189,7 @@ paths:
         Username of a user can be changed.
       security:
        - bearerAuth: []
-      operationId: setMyUsername
+      operationId: setMyUserName
       parameters:
       - name: userId
         in: path

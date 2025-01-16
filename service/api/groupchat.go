@@ -88,13 +88,12 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	var chat Chat
-	chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
+	chat.ChatId, err = strconv.ParseUint(ps.ByName("chatId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid chat ID", http.StatusBadRequest)
 		return
 	}
 
-	chat.ChatId = chatId
 	err = json.NewDecoder(r.Body).Decode(&chat)
 	if err != nil {
 		http.Error(w, "Invalid request body ", http.StatusBadRequest)
