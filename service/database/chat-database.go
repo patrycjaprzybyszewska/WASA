@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+    "errors"
 )
 
 func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
