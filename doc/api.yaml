@@ -15,7 +15,7 @@ tags:
   
 paths:
   /message:
-    post:
+    put:
       tags: ["Message"]
       summary: Send a new message.
       description: |
@@ -64,7 +64,7 @@ paths:
           description: Message is not found.
             
   /message/comment/{messageId}:              
-    post: 
+    put: 
       tags: ["Message"]
       summary: Creates a new comment to a message.
       description: |
@@ -100,7 +100,7 @@ paths:
           description: |
             Message to comment is not found.
   /message/forward/{messageId}/{chatId}:
-    post:
+    put:
       tags: ["Message"]
       description: Forwards message to antoher user
       summary: |
@@ -179,11 +179,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  userId:
-                    type: integer
-                    example: 012345
+               $ref: "#/components/schemas/User"
+                  
   /session/{userId}/userName:
     put:
       tags: ["Login"]
@@ -215,7 +212,10 @@ paths:
       responses: 
         '201':
           description: Username has been changed
-        
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/User"
            
                   
   /session/{userId}/userPhoto:                
@@ -248,11 +248,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                 photo:
-                  type: string
-                  example: "https://gif.jpg"
-                
+               $ref: "#/components/schemas/User"
                  
   /conversation/{conversationId}:
     get:
@@ -327,13 +323,7 @@ paths:
       responses:
         '201':
           description: User ID has been added sucsfully.
-          content:
-            application/json:
-              schema: 
-               type: object
-               items: 
-                $ref: "#/components/schemas/Chat"
-                
+          
   /groupchat/{chatId}/leave/{userId}:  
     delete:
       tags: ["Chat"]
@@ -386,10 +376,13 @@ paths:
       responses: 
         '200':
           description: groupchat name has been changed correctly
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
         '404':
           description: groupchat not found
-        '422' :
-           description: Validation exception
+
   /groupchat/{chatId}/groupPhoto:               
     put: 
       tags: ["Chat"]
@@ -413,11 +406,13 @@ paths:
       responses: 
         '200':
           description: Chat photo has been changed correctly.
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
         '404':
           description: Chat not found.
-        '422' :
-           description: Validation exception        
-      
+
       
 components:
   securitySchemes:
@@ -523,5 +518,26 @@ components:
           pattern: 'ˆ.*?$'
           minLength: 3
           maxLength: 16
-  
-    
+          
+    User:
+      required:
+      - userId
+      title: User
+      description: This object represents an user
+      type: object
+      properties: 
+        userId:
+          type: integer
+          description: unique ID for every chat
+          example: 991334
+        userPhoto:
+          type: string
+          description: Path to photo of the user
+          example: "https://photo.jpg"
+        name:
+          type: string
+          description: Name of the user
+          example: "Family"
+          pattern: 'ˆ.*?$'
+          minLength: 3
+          maxLength: 16
