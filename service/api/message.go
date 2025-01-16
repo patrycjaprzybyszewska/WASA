@@ -20,8 +20,8 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	userId, authErr := auth(r.Header.Get("Authorization"))
-	if authErr != nil {
+	message.SenderId, err = auth(r.Header.Get("Authorization"))
+	if err != nil {
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
@@ -29,7 +29,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
-	message.SenderId = userId
+	
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
