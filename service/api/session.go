@@ -1,16 +1,15 @@
 package api
 
 import (
+	"encoding/json"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
-	"encoding/json"
 	"strconv"
-
 )
 
-func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext){
-	
+func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+
 	w.Header().Set("content-Type", "application/json")
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
@@ -27,7 +26,6 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 	_ = json.NewEncoder(w).Encode(user)
 }
 
-
 func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var user User
@@ -37,14 +35,14 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 	authHeader := r.Header.Get("Authorization")
-    if authHeader == "" {
-        http.Error(w, "Missing authorization", http.StatusUnauthorized)
-        return
-    }
+	if authHeader == "" {
+		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+		return
+	}
 	authid, err := auth(authHeader)
-    if err != nil {
-        http.Error(w, "Invalid token", http.StatusUnauthorized)
-        return
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
 	}
 	if authid != userId {
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
@@ -52,11 +50,11 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	}
 	user.UserId = userId
 	userPhoto, err := rt.db.GetUserPhotoById(userId)
-    user.UserPhoto = userPhoto
+	user.UserPhoto = userPhoto
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
-	}	
+	}
 	dbuser, err := rt.db.SetUsername(user.ToDatabase(), user.UserName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -70,8 +68,6 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 
 // to set username i need to get id, username change it into database, response 201
 
-
-
 func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
 	var user User
@@ -82,9 +78,9 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 	}
 	authHeader := r.Header.Get("Authorization")
 	authid, err := auth(authHeader)
-    if err != nil {
-        http.Error(w, "Invalid token", http.StatusUnauthorized)
-        return
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
 	}
 	if authid != userId {
 		http.Error(w, "bad autorization", http.StatusUnauthorized)
@@ -94,12 +90,12 @@ func (rt *_router) setMyPhoto(w http.ResponseWriter, r *http.Request, ps httprou
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
-	}	
+	}
 	name, err := rt.db.GetUserNameById(userId)
-    if err != nil {
-        http.Error(w, "No name", http.StatusInternalServerError)
-        return
-    }
+	if err != nil {
+		http.Error(w, "No name", http.StatusInternalServerError)
+		return
+	}
 	user.UserName = name
 	dbuser, err := rt.db.SetUserphoto(user.ToDatabase(), user.UserPhoto)
 	if err != nil {
