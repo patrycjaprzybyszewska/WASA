@@ -58,7 +58,7 @@ type Comment struct{
 type Chat struct{
 	ChatId		 uint64 `json:"chatId"`
 	ChatName 	 string `json:"chatName"`
-	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
+	ChatPhoto 	 string `json:"chatPhoto"` // trzeba dodac uzytkownikow
 }
 
 // AppDatabase is the high level interface for the DB

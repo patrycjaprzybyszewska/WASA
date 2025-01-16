@@ -32,7 +32,7 @@ type Comment struct{
 type Chat struct{
 	ChatId		 uint64 `json:"chatId"`
 	ChatName 	 string `json:"chatName"`
-	ChatPhoto 	 string `json:"chatPhoto"`//trzeba dodac uzytkownikow
+	ChatPhoto 	 string `json:"chatPhoto"` // trzeba dodac uzytkownikow
 }
 
 func (u *User) FromDatabase(user database.User){
@@ -74,7 +74,7 @@ func (m *Message) MessageToDatabase() database.Message {
 func(c *Comment) CommentFromDatabase(comment database.Comment){
 	c.MessageId = comment.MessageId
 	c.Content = comment.Content
-	c.CommentId = comment.CommentId//mozliwe ze teho tu nie trzeba
+	c.CommentId = comment.CommentId // mozliwe ze teho tu nie trzeba
 
 }
 

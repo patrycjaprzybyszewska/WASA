@@ -2,7 +2,7 @@ package api
 
 
 import (
-	//"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
+	// "git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/julienschmidt/httprouter"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"net/http"
@@ -43,7 +43,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
-////201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
+ // 201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
 }
 
 func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -62,7 +62,7 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
         }
 
     w.WriteHeader(http.StatusNoContent)
-}////204 no content 404, i need mess id, add auth
+} // 204 no content 404, i need mess id, add auth
 
 func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	messageIdStr := ps.ByName("messageId")
@@ -112,7 +112,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
 }
-//201 404 
+// 201 404 
 
 
 func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -145,7 +145,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(comment)
 
-}///201 404
+} // 201 404
 
 func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	
@@ -169,7 +169,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
         }
 
     w.WriteHeader(http.StatusNoContent)
-}//204 404
+} // 204 404
 
 
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {

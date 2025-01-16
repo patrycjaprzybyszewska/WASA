@@ -49,7 +49,7 @@ func (rt *_router) setMyUsername(w http.ResponseWriter, r *http.Request, ps http
 	_ = json.NewEncoder(w).Encode(user)
 }
 
-///to set username i need to get id, username change it into database, response 201
+// to set username i need to get id, username change it into database, response 201
 
 
 

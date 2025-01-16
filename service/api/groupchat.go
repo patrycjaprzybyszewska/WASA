@@ -116,7 +116,7 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
         return
     }
     chat.ChatFromDatabase(dbchat)
- //sprawdzic czt czat istnieje
+ // sprawdzic czt czat istnieje
     w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(chat)
 }

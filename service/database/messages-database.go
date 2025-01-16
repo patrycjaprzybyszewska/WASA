@@ -7,7 +7,7 @@ import (
 
 
 func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
-////trzeba dodac tworzenie czatu tutaj
+// trzeba dodac tworzenie czatu tutaj
 	var existingChatId uint64
 	err := db.c.QueryRow(`SELECT chatId FROM chats WHERE chatId = ?`, m.ChatId).Scan(&existingChatId)
 	if err != nil {

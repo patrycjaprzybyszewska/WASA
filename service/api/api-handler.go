@@ -13,11 +13,11 @@ func (rt *_router) Handler() http.Handler {
 	
 	rt.router.GET("/liveness", rt.liveness)
 	rt.router.POST("/session", rt.wrap(rt.doLogin)) // to vheck if it ckecks if user is logged
-	//user
+	// user
 	rt.router.PUT("/session/:userId/userName", rt.wrap(rt.setMyUsername))
 	rt.router.PUT("/session/:userId/userPhoto", rt.wrap(rt.setMyPhoto))
 
-	//MESSAGES
+	// MESSAGES
 	rt.router.PUT("/message", rt.wrap(rt.sendMessage))
 	rt.router.DELETE("/message/:messageId", rt.wrap(rt.deleteMessage))
 	rt.router.PUT("/message/forward/:messageId/:chatId", rt.wrap(rt.forwardMessage))
@@ -27,7 +27,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/message/conversation/:chatId", rt.wrap(rt.getConversation))
 
 
-	//chat
+	// chat
 	rt.router.PUT("/groupchat/:chatId/add/:userId", rt.wrap(rt.addToGroup))
 	rt.router.DELETE("/groupchat/:chatId/leave/:userId", rt.wrap(rt.leaveGroup))
 	rt.router.PUT("/groupchat/:chatId/groupName", rt.wrap(rt.setGroupName))
