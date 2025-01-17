@@ -50,7 +50,7 @@ methods: {
 					type="text"
 					id="username"
 					class="form-control"
-					v-model="username"
+					v-model="name"
 					placeholder="UserName"
 				/>
 			</div>
