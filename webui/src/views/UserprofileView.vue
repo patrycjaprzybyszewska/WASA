@@ -78,15 +78,14 @@ methods: {
 				<button @click="setMyUserName">
 OK			</button>
 			</div>
-      <p class="h3">UserPhoto: {{ name }}</p>
+      <p class="h3">UserName: {{ name }}</p>
     </div>
     <div class="user-photo">
       <img :src="userPhoto" alt="User Photo" class="photo" />
       <label for="username" class="form-label">Change UserPhoto: </label> <input
-					type="text"
-					id="userPhotohoto"
+					type="file"
+					id="userPhoto"
 					class="form-control"
-					v-model="newphoto"
 					placeholder="path to photo"
 				/>
         				<button @click="setMyPhoto">
