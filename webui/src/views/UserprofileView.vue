@@ -16,9 +16,10 @@ methods: {
 	async setMyUserName() {
 		this.loading = true;
 	try{
-		localStorage.setItem("name", this.newname);
-		let response = await this.$axios.put("/session/:userId/userName", {userId: this.userId, name: this.name});
-  	this.name = response.data.name;
+
+		let response = await this.$axios.put("/session/${this.userId}/userName", {userId: this.userId, name: this.newname});
+  	localStorage.setItem("name", this.newname);
+		this.name = response.data.name;
 		this.errormsg = null;
     this.loading = false;
 	}	catch (e){ 		
