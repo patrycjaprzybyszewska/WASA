@@ -16,8 +16,8 @@ methods: {
 	async setMyUserName() {
 		this.loading = true;
 	try{
+		localStorage.setItem("name", this.newname);
 		let response = await this.$axios.put("/session/:userId/userName", {userId: this.userId, name: this.name});
-    localStorage.setItem("name", response.data.newname);
   	this.name = response.data.name;
 		this.errormsg = null;
     this.loading = false;
@@ -52,7 +52,7 @@ methods: {
 					type="text"
 					id="username"
 					class="form-control"
-					v-model="name"
+					v-model="newname"
 					placeholder="new username"
 				/>
 				<button @click="setMyUserName">
