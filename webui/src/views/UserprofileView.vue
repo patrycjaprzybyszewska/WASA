@@ -17,7 +17,7 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put("/session/${this.userId}/userName", {userId: this.userId, name: this.newname});
+		let response = await this.$axios.put("/session/${this.userId}/userName", {name: this.newname});
   	localStorage.setItem("name", this.newname);
 		this.name = response.data.name;
 		this.errormsg = null;
