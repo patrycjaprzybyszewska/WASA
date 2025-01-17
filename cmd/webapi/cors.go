@@ -17,7 +17,6 @@ func applyCORSHandler(h http.Handler) http.Handler {
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.ExposedHeaders([]string{"Authorization"}),
 		handlers.AllowedHeaders([]string{"Authorization", "Content-Type", "searcher_id",
-			"identifier", "requester_ID", "user_id", "user_name", "commenter_name"})
-	)(h)
+			"identifier", "requester_ID", "user_id", "user_name", "commenter_name"}),)(h)
 }
 	// Some of the allowed headers are legacy.
