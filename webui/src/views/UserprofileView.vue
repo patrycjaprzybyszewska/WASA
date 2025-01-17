@@ -4,21 +4,21 @@ export default {
   data() {
     return {
       userId: localStorage.getItem("userId"),  
-      userName: localStorage.getItem("name"), 
+      name: localStorage.getItem("name"), 
       userPhoto: "",
+			newname: "",
       successmsg: null,
       errormsg: null,
       loading: false,
     };
   },
-/*
 methods: { 
 	async setMyUserName() {
 		this.loading = true;
 	try{
 		let response = await this.$axios.put("/session/:userId/userName", {userId: this.userId, name: this.name});
-    localStorage.setItem("userId", response.data.userId);
-    localStorage.setItem("name", response.data.name);
+    localStorage.setItem("name", response.data.newname);
+  	this.name = response.data.name;
 		this.errormsg = null;
     this.loading = false;
 	}	catch (e){ 		
@@ -31,7 +31,7 @@ methods: {
 	}
 	},
 },
-*/
+
 
 };
 </script>
@@ -46,6 +46,18 @@ methods: {
     <div class="user-details">
       <h1 class="h2">USER PROFILE</h1>
       <p class="h3">UserId: {{ userId }}</p>
+						<div class="mb-3">
+				<label for="username" class="form-label">Change UserName: </label>
+				<input
+					type="text"
+					id="username"
+					class="form-control"
+					v-model="name"
+					placeholder="new username"
+				/>
+				<button @click="setMyUserName">
+OK					</button>
+			</div>
       <p class="h3">UserName: {{ userName }}</p>
     </div>
     <div class="user-photo">
