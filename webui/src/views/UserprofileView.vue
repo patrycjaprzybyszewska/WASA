@@ -17,7 +17,7 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put("/session/${this.userId}/userName", {name: this.newname, userPhoto: ""});
+		let response = await this.$axios.put('/session/${this.userId}/userName', {name: this.newname, userPhoto: ""},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
   	localStorage.setItem("name", this.newname);
 		this.name = response.data.name;
 		this.errormsg = null;
