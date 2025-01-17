@@ -33,7 +33,10 @@ methods: {
 	}
 	},
 },
+
+
 };
+
 </script>
 <template>
 	<div>

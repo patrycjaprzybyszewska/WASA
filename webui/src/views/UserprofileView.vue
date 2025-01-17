@@ -5,7 +5,8 @@ export default {
     return {
       userId: localStorage.getItem("userId"),  
       name: localStorage.getItem("name"), 
-      userPhoto: "",
+      userPhoto: localStorage.getItem("userPhoto"),
+      newphoto:"",
 			newname: "",
       successmsg: null,
       errormsg: null,
@@ -31,6 +32,23 @@ methods: {
             this.errormsg = e.toString();						
 					}
 	}
+	},async setMyPhoto() {
+		this.loading = true;
+	try{
+
+		let response = await this.$axios.put(`/session/${this.userId}/userPhoto`, {name: this.name, userPhoto: this.newphoto},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+  	localStorage.setItem("userPhoto", this.newphoto);
+		this.userPhoto = response.data.userPhoto;
+		this.errormsg = null;
+    this.loading = false;
+	}	catch (e){ 		
+				if (e.response && e.response.status === 400) {
+            
+
+					}else{
+            this.errormsg = e.toString();						
+					}
+  }
 	},
 },
 
@@ -58,15 +76,26 @@ methods: {
 					placeholder="new username"
 				/>
 				<button @click="setMyUserName">
-OK					</button>
+OK			</button>
 			</div>
-      <p class="h3">UserName: {{ name }}</p>
+      <p class="h3">UserPhoto: {{ userPhoto }}</p>
     </div>
     <div class="user-photo">
       <img :src="userPhoto" alt="User Photo" class="photo" />
+      <label for="username" class="form-label">Change UserPhoto: </label> <input
+					type="text"
+					id="userPhotohoto"
+					class="form-control"
+					v-model="newphoto"
+					placeholder="path to photo"
+				/>
+        				<button @click="setMyPhoto">
+OK					</button>
     </div>
   </div>
 </template>
+
+
 
 
 <style scoped>
