@@ -6,7 +6,7 @@ export default {
 			loading: false,
 			successmsg: null,
 			userId: "",
-			name: ""
+			name: "",
 		}
 	},
 methods: { 
