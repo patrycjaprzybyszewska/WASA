@@ -17,9 +17,10 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put('/session/${this.userId}/userName', {name: this.newname, userPhoto: ""},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+		let response = await this.$axios.put(`/session/${this.userId}/userName`, {name: this.newname, userPhoto: ""},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
   	localStorage.setItem("name", this.newname);
 		this.name = response.data.name;
+    localStorage.setItem("name", this.newname);
 		this.errormsg = null;
     this.loading = false;
 	}	catch (e){ 		
