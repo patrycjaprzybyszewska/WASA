@@ -19,7 +19,7 @@ methods: {
 		this.successmsg = "You are logged!";
 		this.errormsg = null;
     this.loading = false;
-		this.$router.push({ path: 'session'})
+		this.$router.push({ path: '/session'})
 	}	catch (e){ 		
 				if (e.response && e.response.status === 400) {
             this.errormsg = "Failed to login";
