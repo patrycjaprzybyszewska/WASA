@@ -14,8 +14,10 @@ methods: {
 		this.loading = true;
 	try{
 		let response = await this.$axios.post("/session", {userId: this.userId, name: this.name});
-    localStorage.setItem("userId", response.data.userId);
-    localStorage.setItem("name", response.data.name);
+		localStorage.removeItem('userId');
+		localStorage.removeItem('name');
+    	localStorage.setItem("userId", response.data.userId);
+  		localStorage.setItem("name", response.data.name);
 		this.successmsg = "You are logged!";
 		this.errormsg = null;
     this.loading = false;
