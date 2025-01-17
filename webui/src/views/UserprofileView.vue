@@ -14,6 +14,14 @@ export default {
     };
   },
 methods: { 
+  input(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.newphoto = e.target.result; 
+        };
+        reader.readAsDataURL(file);}},
 	async setMyUserName() {
 		this.loading = true;
 	try{
@@ -82,11 +90,12 @@ OK			</button>
     </div>
     <div class="user-photo">
       <img :src="userPhoto" alt="User Photo" class="photo" />
-      <label for="username" class="form-label">Change UserPhoto: </label> <input
+      <p class="h3">Selected Photo: {{ newphoto }}</p>
+      <label for="userPhoto" class="form-label">Change UserPhoto: </label> <input
 					type="file"
 					id="userPhoto"
 					class="form-control"
-					placeholder="path to photo"
+					@change="input"
 				/>
         				<button @click="setMyPhoto">
 OK					</button>
