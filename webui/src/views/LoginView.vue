@@ -5,8 +5,8 @@ export default {
 			errormsg: null,
 			loading: false,
 			successmsg: null,
-			userId: undefined,
-			name: undefined
+			userId: "",
+			name: ""
 		}
 	},
 methods: { 
