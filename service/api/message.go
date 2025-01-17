@@ -29,7 +29,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
-	
+
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
@@ -70,7 +70,7 @@ func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps http
 
 func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	var message Message
-	
+
 	messageId, err := strconv.ParseUint(ps.ByName("messageId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
@@ -87,7 +87,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Forwarded message does not exist", http.StatusNotFound)
 		return
 	}
-
 
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
