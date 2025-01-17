@@ -78,7 +78,7 @@ methods: {
 				<button @click="setMyUserName">
 OK			</button>
 			</div>
-      <p class="h3">UserPhoto: {{ userPhoto }}</p>
+      <p class="h3">UserPhoto: {{ name }}</p>
     </div>
     <div class="user-photo">
       <img :src="userPhoto" alt="User Photo" class="photo" />
