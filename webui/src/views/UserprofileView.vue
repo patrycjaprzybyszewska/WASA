@@ -33,8 +33,9 @@ methods: {
     localStorage.setItem("name", this.newname);
 		this.errormsg = null;
     this.loading = false;
+    this.successmsg = "Name set!";
 	}	catch (e){ 		
-    console.error("Error setting username:", e);
+      console.error("Error setting username:", e);
 				if (e.response && e.response.status === 400) {
             
 
