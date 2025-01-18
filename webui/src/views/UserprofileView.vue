@@ -7,7 +7,6 @@ export default {
       name: localStorage.getItem("name"), 
       userPhoto: localStorage.getItem("userPhoto"),
       newphoto:"",
-      photo: null,
 			newname: "",
       successmsg: null,
       errormsg: null,
@@ -15,13 +14,14 @@ export default {
     };
   },
 methods: { 
+  
   input(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.newphoto = e.target.result; 
-          this.photo = URL.createObjectURL(file);
+          this.userPhoto = URL.createObjectURL(file);
         };
         reader.readAsDataURL(file);}},
 	async setMyUserName() {
@@ -51,6 +51,7 @@ methods: {
 		this.userPhoto = response.data.newphoto;
 		this.errormsg = null;
     this.loading = false;
+    this.successmsg = "Photo set!";
 	}	catch (e){ 		
 				if (e.response && e.response.status === 400) {
             
@@ -91,7 +92,7 @@ OK			</button>
       <p class="h3">UserName: {{ name }}</p>
     </div>
     <div class="user-photo">
-      <img :src="photo" alt="User Photo" style="width: 100%; height: 100%; object-fit: cover;" />    
+      <img :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
       <label for="userPhoto" class="form-label">Change UserPhoto: </label>
       <input
         type="file"
