@@ -25,14 +25,13 @@ methods: {
 		this.errormsg = null;
         this.loading = false;
 		this.successmsg = "Message sent!";
-	}	catch (e){ 		
-				if (e.response && e.response.status === 400) {
-            
-
-					}else{
-            this.errormsg = e.toString();						
-					}
-	}
+	}	catch (e) { console.error("Error sending message:", e);
+  if (e.response) {
+    console.error("Response data:", e.response.data);
+    console.error("Response status:", e.response.status);
+  }
+  this.errormsg = "Failed to send message..";
+}
 	},}
 
 
