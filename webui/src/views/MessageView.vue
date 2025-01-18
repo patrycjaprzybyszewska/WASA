@@ -23,7 +23,7 @@ methods: {
 		this.content = response.data.content;
 		this.chatId = response.data.chatId;
 		this.errormsg = null;
-    this.loading = false;
+        this.loading = false;
 		this.successmsg = "Message sent!";
 	}	catch (e){ 		
 				if (e.response && e.response.status === 400) {
@@ -71,8 +71,11 @@ methods: {
     </div>
 				<button @click="sendMessage">
 OK			</button>
+<div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+<div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
 
   </div>
+
 </template>
 
 
