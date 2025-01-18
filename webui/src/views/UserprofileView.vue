@@ -52,6 +52,7 @@ methods: {
     this.loading = false;
     this.successmsg = "Photo set!";
 	}	catch (e){ 		
+    console.error("Error:", e); 
 				if (e.response && e.response.status === 400) {
             
 
