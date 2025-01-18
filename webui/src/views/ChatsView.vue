@@ -62,7 +62,7 @@ export default {
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
-    <p>Chat ID: <button @click="getMessages(chat.chatId)">{{ chat.chatId }}</button></p>
+    <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
   </li>
 </ul>
   <div v-if="selectedChatId">
