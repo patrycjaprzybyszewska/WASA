@@ -2,37 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 <script>
-export default {
-	data(){
-		return{
-			chats: [],
-			loading: false,
-			error: null,
-			userId: localStorage.getItem("userId")
-		};
-	},
-	created() {
-		this.getConversations();
-	},
-	methods: {
-		async getConversations(){
-			this.loading = true;
-      		this.error = null;
-     			 try {
-      				  const response = await this.$axios.get('/conversations', {
-       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
-       		 });
-			console.log("Response data:", response.data)
-       		 this.chats = response.data; 
-   		   } catch (err) {
-     	   console.error("Error fetching conversations:", err);
-       		this.error = "Unable to fetch conversations.";
-      } finally {
-        this.loading = false;
-      }
-		},
-	},
-};
+export default {}
 const userId = localStorage.getItem("userId");
 </script>
 
@@ -79,17 +49,14 @@ const userId = localStorage.getItem("userId");
 						<span>Secondary menu</span>
 					</h6>
 					<ul class="nav flex-column">
-							<li v-for="chat in chats" :key="chat.chatId" class="nav-item">
-								<RouterLink :to="'/chat/' + chat.chatId" class="nav-link">
+						<li class="nav-item">
+							<RouterLink :to="'/chats'" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#file-text"/></svg>
-								{{ chat.chatId }}
+								Chats
 							</RouterLink>
 						</li>
 					</ul>
 				</div>
-				<div v-if="error" class="text-danger">
-      			{{ error }}
-    </div>
 			</nav>
 
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
