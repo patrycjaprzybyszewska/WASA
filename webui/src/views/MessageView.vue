@@ -19,7 +19,7 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put(`/message`, {content: this.content, chatId: this.chatId},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+		let response = await this.$axios.put(`/message`, {content: this.content, chatId: parseInt(this.chatId)},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
 		this.content = response.data.content;
 		this.chatId = response.data.chatId;
 		this.errormsg = null;
