@@ -31,7 +31,8 @@ const userId = localStorage.getItem("userId");
 
 						</li>
 						<li class="nav-item">
-							/*<RouterLink :to="/user/ + 'userId'" class="nav-link">
+							<RouterLink :to="`/user/${userId}`" class="nav-link">
+
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#layout"/></svg>
 								UserProfile
 							</RouterLink>
