@@ -65,7 +65,7 @@ export default {
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
   </li>
 </ul>
-  <div v-if="selectedChatId">
+  <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
