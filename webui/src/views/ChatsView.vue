@@ -14,6 +14,11 @@ export default {
 	},
 	methods: {
 		async getConversations(){
+            const userId = localStorage.getItem("userId");
+    if (!userId) {
+      this.error = "User ID not found in localStorage.";
+      this.loading = false;
+      return;}
 			this.loading = true;
       		this.error = null;
      			 try {
@@ -24,7 +29,7 @@ export default {
        		 this.chats = response.data; 
    		   } catch (err) {
      	   console.error("Error fetching conversations:", err);
-       		this.error = "Unable to fetch conversations.";
+       		this.error = `Unable to fetch conversations.Error: ${err.response ? err.response.status : err.message}`;
       } finally {
         this.loading = false;
       }
