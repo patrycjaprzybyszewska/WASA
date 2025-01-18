@@ -38,9 +38,9 @@ const userId = localStorage.getItem("userId");
 							</RouterLink>
 						</li>
 						<li class="nav-item">
-							<RouterLink to="/link2" class="nav-link">
+							<RouterLink to="/message" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#key"/></svg>
-								Menu item 2
+								SendMessage
 							</RouterLink>
 						</li>
 					</ul>
