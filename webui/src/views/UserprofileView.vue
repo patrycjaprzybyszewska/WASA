@@ -13,11 +13,6 @@ export default {
       loading: false,
     };
   },
-  created() {
-    if (this.userPhoto) {
-      this.userPhoto = this.userPhoto; 
-    }
-  },
 methods: { 
   
   input(event) {
@@ -53,7 +48,7 @@ methods: {
 
 		let response = await this.$axios.put(`/session/${this.userId}/userPhoto`, {name: "", userPhoto: this.newphoto},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
   	localStorage.setItem("userPhoto", this.newphoto);
-		this.userPhoto = response.data.newphoto;
+		this.userPhoto = this.newphoto;
 		this.errormsg = null;
     this.loading = false;
     this.successmsg = "Photo set!";
