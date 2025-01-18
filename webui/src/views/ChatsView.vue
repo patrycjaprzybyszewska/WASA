@@ -41,7 +41,7 @@ export default {
             this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.get('/conversation/${chatId}', {
+                const response = await this.$axios.get(`/conversation/${this.userId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.messages = response.data;
