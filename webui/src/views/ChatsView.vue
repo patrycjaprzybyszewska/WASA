@@ -7,6 +7,7 @@ export default {
             messages: [],
 			loading: false,
 			error: null,
+            chatId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
     };
