@@ -17,7 +17,7 @@ methods: {
 		localStorage.removeItem('userPhoto');
 		localStorage.removeItem('userId');
 		localStorage.removeItem('name');
-		let response = await this.$axios.post("/session", {name: this.name, userPhoto: ""}, { headers: { "Content-Type": "application/json" }});
+		let response = await this.$axios.post("/session", {name: this.name}, { headers: { "Content-Type": "application/json" }});
     	localStorage.setItem("userId", response.data.userId);
   		localStorage.setItem("name", response.data.name);
 		this.successmsg = "You are logged!";
