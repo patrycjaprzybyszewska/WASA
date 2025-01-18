@@ -91,7 +91,7 @@ OK			</button>
       <p class="h3">UserName: {{ name }}</p>
     </div>
     <div class="user-photo">
-      <img :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
+      <img :src="this.userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
       <label for="userPhoto" class="form-label">Change UserPhoto: </label>
       <input
         type="file"
