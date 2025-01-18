@@ -99,7 +99,7 @@ OK			</button>
     <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
 
     <div class="user-photo">
-      <img v-if="this.userPhoto" :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
+      <img v-if="userPhoto" :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
       <div v-else>
         <p>Photo</p>
       </div>
