@@ -46,7 +46,7 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put(`/session/${this.userId}/userPhoto`, {name: this.name, userPhoto: this.newphoto},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+		let response = await this.$axios.put(`/session/${this.userId}/userPhoto`, {name: "", userPhoto: this.newphoto},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
   	localStorage.setItem("userPhoto", this.newphoto);
 		this.userPhoto = response.data.newphoto;
 		this.errormsg = null;
