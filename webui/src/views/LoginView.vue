@@ -64,6 +64,9 @@ methods: {
 		      <button type="submit" class="btn btn-primary" :disabled="loading">
 					{{ loading ? "Logging in..." : "OK" }}
       </button>
+	  <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+    <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
 		</form>
 	</div>
 </template>
