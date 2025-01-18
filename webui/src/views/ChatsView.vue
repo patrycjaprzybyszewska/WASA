@@ -4,9 +4,11 @@ export default {
   data() {
     return {
             chats: [],
+            messages: [],
 			loading: false,
 			error: null,
-			userId: localStorage.getItem("userId")
+			userId: localStorage.getItem("userId"),
+            selectedChat: null,
     };
   },
   created() {
@@ -34,6 +36,21 @@ export default {
         this.loading = false;
       }
 		},
+        async getConversation(){
+            this.loading = true;
+            this.error = null;
+            try{
+                const response = await this.$axios.get('/conversation/${chatId}', {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+                this.messages = response.data;
+                this.selectedChat = chatId;
+            } catch (err) {
+        console.error("Error fetching messages:", err);
+        this.error = `Unable to fetch messages for chatId ${chatId}. Error: ${
+          err.response ? err.response.status : err.message
+        }`;}
+     },
 	},
 };
 </script>
@@ -45,7 +62,16 @@ export default {
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
+    <p>Chat ID: <button @click="getMessages(chat.chatId)">{{ chat.chatId }}</button></p>
   </li>
 </ul>
+  <div v-if="selectedChatId">
+      <h2>Messages for Chat: {{ selectedChat }}</h2>
+      <ul>
+        <li v-for="message in messages" :key="message.messageId">
+          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
+        </li>
+      </ul>
+</div>
 </div>
 </template>
