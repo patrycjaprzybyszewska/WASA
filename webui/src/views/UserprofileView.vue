@@ -91,7 +91,10 @@ OK			</button>
       <p class="h3">UserName: {{ name }}</p>
     </div>
     <div class="user-photo">
-      <img :src="this.userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
+      <img v-if="this.userPhoto" :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
+      <div v-else>
+        <p>Photo</p>
+      </div>
       <label for="userPhoto" class="form-label">Change UserPhoto: </label>
       <input
         type="file"

@@ -7,7 +7,7 @@ export default {
 			successmsg: null,
 			userId: "",
 			name: "",
-			userPhoto: "",
+
 		}
 	},
 methods: { 
