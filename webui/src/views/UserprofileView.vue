@@ -13,6 +13,11 @@ export default {
       loading: false,
     };
   },
+  created() {
+    if (this.userPhoto) {
+      this.userPhoto = this.userPhoto; 
+    }
+  },
 methods: { 
   
   input(event) {
@@ -21,7 +26,7 @@ methods: {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.newphoto = e.target.result; 
-          this.userPhoto = URL.createObjectURL(file);
+          this.userPhoto = e.target.result; 
         };
         reader.readAsDataURL(file);}},
 	async setMyUserName() {
