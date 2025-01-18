@@ -42,8 +42,10 @@ methods: {
 					}else{
             this.errormsg = e.toString();						
 					}
-	}
-	},async setMyPhoto() {
+	} finally {
+        this.loading = false;
+      }
+    },async setMyPhoto() {
 		this.loading = true;
 	try{
 
@@ -93,6 +95,9 @@ OK			</button>
 			</div>
       <p class="h3">UserName: {{ name }}</p>
     </div>
+    <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+    <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
     <div class="user-photo">
       <img v-if="this.userPhoto" :src="userPhoto" alt="User Photo" style="width: 200px; height: 200px; object-fit: cover;" />
       <div v-else>
