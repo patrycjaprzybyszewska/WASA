@@ -37,7 +37,7 @@ export default {
         this.loading = false;
       }
 		},
-        async getConversation(){
+        async getConversation(chatId){
             this.loading = true;
             this.error = null;
             try{
