@@ -21,7 +21,6 @@ methods: {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.newphoto = e.target.result; 
-          this.userPhoto = e.target.result; 
         };
         reader.readAsDataURL(file);}},
 	async setMyUserName() {
