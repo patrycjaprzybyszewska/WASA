@@ -22,6 +22,7 @@ export default {
       				  const response = await this.$axios.get('/conversations', {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
+			console.log("Response data:", response.data)
        		 this.chats = response.data; 
    		   } catch (err) {
      	   console.error("Error fetching conversations:", err);
@@ -81,7 +82,7 @@ const userId = localStorage.getItem("userId");
 							<li v-for="chat in chats" :key="chat.id" class="nav-item">
 								<RouterLink :to="'/chat/' + chat.id" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#file-text"/></svg>
-								{{ chat.name }}
+								{{ chat.chatId }}
 							</RouterLink>
 						</li>
 					</ul>
