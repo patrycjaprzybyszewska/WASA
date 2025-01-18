@@ -7,6 +7,7 @@ export default {
       name: localStorage.getItem("name"), 
       userPhoto: localStorage.getItem("userPhoto"),
       newphoto:"",
+      photo: null,
 			newname: "",
       successmsg: null,
       errormsg: null,
@@ -20,6 +21,7 @@ methods: {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.newphoto = e.target.result; 
+          this.photo = URL.createObjectURL(file);
         };
         reader.readAsDataURL(file);}},
 	async setMyUserName() {
@@ -89,13 +91,13 @@ OK			</button>
       <p class="h3">UserName: {{ name }}</p>
     </div>
     <div class="user-photo">
-      <img :src="userPhoto" alt="User Photo" class="photo" />
-      <p class="h3">Selected Photo: {{ newphoto }}</p>
-      <label for="userPhoto" class="form-label">Change UserPhoto: </label> <input
-					type="file"
-					id="userPhoto"
-					class="form-control"
-					@change="input"
+      <img :src="photo" alt="User Photo" style="width: 100%; height: 100%; object-fit: cover;" />    
+      <label for="userPhoto" class="form-label">Change UserPhoto: </label>
+      <input
+        type="file"
+        id="userPhoto"
+        class="form-control"
+        @change="input"
 				/>
         				<button @click="setMyPhoto">
 OK					</button>
