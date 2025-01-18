@@ -20,7 +20,6 @@ methods: {
 		let response = await this.$axios.post("/session", {name: this.name, userPhoto: ""}, { headers: { "Content-Type": "application/json" }});
     	localStorage.setItem("userId", response.data.userId);
   		localStorage.setItem("name", response.data.name);
-		localStorage.setItem("userPhoto", ""); 
 		this.successmsg = "You are logged!";
 		this.errormsg = null;
     this.loading = false;
