@@ -34,6 +34,7 @@ methods: {
 		this.errormsg = null;
     this.loading = false;
 	}	catch (e){ 		
+    console.error("Error setting username:", e);
 				if (e.response && e.response.status === 400) {
             
 
