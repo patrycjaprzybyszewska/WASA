@@ -56,14 +56,16 @@ methods: {
     this.loading = false;
     this.successmsg = "Photo set!";
 	}	catch (e){ 		
-    console.error("Error:", e); 
+    console.error("Error setting photo:", e);
 				if (e.response && e.response.status === 400) {
             
 
 					}else{
             this.errormsg = e.toString();						
 					}
-  }
+	} finally {
+        this.loading = false;
+      }
 	},
 },
 
