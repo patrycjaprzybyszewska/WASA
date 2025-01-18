@@ -79,8 +79,8 @@ const userId = localStorage.getItem("userId");
 						<span>Secondary menu</span>
 					</h6>
 					<ul class="nav flex-column">
-							<li v-for="chat in chats" :key="chat.id" class="nav-item">
-								<RouterLink :to="'/chat/' + chat.id" class="nav-link">
+							<li v-for="chat in chats" :key="chat.chatId" class="nav-item">
+								<RouterLink :to="'/chat/' + chat.chatId" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#file-text"/></svg>
 								{{ chat.chatId }}
 							</RouterLink>
