@@ -76,16 +76,20 @@ export default {
      async forwardMessage(chattoforwardId){
             this.loading = true;
             this.error = null;
+            this.successmsg = null;
             try{
                 const response = await this.$axios.put(`/message/forward/${this.MessagetoForward}/${chattoforwardId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Message forwarded!";
+                this.MessagetoForward = null;
             } catch (err) {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
           err.response ? err.response.status : err.message
-        }`;}},
+        }`;}finally {
+    this.loading = false;
+  }},
 	},
 };
 </script>
