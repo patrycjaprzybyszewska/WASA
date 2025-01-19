@@ -187,7 +187,7 @@ export default {
                 const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${userId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-               
+                this.successmsg = "Group left!";
             } catch (err) {
         console.error("Error leaving group:", err);
      ;}
