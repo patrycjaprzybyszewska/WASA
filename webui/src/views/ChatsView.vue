@@ -179,6 +179,19 @@ export default {
         this.loading = false;
       }
 	},
+    async leaveGroup (chatId){
+        const userId = localStorage.getItem("userId");
+        this.loading = true;
+            this.error = null;
+            try{
+                const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${userId}`, {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+               
+            } catch (err) {
+        console.error("Error leaving group:", err);
+     ;}
+    },
     toggleSettings(chatId) {
 
       this.showSettings = !this.showSettings;
@@ -200,12 +213,14 @@ export default {
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
+    <button @click="leaveGroup(chat.chatId)">Leave Group</button>
 
   </li>
 </ul>
   <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
       <button @click="toggleSettings(selectedChat)">Settings</button>
+
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
