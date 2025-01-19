@@ -13,7 +13,7 @@ export default {
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
             MessagetoForward: null,
-            setMessagetoComment: null,
+            MessagetoComment: null,
             chattoforwardId: null,
             successmsg: null, 
             errormsg: null,
