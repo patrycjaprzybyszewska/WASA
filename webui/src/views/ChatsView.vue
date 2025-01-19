@@ -180,6 +180,7 @@ export default {
       }
 	},
     toggleSettings(chatId) {
+        showSettings = true;
       this.showSettings = !this.showSettings;
       if (this.showSettings) {
         this.chatId = chatId; 
