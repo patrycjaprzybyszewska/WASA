@@ -124,7 +124,5 @@ export default {
       <button @click="MessagetoForward = null">Cancel</button>
     </div>
     <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
-<div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
-
 </div>
 </template>
