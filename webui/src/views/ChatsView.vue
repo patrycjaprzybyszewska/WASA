@@ -199,11 +199,12 @@ export default {
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
-    <button @click="toggleSettings(chat.chatId)">Settings</button>
+
   </li>
 </ul>
   <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
+      <button @click="toggleSettings(chat.chatId)">Settings</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
