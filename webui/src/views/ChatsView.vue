@@ -63,7 +63,7 @@ export default {
                 this.messages = this.messages.filter((msg) => msg.messageId !== messageId);
             } catch (err) {
         console.error("Error deleteing messages:", err);
-        this.error = `Unable to fetch delete  ${
+        this.error = `Unable to delete message with ID ${messageId}. Error: $${
           err.response ? err.response.status : err.message
         }`;}
      },
