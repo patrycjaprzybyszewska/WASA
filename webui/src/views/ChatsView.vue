@@ -8,6 +8,7 @@ export default {
 			loading: false,
 			error: null,
             chatId: null,
+            messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
     };
@@ -52,6 +53,20 @@ export default {
           err.response ? err.response.status : err.message
         }`;}
      },
+     async deleteMessage(messageId){
+            this.loading = true;
+            this.error = null;
+            try{
+                const response = await this.$axios.delete(`/message/${this.messageId}`, {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+                this.messages = this.messages.filter((msg) => msg.messageId !== messageId);
+            } catch (err) {
+        console.error("Error deleteing messages:", err);
+        this.error = `Unable to fetch delete  ${
+          err.response ? err.response.status : err.message
+        }`;}
+     },
 	},
 };
 </script>
@@ -71,6 +86,7 @@ export default {
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
+          <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
         </li>
       </ul>
 </div>
