@@ -13,6 +13,7 @@ export default {
             selectedChat: null,
             MessagetoForward: null,
             chattoforwardId: null,
+            successmsg: null, 
     };
   },
   created() {
