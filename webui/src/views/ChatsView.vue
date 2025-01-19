@@ -57,7 +57,7 @@ export default {
             this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.delete(`/message/${this.messageId}`, {
+                const response = await this.$axios.delete(`/message/${messageId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.messages = this.messages.filter((msg) => msg.messageId !== messageId);
