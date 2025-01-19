@@ -193,7 +193,7 @@ export default {
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
-    <p>Settings: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
+    <p>Settings: <button @click="toggleSettings(chat.chatId)">Settings</button></p>
   </li>
 </ul>
   <div v-if="selectedChat">
@@ -203,7 +203,7 @@ export default {
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
-          <p>commentMessage: <button @click="toggleSettings(chat.chatId)">Settings</button></p>
+          <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
       <div v-if="showSettings">
