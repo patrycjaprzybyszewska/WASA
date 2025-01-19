@@ -199,7 +199,7 @@ export default {
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
-    <p>Settings: <button @click="toggleSettings(chat.chatId)">Settings</button></p>
+    <button @click="toggleSettings(chat.chatId)">Settings</button>
   </li>
 </ul>
   <div v-if="selectedChat">
