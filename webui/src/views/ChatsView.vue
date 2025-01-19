@@ -81,7 +81,8 @@ export default {
             this.successmsg = null;
             this.errormsg = null;
             try{
-                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}/${chattoforwardId}`, {
+                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}/${chattoforwardId}`, 
+                {}, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Message forwarded!";
