@@ -179,6 +179,12 @@ export default {
         this.loading = false;
       }
 	},
+    toggleSettings(chatId) {
+      this.showSettings = !this.showSettings;
+      if (this.showSettings) {
+        this.chatId = chatId; 
+      }
+    },
 },
 
 
