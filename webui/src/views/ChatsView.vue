@@ -109,7 +109,7 @@ export default {
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
         </li>
       </ul>
-    </div><div v-if="setMessagetoForward">
+    </div><div v-if="MessagetoForward">
       <h2>Select Chat</h2>
       <ul>
         <li v-for="chat in chats" :key="chat.chatId">
@@ -118,7 +118,7 @@ export default {
           </button>
         </li>
       </ul>
-      <button @click="messagetoForward = null">Cancel</button>
+      <button @click="MessagetoForward = null">Cancel</button>
     </div>
 </div>
 </template>
