@@ -71,16 +71,17 @@ export default {
         
      },
      setMessagetoForward(messageId) {
-      this.MessagetoForward = { messageId };
+      localStorage.setItem("MessagetoForward", messageId);
     },
      async forwardMessage(chattoforwardId){
             this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward}/${chattoforwardId}`, {
+                const response = await this.$axios.put(`/message/forward/${MessagetoForward}/${chattoforwardId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Message forwarded!";
+                localStorage.removeItem('MessagetoForward');
             } catch (err) {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
@@ -120,5 +121,8 @@ export default {
       </ul>
       <button @click="MessagetoForward = null">Cancel</button>
     </div>
+    <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+<div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
 </div>
 </template>
