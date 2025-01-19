@@ -109,7 +109,7 @@ export default {
         content: this.selectedComment, 
       };
 
-      const response = await this.$axios.post(`/message/comment/${this.setMessagetoComment.messageId}`, commentData, {
+      const response = await this.$axios.put(`/message/comment/${this.setMessagetoComment.messageId}`, commentData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
       });
 
