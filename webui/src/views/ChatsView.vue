@@ -11,6 +11,7 @@ export default {
             messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
+            MessagetoForward: null,
     };
   },
   created() {
@@ -68,8 +69,8 @@ export default {
         }`;}
         
      },
-     MessagetoForward(messageId) {
-      this.forwardMessageData = { messageId };
+     setMessagetoForward(messageId) {
+      this.MessagetoForward = { messageId };
     },
      async forwardMessage(chatId){
             this.loading = true;
@@ -105,10 +106,10 @@ export default {
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
-          <p>forwardMessage: <button @click="MessagetoForward(message.messageId)">{{ message.messageId }}</button></p>
+          <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
         </li>
       </ul>
-</div><div v-if="MessagetoForward">
+    </div><div v-if="setMessagetoForward">
       <h2>Select Chat</h2>
       <ul>
         <li v-for="chat in chats" :key="chat.chatId">
@@ -117,7 +118,7 @@ export default {
           </button>
         </li>
       </ul>
-      <button @click="MessagetoForward = null">Cancel</button>
+      <button @click="messagetoForward = null">Cancel</button>
     </div>
 </div>
 </template>
