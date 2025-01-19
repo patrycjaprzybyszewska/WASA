@@ -180,7 +180,7 @@ export default {
       }
 	},
     toggleSettings(chatId) {
-        showSettings = true;
+
       this.showSettings = !this.showSettings;
       if (this.showSettings) {
         this.chatId = chatId; 
@@ -205,7 +205,7 @@ export default {
 </ul>
   <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
-      <button @click="toggleSettings(chat.chatId)">Settings</button>
+      <button @click="toggleSettings(selectedChat)">Settings</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
