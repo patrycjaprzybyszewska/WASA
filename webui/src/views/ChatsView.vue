@@ -71,17 +71,16 @@ export default {
         
      },
      setMessagetoForward(messageId) {
-      localStorage.setItem("MessagetoForward", messageId);
+      this.MessagetoForward = { messageId };
     },
      async forwardMessage(chattoforwardId){
             this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.put(`/message/forward/${MessagetoForward}/${chattoforwardId}`, {
+                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward}/${chattoforwardId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Message forwarded!";
-                localStorage.removeItem('MessagetoForward');
             } catch (err) {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
