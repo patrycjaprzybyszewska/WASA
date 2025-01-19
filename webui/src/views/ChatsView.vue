@@ -80,7 +80,7 @@ export default {
                 const response = await this.$axios.put(`/message/forward/${this.messageId}/${chatId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-    
+                this.successmsg = "Message forwarded!";
             } catch (err) {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
