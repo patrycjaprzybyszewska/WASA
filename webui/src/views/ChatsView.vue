@@ -107,10 +107,10 @@ export default {
     try {
       const commentData = {
         content: this.selectedComment, 
-        messageId: this.setMessagetoComment.messageId,
+        messageId: this.MessagetoComment.messageId,
       };
 
-      const response = await this.$axios.put(`/message/comment/${this.setMessagetoComment.messageId}`, commentData, {
+      const response = await this.$axios.put(`/message/comment/${this.MessagetoComment.messageId}`, commentData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
       });
 
