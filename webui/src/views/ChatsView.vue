@@ -66,7 +66,25 @@ export default {
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
           err.response ? err.response.status : err.message
         }`;}
+        
      },
+     MessagetoForward(messageId) {
+      this.forwardMessageData = { messageId };
+    },
+     async forwardMessage(chatId){
+            this.loading = true;
+            this.error = null;
+            try{
+                const { messageId } = this.MessagetoForward;
+                const response = await this.$axios.post(`/message/forward/${messageId}/${chatId}`, {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+    
+            } catch (err) {
+        console.error("Error deleteing messages:", err);
+        this.error = `Unable to delete message with ID ${messageId}. Error: $${
+          err.response ? err.response.status : err.message
+        }`;}},
 	},
 };
 </script>
@@ -87,8 +105,19 @@ export default {
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
+          <p>forwardMessage: <button @click="MessagetoForward(message.messageId)">{{ message.messageId }}</button></p>
         </li>
       </ul>
-</div>
+</div><div v-if="MessagetoForward">
+      <h2>Select Chat</h2>
+      <ul>
+        <li v-for="chat in chats" :key="chat.chatId">
+          <button @click="forwardMessage(chat.chatId)">
+            Forward to {{ chat.chatName }} (Chat ID: {{ chat.chatId }})
+          </button>
+        </li>
+      </ul>
+      <button @click="MessagetoForward = null">Cancel</button>
+    </div>
 </div>
 </template>
