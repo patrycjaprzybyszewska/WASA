@@ -12,6 +12,7 @@ export default {
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
             MessagetoForward: null,
+            chattoforwardId: null,
     };
   },
   created() {
@@ -72,12 +73,11 @@ export default {
      setMessagetoForward(messageId) {
       this.MessagetoForward = { messageId };
     },
-     async forwardMessage(chatId){
+     async forwardMessage(chattoforwardId){
             this.loading = true;
             this.error = null;
             try{
-                const { messageId } = this.MessagetoForward;
-                const response = await this.$axios.put(`/message/forward/${this.messageId}/${chatId}`, {
+                const response = await this.$axios.put(`/message/forward/${MessagetoForward}/${chattoforwardId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Message forwarded!";
