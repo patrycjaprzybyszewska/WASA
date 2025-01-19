@@ -9,6 +9,8 @@ export default {
 			loading: false,
 			error: null,
             chatId: null,
+            chatName: "",
+            chatPhoto: "",
             messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
@@ -17,6 +19,7 @@ export default {
             chattoforwardId: null,
             successmsg: null, 
             errormsg: null,
+            showSettings: false,
     };
   },
   created() {
@@ -123,8 +126,62 @@ export default {
     } finally {
       this.loading = false;
     }
-  },}
-	
+  },
+  input(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.newphoto = e.target.result; 
+        };
+        reader.readAsDataURL(file);}},
+	async setMyGroupName() {
+		this.loading = true;
+	try{
+
+		let response = await this.$axios.put(`/groupchat/${this.chatId}/groupName`, {chatName: this.newname, chatPhoto: ""},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+  	localStorage.setItem("chatName", this.newname);
+		this.chatName = response.data.name;
+    localStorage.setItem("chatName", this.newname);
+		this.errormsg = null;
+    this.loading = false;
+    this.successmsg = "Name set!";
+	}	catch (e){ 		
+      console.error("Error setting username:", e);
+				if (e.response && e.response.status === 400) {
+            
+
+					}else{
+            this.errormsg = e.toString();						
+					}
+	} finally {
+        this.loading = false;
+      }
+    },async setMyPhoto() {
+		this.loading = true;
+	try{
+
+		let response = await this.$axios.put(`/groupchat/${this.chatId}/groupPhoto`, {chatName: "", chatPhoto: this.newphoto},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+  	localStorage.setItem("userPhoto", this.newphoto);
+		this.userPhoto = this.newphoto;
+		this.errormsg = null;
+    this.loading = false;
+    this.successmsg = "Photo set!";
+	}	catch (e){ 		
+    console.error("Error setting photo:", e);
+				if (e.response && e.response.status === 400) {
+            
+
+					}else{
+            this.errormsg = e.toString();						
+					}
+	} finally {
+        this.loading = false;
+      }
+	},
+},
+
+
 };
 </script>
 <template>
@@ -136,6 +193,7 @@ export default {
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
+    <p>Settings: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
   </li>
 </ul>
   <div v-if="selectedChat">
@@ -145,9 +203,48 @@ export default {
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
-          <p>commentMessage: <button @click="setMessagetoComment(message.messageId)">{{ message.messageId }}Comment</button></p>
+          <p>commentMessage: <button @click="toggleSettings(chat.chatId)">Settings</button></p>
         </li>
       </ul>
+      <div v-if="showSettings">
+      <h2> Chat: {{ chatId }}</h2>
+      <button @click="showSettings = false">Close</button>
+      <div class="user-profile">
+        <div class="user-details">
+          <h1 class="h2">CHAT</h1>
+          <p class="h3">ChatId: {{ userId }}</p>
+          <div class="mb-3">
+            <label for="chatname" class="form-label">Change ChatName: </label>
+            <input
+              type="text"
+              id="chatname"
+              class="form-control"
+              v-model="newname"
+              placeholder="new chatname"
+            />
+            <button @click="setMyGroupName">OK</button>
+          </div>
+          <p class="h3">ChatName: {{ chatName }}</p>
+        </div>
+        <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+        <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
+        <div class="chat-photo">
+          <img v-if="chatPhoto" :src="chatPhoto" alt="Chat Photo" style="width: 200px; height: 200px; object-fit: cover;" />
+          <div v-else>
+            <p>Photo</p>
+          </div>
+          <label for="chatPhoto" class="form-label">Change UserPhoto: </label>
+          <input
+            type="file"
+            id="chatPhoto"
+            class="form-control"
+            @change="input"
+          />
+          <button @click="setGroupPhoto">OK</button>
+        </div>
+      </div>
+    </div>
     </div><div v-if="MessagetoForward">
       <h2>Select Chat</h2>
       <ul>
