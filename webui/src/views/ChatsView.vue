@@ -4,6 +4,7 @@ export default {
   data() {
     return {
             chats: [],
+            comments: [":)", ":("],
             messages: [],
 			loading: false,
 			error: null,
@@ -12,6 +13,7 @@ export default {
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
             MessagetoForward: null,
+            setMessagetoComment: null,
             chattoforwardId: null,
             successmsg: null, 
             errormsg: null,
@@ -75,6 +77,7 @@ export default {
      setMessagetoForward(messageId) {
       this.MessagetoForward = { messageId };
     },
+
      async forwardMessage(chattoforwardId){
             this.loading = true;
             this.error = null;
@@ -92,7 +95,35 @@ export default {
         this.errormsg = `Unable to delete message with ID ${messageId}. Error: $${
           err.response ? err.response.status : err.message
         }`;}},
-	},
+        setMessagetoComment(messageId) {
+      this.MessagetoComment = { messageId };
+    },
+    async setComment(){
+        this.loading = true;
+    this.error = null;
+    this.successmsg = null;
+    this.errormsg = null;
+    
+    try {
+      const commentData = {
+        content: this.selectedComment, 
+      };
+
+      const response = await this.$axios.post(`/message/comment/${this.setMessagetoComment.messageId}`, commentData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+      });
+
+      this.successmsg = "Comment!";
+      this.setMessagetoComment = null;
+      this.selectedComment = null; 
+    } catch (err) {
+      console.error("Error adding comment:", err);
+      this.errormsg = `Unable to add comment. Error: ${err.response ? err.response.status : err.message}`;
+    } finally {
+      this.loading = false;
+    }
+  },}
+	
 };
 </script>
 <template>
@@ -113,6 +144,7 @@ export default {
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
+          <p>commentMessage: <button @click="setMessagetoComment(message.messageId)">{{ message.messageId }}Comment</button></p>
         </li>
       </ul>
     </div><div v-if="MessagetoForward">
@@ -129,5 +161,12 @@ export default {
     <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
 
     <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+</div><div v-if="MessagetoComment">
+    <h2>Select Comment</h2>
+        <div v-for="(comment, index) in comments" :key="index">
+    <button @click="selectedComment = comment">{{ comment }}</button>
+  </div>
+  <button @click="setComment">Comment</button>
+     
 </div>
 </template>
