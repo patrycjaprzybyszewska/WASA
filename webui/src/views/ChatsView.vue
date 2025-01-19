@@ -107,6 +107,7 @@ export default {
     try {
       const commentData = {
         content: this.selectedComment, 
+        messageId: this.setMessagetoComment.messageId,
       };
 
       const response = await this.$axios.put(`/message/comment/${this.setMessagetoComment.messageId}`, commentData, {
