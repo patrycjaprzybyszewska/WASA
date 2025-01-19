@@ -87,9 +87,7 @@ export default {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
           err.response ? err.response.status : err.message
-        }`;}finally {
-    this.loading = false;
-  }},
+        }`;}},
 	},
 };
 </script>
