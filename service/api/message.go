@@ -15,21 +15,32 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	w.Header().Set("Content-Type", "application/json")
 
 	var message Message
-	err := json.NewDecoder(r.Body).Decode(&message)
+	var requestBody struct {
+		Content  string `json:"content"`
+		ChatName string `json:"chatName"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+
 	message.SenderId, err = auth(r.Header.Get("Authorization"))
 	if err != nil {
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	if message.Content == "" || message.ChatId == 0 {
+	if requestBody.Content == "" || requestBody.ChatName == 0 {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
 
+	message.ChatId, err := rt.db.GetChatIdbyName(requestBody.ChatName)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	message.Content = requestBody.Content
 	currentTime := time.Now()
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")

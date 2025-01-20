@@ -124,3 +124,38 @@ func (db *appdbimpl) GetChatNameById(chatId uint64) (string, error) {
 	}
 	return chatName, nil
 }
+func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
+	var chatId uint64
+	var userId uint64
+	err := db.c.QueryRow(`SELECT ChatId FROM chats WHERE ChatName = ?`, chatName).Scan(&chatId)
+	if err != nil {
+		err = db.c.QueryRow(`SELECT UserId FROM users WHERE Username = ?`, chatName).Scan(&userId)
+		if err == nil{ 
+		res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
+		if err != nil {
+			return 0, fmt.Errorf("failed to create chat: %v", err)
+		}
+		
+		lastInsertId, err := res.LastInsertId()
+		if err != nil {
+			return 0, fmt.Errorf("failed to create chat id: %v", err)
+		}
+		chatId = uint64(lastInsertId)
+		err = db.c.AddUserToChat(chatId, userId)
+			if err != nil {
+				return 0, fmt.Errorf("failed to create chat id: %v", err)
+			}
+		}
+		else{
+			fmt.Println("No chat found, creating new one")
+			res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
+			lastInsertId, err := res.LastInsertId()
+			if err != nil {
+				return 0, fmt.Errorf("failed to retrieve last insert id: %v", err)
+			}
+			chatId = uint64(lastInsertId)
+
+		}
+	}
+	return chatId, nil
+}
