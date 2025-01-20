@@ -27,7 +27,7 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 	userIdStr := ps.ByName("userId")
 	userId, err := strconv.ParseUint(userIdStr, 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
 
