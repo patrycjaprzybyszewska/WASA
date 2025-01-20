@@ -40,6 +40,11 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	return userName, nil
 }
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
+	var userId uint64
+	err := db.c.QueryRow(`SELECT userName FROM users WHERE userId = ?`, userId).Scan(&userName)
+	if err == nil{
+		  return u, fmt.Errorf("UserName is not aviable, cannot be changed")}
+
 	res, err := db.c.Exec(`UPDATE users SET UserName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
 	if err != nil {
 		return u, err
@@ -52,6 +57,8 @@ func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 	}
 	return u, nil
 }
+
+
 
 func (db *appdbimpl) SetUserphoto(u User, photo string) (User, error) {
 	res, err := db.c.Exec(`UPDATE users SET userPhoto=?, userName=? WHERE userId=?`, photo, u.UserName, u.UserId)
