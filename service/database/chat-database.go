@@ -1,8 +1,8 @@
 package database
 
 import (
-	"errors"
 	"fmt"
+	"errors"
 )
 
 func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
@@ -133,7 +133,7 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		return chatId, nil
 	}
 
-		err = db.c.QueryRow(`SELECT UserId FROM users WHERE Username = ?`, chatName).Scan(&userId)
+		err = db.c.QueryRow(`SELECT UserId FROM users WHERE userName = ?`, chatName).Scan(&userId)
 		if err == nil{ 
 		res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
 		if err != nil {
@@ -145,7 +145,7 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 			return 0, fmt.Errorf("failed to create chat id: %v", err)
 		}
 		chatId = uint64(lastInsertId)
-		err = db.c.AddUserToChat(chatId, userId)
+		err = db.AddUserToChat(chatId, userId)
 			if err != nil {
 				return 0, fmt.Errorf("failed to create chat id: %v", err)
 			}

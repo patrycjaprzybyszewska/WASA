@@ -39,14 +39,6 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	}
 	return userName, nil
 }
-func (db *appdbimpl) GetUserIdbyName(userName string) (uint64, error) {
-	var userName string
-	err := db.c.QueryRow(`SELECT userId FROM users WHERE userName = ?`, userName).Scan(&userId)
-	if err != nil {
-		return "", err
-	}
-	return userId, nil
-}
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 
 	res, err := db.c.Exec(`UPDATE users SET UserName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
