@@ -38,7 +38,7 @@ methods: {
       console.error("Error setting username:", e);
 				if (e.response && e.response.status === 400) {
             
-
+          console.error("Error message:", e.message);
 					}else{
             this.errormsg = e.toString();						
 					}
