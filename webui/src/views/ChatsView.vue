@@ -5,6 +5,7 @@ export default {
     return {
             chats: [],
             comments: [":)", ":("],
+            commentlist: [],
             messages: [],
 			loading: false,
 			error: null,
@@ -107,7 +108,10 @@ export default {
     this.error = null;
     this.successmsg = null;
     this.errormsg = null;
-    
+    if (!this.messageComments[this.MessagetoComment.messageId]) {
+      this.messageComments[this.MessagetoComment.messageId] = [];
+    }
+    this.messageComments[this.MessagetoComment.messageId].push(this.selectedComment);
     try {
       const commentData = {
         content: this.selectedComment, 
@@ -254,12 +258,23 @@ export default {
             />
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
+        
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
+      <div v-if="messageComments[message.messageId]" class="comments-section">
+        <p>Comments:</p>
+        <button
+          v-for="(comment, index) in messageComments[message.messageId]"
+          :key="index"
+          class="comment-button"
+        >
+          {{ comment }}
+        </button>
+        </div>
       </ul>
       <div v-if="showSettings">
       <h2> Chat: {{ chatId }}</h2>
