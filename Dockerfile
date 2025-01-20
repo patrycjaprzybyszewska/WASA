@@ -1,0 +1,27 @@
+FROM golang:1.19.1
+
+WORKDIR /src/
+COPY . .
+
+RUN go build -o ./webapi ./cmd/webapi
+
+FROM debian:bookworm 
+
+EXPOSE 3000
+
+
+WORKDIR /app/
+RUN go build -o ./webapi ./cmd/webapi
+
+CMD ["/src/webapi"]
+
+FROM node:lts as builder
+
+WORKDIR /app
+COPY . .
+
+RUN npm run build-prod
+
+FROM nginx:stable
+
+RUN go build -o ./webapi ./cmd/webapi
