@@ -259,7 +259,7 @@ export default {
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}{{ comment.content }}</p>
+          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <ul>
              <li v-for="(comment, index) in message.comments" :key="index">
                  <p>{{ comment.content }}</p>
