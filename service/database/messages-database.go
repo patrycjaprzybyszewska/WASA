@@ -195,6 +195,5 @@ func (db *appdbimpl) GetCommentsById (messageId uint64) ([]Comment, error) {
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-
 	return comments, nil
 }

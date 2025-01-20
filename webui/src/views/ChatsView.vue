@@ -55,7 +55,11 @@ export default {
                 const response = await this.$axios.get(`/conversation/${chatId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-                this.messages = response.data;
+                this.messages = response.data.map(item => ({
+                 ...item.message,
+                 comments: item.comments || [], 
+                  }));
+
                 this.selectedChat = chatId;
             } catch (err) {
         console.error("Error fetching messages:", err);
@@ -247,7 +251,7 @@ export default {
       <label for="usertoad" class="form-label">User id: </label>
             <input
               type="text"
-              id="Uusertoad"
+              id="usertoad"
               class="form-control"
               v-model="usertoad"
               placeholder="user to add"
@@ -255,7 +259,12 @@ export default {
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
+          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}{{ comment.content }}</p>
+          <ul>
+             <li v-for="(comment, index) in message.comments" :key="index">
+                 <p>{{ comment.content }}</p>
+            </li>
+          </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
