@@ -17,6 +17,7 @@ export default {
             MessagetoForward: null,
             MessagetoComment: null,
             chattoforwardId: null,
+            commentId: null,
             successmsg: null, 
             usertoad: null,
             errormsg: null,
@@ -218,6 +219,20 @@ export default {
         this.error = `Unable to add user to group. Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
+    async uncommentMessage (commentId){
+        this.successmsg = null;
+        this.loading = true;
+       this.error = null;
+            try{
+                const response = await this.$axios.delete(`/comment/${commentId}`, {}, {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+                this.successmsg = "Comment removed!";
+            } catch (err) {
+   console.error("Error deleting:", err);
+        this.error = ` Error: ${err.response ? err.response.status : err.message}`
+     ;}
+    },
     toggleSettings(chatId) {
 
       this.showSettings = !this.showSettings;
@@ -262,7 +277,7 @@ export default {
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
           <ul>
              <li v-for="(comment, index) in message.comments" :key="index">
-                 <p>{{ comment.content }}</p>
+                 <button @click="uncommentMessage(comment.commentId)">{{ comment.content }}</button>
             </li>
           </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
