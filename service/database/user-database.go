@@ -40,7 +40,6 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	return userName, nil
 }
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
-
 	res, err := db.c.Exec(`UPDATE users SET UserName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
 	if err != nil {
 		return u, err
