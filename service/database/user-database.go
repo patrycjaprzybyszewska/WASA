@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"database/sql"
 )
 
@@ -41,11 +42,11 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 }
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 	var userId uint64
-	err := db.c.QueryRow(`SELECT userName FROM users WHERE userId = ?`, userId).Scan(&userName)
+	err := db.c.QueryRow(`SELECT userName FROM users WHERE userId = ?`, userId).Scan(&username)
 	if err == nil{
 		  return u, fmt.Errorf("UserName is not aviable, cannot be changed")}
 
-	res, err := db.c.Exec(`UPDATE users SET UserName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
+	res, err := db.c.Exec(`UPDATE users SET userName=?, userPhoto=? WHERE userId=?`, username, u.UserPhoto, u.UserId)
 	if err != nil {
 		return u, err
 	}
