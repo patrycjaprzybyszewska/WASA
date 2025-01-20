@@ -72,7 +72,7 @@ func (m *Message) MessageToDatabase() database.Message {
 func (c *Comment) CommentFromDatabase(comment database.Comment) {
 	c.MessageId = comment.MessageId
 	c.Content = comment.Content
-	c.CommentId = comment.CommentId // mozliwe ze teho tu nie trzeba
+	c.CommentId = comment.CommentId // mozliwe ze teho tu nike trzeba
 
 }
 
