@@ -198,7 +198,7 @@ export default {
         this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.put(`/groupchat/${selectedChat}/add/${this.usertoad}`, {
+                const response = await this.$axios.put(`/groupchat/${this.selectedChat}/add/${this.usertoad}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "User added!";
@@ -244,7 +244,7 @@ export default {
               v-model="usertoad"
               placeholder="user to add"
             />
-            <button @click="addToGroup(chat.chatId)">Add user</button>
+            <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
