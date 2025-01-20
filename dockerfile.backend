@@ -13,7 +13,6 @@ EXPOSE 3000
 
 
 WORKDIR /app/
-RUN go build -o ./webapi ./cmd/webapi
 COPY --from=builder /src/webapi /app/
 
 CMD ["/src/webapi"]
