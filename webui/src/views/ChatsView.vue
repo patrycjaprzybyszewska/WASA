@@ -208,7 +208,8 @@ export default {
        		 });
                 this.successmsg = "User added!";
             } catch (err) {
-        console.error("Error adding user to group:", err);
+   console.error("Error adding user to group:", err);
+        this.error = `Unable to add user to group. Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
     toggleSettings(chatId) {
