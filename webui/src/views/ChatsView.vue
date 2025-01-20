@@ -181,7 +181,6 @@ export default {
       }
 	},
     async leaveGroup (chatId){
-        const userId = localStorage.getItem("userId");
         this.loading = true;
             this.error = null;
             try{
