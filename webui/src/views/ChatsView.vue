@@ -191,6 +191,8 @@ export default {
                 this.successmsg = "Group left!";
             } catch (err) {
         console.error("Error leaving group:", err);
+        console.error("Error leaving group:", err);
+        this.error = `Unable to leave group. Error: ${err.response ? err.response.status : err.message}`;
      ;}
     },
     async addToGroup (selectedChat){
