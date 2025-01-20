@@ -105,7 +105,7 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 
 }
 
-func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
+func (db *appdbimpl) GetConversation(chatId uint64) ([]MessageandComments, error) {
 
 	rows, err := db.c.Query(`SELECT messageId, senderId, content, messageDate, messageTime, state, chatId 
 								FROM messages 

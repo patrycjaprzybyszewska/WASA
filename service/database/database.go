@@ -87,7 +87,7 @@ type AppDatabase interface {
 	LeaveGroup(uint64, uint64) error
 	SetGroupName(Chat, string) (Chat, error)
 	SetGroupPhoto(Chat, string) (Chat, error)
-	GetConversation(uint64) ([]Message, error)
+	GetConversation(uint64) ([]MessageandComments, error)
 	GetChats() ([]Chat, error)
 	Removecomment(uint64) error
 	Ping() error
