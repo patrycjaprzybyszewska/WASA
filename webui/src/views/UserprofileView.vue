@@ -36,9 +36,8 @@ methods: {
     this.successmsg = "Name set!";
 	}	catch (e){ 		
       console.error("Error setting username:", e);
-				if (e.response && e.response.status === 400) {
-            
-          console.error("Error message:", e.message);
+				if (e.response && e.response.status === 500) {
+          this.errormsg = "Cannot change the username to existing one!";	
 					}else{
             this.errormsg = e.toString();						
 					}

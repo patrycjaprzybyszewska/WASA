@@ -274,7 +274,10 @@ export default {
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
+          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
+          <span v-if="message.state === 'delivered'">☑</span>
+          <span v-else>{☑☑}</span>
+        </p>
           <ul>
              <li v-for="(comment, index) in message.comments" :key="index">
                  <button @click="uncommentMessage(comment.commentId)">{{ comment.content }}</button>
