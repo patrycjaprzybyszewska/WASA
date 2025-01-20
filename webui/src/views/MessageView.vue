@@ -20,9 +20,9 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put(`/message`, {content: this.content, chatName: chatName},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+		let response = await this.$axios.put(`/message`, {content: this.content, chatName: this.chatName},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
 		this.content = response.data.content;
-		this.chatId = response.data.chatId;
+		this.chatName = response.data.chatName;
 		this.errormsg = null;
         this.loading = false;
 		this.successmsg = "Message sent!";
@@ -59,7 +59,7 @@ methods: {
 				/>
 				</div>
 				<div class="mb-3">
-				<label for="user" class="form-label">UserId: </label>
+				<label for="user" class="form-label">Username: </label>
 				<input
 					type="text"
 					id="chatName"
