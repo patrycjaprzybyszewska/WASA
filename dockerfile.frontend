@@ -6,7 +6,7 @@ COPY webui webui
 
 WORKDIR /app/webui
 
-RUN nmp install
+RUN npm install
 RUN yarn install
 RUN npm run build-prod
 
