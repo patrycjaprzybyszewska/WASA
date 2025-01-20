@@ -18,6 +18,7 @@ export default {
             MessagetoComment: null,
             chattoforwardId: null,
             successmsg: null, 
+            usertoad: null,
             errormsg: null,
             showSettings: false,
     };
@@ -192,6 +193,19 @@ export default {
         console.error("Error leaving group:", err);
      ;}
     },
+    async addToGroup (selectedChat){
+        
+        this.loading = true;
+            this.error = null;
+            try{
+                const response = await this.$axios.put(`/groupchat/${selectedChat}/add/${usertoad}`, {
+       				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
+       		 });
+                this.successmsg = "User added!";
+            } catch (err) {
+        console.error("Error adding user to group:", err);
+     ;}
+    },
     toggleSettings(chatId) {
 
       this.showSettings = !this.showSettings;
@@ -214,6 +228,7 @@ export default {
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
     <button @click="leaveGroup(chat.chatId)">Leave Group</button>
+    
 
   </li>
 </ul>
@@ -221,6 +236,15 @@ export default {
       <h2>Messages for Chat: {{ selectedChat }}</h2>
       <button @click="toggleSettings(selectedChat)">Settings</button>
 
+      <label for="user" class="form-label">User id: </label>
+            <input
+              type="text"
+              id="user"
+              class="form-control"
+              v-model="usertoad"
+              placeholder="user to add"
+            />
+            <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
