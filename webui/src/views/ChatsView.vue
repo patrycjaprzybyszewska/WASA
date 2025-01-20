@@ -185,7 +185,7 @@ export default {
         this.loading = true;
             this.error = null;
             try{
-                const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${userId}`, {
+                const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${this.userId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Group left!";
@@ -194,7 +194,7 @@ export default {
      ;}
     },
     async addToGroup (selectedChat){
-        
+        this.successmsg = null;
         this.loading = true;
             this.error = null;
             try{
