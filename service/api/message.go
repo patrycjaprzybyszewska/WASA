@@ -30,7 +30,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	if requestBody.Content == "" || requestBody.chatName == ""{
+	if requestBody.Content == "" || requestBody.ChatName == ""{
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
