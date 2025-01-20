@@ -181,7 +181,7 @@ export default {
       }
 	},
     async leaveGroup (chatId){
-
+        this.successmsg = null;
         this.loading = true;
             this.error = null;
             try{
