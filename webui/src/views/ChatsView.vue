@@ -224,7 +224,7 @@ export default {
         this.loading = true;
        this.error = null;
             try{
-                const response = await this.$axios.delete(`/comment/${commentId}`, {}, {
+                const response = await this.$axios.delete(`/comment/${commentId}`,  {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "Comment removed!";
