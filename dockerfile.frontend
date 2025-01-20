@@ -5,6 +5,9 @@ COPY webui webui
 
 
 WORKDIR /app/webui
+
+RUN nmp install
+RUN yarn install
 RUN npm run build-prod
 
 FROM nginx:stable
