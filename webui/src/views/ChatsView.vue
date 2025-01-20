@@ -239,7 +239,7 @@ export default {
       <label for="user" class="form-label">User id: </label>
             <input
               type="text"
-              id="user"
+              id="Uusertoad"
               class="form-control"
               v-model="usertoad"
               placeholder="user to add"
