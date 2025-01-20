@@ -6,6 +6,7 @@ export default {
       userId: localStorage.getItem("userId"),  
       name: localStorage.getItem("name"), 
       userPhoto: localStorage.getItem("userPhoto"),
+      chatName: "",
       content:"",
       chatId: null,
       successmsg: null,
@@ -19,7 +20,7 @@ methods: {
 		this.loading = true;
 	try{
 
-		let response = await this.$axios.put(`/message`, {content: this.content, chatId: parseInt(this.chatId)},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
+		let response = await this.$axios.put(`/message`, {content: this.content, chatName: chatName},  { headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` }});
 		this.content = response.data.content;
 		this.chatId = response.data.chatId;
 		this.errormsg = null;
@@ -61,10 +62,10 @@ methods: {
 				<label for="user" class="form-label">UserId: </label>
 				<input
 					type="text"
-					id="chatId"
+					id="chatName"
 					class="form-control"
-					v-model="chatId"
-					placeholder="type here id of user or a chat"
+					v-model="chatName"
+					placeholder="type here name of user,chat if chat does not exist it will be created"
 				/>
 				</div>
     </div>
