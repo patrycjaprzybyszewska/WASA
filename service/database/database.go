@@ -61,7 +61,7 @@ type Chat struct {
 	ChatName  string `json:"chatName"`
 	ChatPhoto string `json:"chatPhoto"` // trzeba dodac uzytkownikow
 }
-type MessageandComments {
+type MessageandComments struct{
 	Message  Message   `json:"message"`
 	Comments []Comment `json:"comments"`
 }
