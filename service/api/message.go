@@ -40,10 +40,10 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
+
 	// 201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
 }
 
@@ -109,6 +109,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
 		return
 	}
+	
 	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
@@ -193,7 +194,6 @@ func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps ht
 		http.Error(w, fmt.Sprintf("Error fetching conversation: %v", err), http.StatusInternalServerError)
 		return
 	}
-
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(conversation)
 }

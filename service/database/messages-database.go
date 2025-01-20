@@ -116,14 +116,22 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]Message, error) {
 	}
 	defer rows.Close()
 
-	var conversation []Message
+	var conversation []MessageandComments
 
 	for rows.Next() {
 		var message Message
 		if err := rows.Scan(&message.MessageId, &message.SenderId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
-		conversation = append(conversation, message)
+		comments, err := db.GetCommentsById(message.MessageId)
+		if err != nil {
+			return nil, fmt.Errorf("error for message %d: %w", message.MessageId, err)
+		}
+		messageandComments := MessageandComments{
+			Message:  message,
+			Comments: comments,
+		}
+		conversation = append(conversation, messageandComments)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rows: %w", err)
@@ -156,4 +164,37 @@ func (db *appdbimpl) CheckCommentById(commentId uint64) error {
 	}
 
 	return nil
+}
+
+func (db *appdbimpl) GetCommentsById (messageId uint64) ([]Comment, error) {
+	var comments []Comment
+
+	query := `
+	SELECT commentId, messageId, content
+	FROM comments
+	WHERE messageId = ?
+    `
+
+	rows, err := db.c.Query(query, messageId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var comment Comment
+
+		err := rows.Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
+		if err != nil {
+			return nil, err
+		}
+
+		comments = append(comments, comment)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return comments, nil
 }

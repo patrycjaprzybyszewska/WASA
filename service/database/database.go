@@ -61,7 +61,10 @@ type Chat struct {
 	ChatName  string `json:"chatName"`
 	ChatPhoto string `json:"chatPhoto"` // trzeba dodac uzytkownikow
 }
-
+type MessageandComments {
+	Message  Message   `json:"message"`
+	Comments []Comment `json:"comments"`
+}
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	GetName() (string, error)
@@ -71,6 +74,7 @@ type AppDatabase interface {
 	GetUserNameById(uint64) (string, error)
 	GetChatPhotoById(uint64) (string, error)
 	GetChatNameById(uint64) (string, error)
+	GetCommentsById(uint64) ([]Comment, error)
 	CreateLogin(User) (User, error)
 	GetMessageById(uint64) (Message, error)
 	CheckMessageById(uint64) error
