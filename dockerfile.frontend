@@ -1,0 +1,10 @@
+FROM node:lts as builder
+
+WORKDIR /app
+COPY . .
+
+RUN npm run build-prod
+
+FROM nginx:stable
+
+RUN go build -o ./webapi ./cmd/webapi
