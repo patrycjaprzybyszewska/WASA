@@ -194,9 +194,9 @@ export default {
                 const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${this.userId}`,  {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-             
-                this.chats = this.chats.filter((deleted) => deleted.chatId !== chatId);
                 this.successmsg = "Group left!";
+                
+             this.chats = this.chats.filter(chat => chat.chatId !== chatId);
             } catch (err) {
         console.error("Error leaving group:", err);
         console.error("Error leaving group:", err);
