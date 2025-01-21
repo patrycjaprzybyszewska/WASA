@@ -2,7 +2,9 @@ package api
 
 import (
 	// "git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
@@ -35,7 +37,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
-	err = rt.db.AddUserToChat(message.chatId, message.SenderId)
+	err = rt.db.AddUserToChat(message.ChatId, message.SenderId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "Chat or user not found", http.StatusNotFound)
@@ -118,7 +120,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
-	err = rt.db.AddUserToChat(message.chatId, message.SenderId)
+	err = rt.db.AddUserToChat(message.ChatId, message.SenderId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "Chat or user not found", http.StatusNotFound)
