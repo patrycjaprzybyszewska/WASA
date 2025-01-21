@@ -37,7 +37,7 @@ export default {
 			this.loading = true;
       		this.error = null;
      			 try {
-      				  const response = await this.$axios.get('/conversation', {
+      				  const response = await this.$axios.get('/conversation', {userId: localStorage.getItem("userId") }, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
 			console.log("Response data:", response.data)

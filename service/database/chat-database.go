@@ -76,13 +76,10 @@ func (db *appdbimpl) SetGroupName(ch Chat, chatName string) (Chat, error) {
 	return ch, nil
 }
 
-func (db *appdbimpl) GetChats() ([]Chat, error) {
+func (db *appdbimpl) GetChats(userId uint64) ([]Chat, error) {
 	var chats []Chat
-
-	query := `
-        SELECT c.chatId, c.chatName, c.chatPhoto 
-        FROM chats c
-    `
+	var chatId uint64
+	query := db.c.Query(`SELECT c.chatId, c.chatName, c.chatPhoto FROM chats c JOIN chat_users u ON u.chatId = c.chatId WHERE u.userId = ?`, userId)
 
 	rows, err := db.c.Query(query)
 	if err != nil {

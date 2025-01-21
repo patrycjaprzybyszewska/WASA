@@ -89,7 +89,7 @@ type AppDatabase interface {
 	SetGroupName(Chat, string) (Chat, error)
 	SetGroupPhoto(Chat, string) (Chat, error)
 	GetConversation(uint64) ([]MessageandComments, error)
-	GetChats() ([]Chat, error)
+	GetChats(uint64) ([]Chat, error)
 	Removecomment(uint64) error
 	Ping() error
 }
