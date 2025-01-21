@@ -41,6 +41,8 @@ export default {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
 			console.log("Response data:", response.data)
+
+             this.chats = this.chats.filter((deleted) => deleted.chatId !== chatId);
        		 this.chats = response.data; 
    		   } catch (err) {
      	   console.error("Error fetching conversations:", err);
@@ -75,7 +77,7 @@ export default {
                 const response = await this.$axios.delete(`/message/${messageId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-                this.messages = this.messages.filter((msg) => msg.messageId !== messageId);
+                this.messages = this.messages.filter((deleted) => deleted.messageId !== messageId);
             } catch (err) {
         console.error("Error deleteing messages:", err);
         this.error = `Unable to delete message with ID ${messageId}. Error: $${
@@ -227,6 +229,9 @@ export default {
                 const response = await this.$axios.delete(`/comment/${commentId}`,  {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
+                this.messages.forEach((message) => {
+                  message.comments = message.comments.filter((deleted) => deleted.commentId !== commentId);
+                  });
                 this.successmsg = "Comment removed!";
             } catch (err) {
    console.error("Error deleting:", err);
@@ -274,7 +279,7 @@ export default {
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>{{ message.senderId }}</strong>: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
+          <p><strong>{{ message.senderId }}</strong><br>State: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
           <span v-if="message.state === 'delivered'">☑</span>
           <span v-else>{☑☑}</span>
         </p>
