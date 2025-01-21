@@ -29,11 +29,7 @@ export default {
 	},
 	methods: {
 		async getConversations(){
-            const userId = localStorage.getItem("userId");
-    if (!userId) {
-      this.error = "User ID not found in localStorage.";
-      this.loading = false;
-      return;}
+       
 			this.loading = true;
       		this.error = null;
      			 try {
