@@ -37,15 +37,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
-	err = rt.db.AddUserToChat(message.ChatId, message.SenderId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Error(w, "Chat or user not found", http.StatusNotFound)
-			return
-		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+
 	message.ChatId, err = rt.db.GetChatIdbyName(requestBody.ChatName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -118,15 +110,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.SenderId, err = auth(authHeader)
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		return
-	}
-	err = rt.db.AddUserToChat(message.ChatId, message.SenderId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Error(w, "Chat or user not found", http.StatusNotFound)
-			return
-		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	currentTime := time.Now()
