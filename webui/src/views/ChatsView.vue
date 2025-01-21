@@ -42,6 +42,9 @@ export default {
        		 this.chats = response.data; 
    		   } catch (err) {
      	   console.error("Error fetching conversations:", err);
+          if (e.response && e.response.status === 404) {
+            this.error = `  U have no conversations!`;
+          }
        		this.error = `Unable to fetch conversations.Error: ${err.response ? err.response.status : err.message}`;
       } finally {
         this.loading = false;
