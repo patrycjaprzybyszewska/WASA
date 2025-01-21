@@ -164,13 +164,12 @@ func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps h
 		http.Error(w, "Missing authorization", http.StatusUnauthorized)
 		return
 	}
-	var userId uint64
-	err := json.NewDecoder(r.Body).Decode(&userId)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
+    userIdStr := r.URL.Query().Get("userId")
+    if userIdStr == "" {
+        http.Error(w, "Missing userId", http.StatusBadRequest)
+        return
+    }
+	userId = strconv.ParseUint(userIdStr, 10, 64)
 	chats, err := rt.db.GetChats(userId)
 	if err != nil {
 		http.Error(w, "Unable to fetch conversations", http.StatusInternalServerError)
