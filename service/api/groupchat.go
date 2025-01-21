@@ -159,12 +159,12 @@ func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps http
 
 func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	struserId, err = auth(r.Header.Get("Authorization"))
+	struserId, err := auth(r.Header.Get("Authorization"))
 	if err != nil {
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-   struserId, err := strconv.ParseUint(userIdStr, 10, 64)
+   userId, err : strconv.ParseUint(struserId, 10, 64)
     if err != nil {
         http.Error(w, "Invalid userId", http.StatusBadRequest)
         return

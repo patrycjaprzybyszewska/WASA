@@ -55,7 +55,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
 
-	// 201 send correctly, 400 missing info potzrebuje user id, DODAC AUTORYZACJE
+	// 201 send correctly, 400 missing info potzrebuje user id, DODAnC AUTORYZACJE
 }
 
 func (rt *_router) deleteMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
