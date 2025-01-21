@@ -10,19 +10,17 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 
 	res, err := db.c.Exec(`INSERT INTO messages (senderId, chatId, content, messageDate, messageTime, state) 
                         VALUES (?, ?, ?, ?, ?, ?)`, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
-	
-	
 
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {
 		return m, fmt.Errorf("error fetching last insert ID: %w", err)
 	}
 
+	m.MessageId = uint64(lastInsertID)
 	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId) VALUES (?, ?)", m.ChatId, m.SenderId)
 	if err != nil {
 				return m, fmt.Errorf("error adding user to chat: %w", err)
 		}
-
 
 	return m, nil
 }
