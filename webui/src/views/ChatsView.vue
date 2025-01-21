@@ -42,7 +42,6 @@ export default {
        		 });
 			console.log("Response data:", response.data)
 
-             this.chats = this.chats.filter((deleted) => deleted.chatId !== chatId);
        		 this.chats = response.data; 
    		   } catch (err) {
      	   console.error("Error fetching conversations:", err);
@@ -195,6 +194,8 @@ export default {
                 const response = await this.$axios.delete(`/groupchat/${chatId}/leave/${this.userId}`,  {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
+             
+                this.chats = this.chats.filter((deleted) => deleted.chatId !== chatId);
                 this.successmsg = "Group left!";
             } catch (err) {
         console.error("Error leaving group:", err);
