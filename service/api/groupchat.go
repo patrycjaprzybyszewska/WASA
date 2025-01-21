@@ -164,7 +164,7 @@ func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps h
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-   userId, err : strconv.ParseUint(struserId, 10, 64)
+   userId, err := strconv.ParseUint(struserId, 10, 64)
     if err != nil {
         http.Error(w, "Invalid userId", http.StatusBadRequest)
         return
