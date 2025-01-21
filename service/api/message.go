@@ -2,9 +2,7 @@ package api
 
 import (
 	// "git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
-	"database/sql"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
