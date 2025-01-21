@@ -169,7 +169,12 @@ func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps h
         http.Error(w, "Missing userId", http.StatusBadRequest)
         return
     }
-	userId = strconv.ParseUint(userIdStr, 10, 64)
+    userId, err := strconv.ParseUint(userIdStr, 10, 64)
+    if err != nil {
+        http.Error(w, "Invalid userId", http.StatusBadRequest)
+        return
+    }
+
 	chats, err := rt.db.GetChats(userId)
 	if err != nil {
 		http.Error(w, "Unable to fetch conversations", http.StatusInternalServerError)
