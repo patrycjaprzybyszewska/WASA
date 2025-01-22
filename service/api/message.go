@@ -31,7 +31,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	if requestBody.Content == "" || requestBody.ChatName == ""{
+	if requestBody.Content == "" || requestBody.ChatName == "" {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
 	}
@@ -120,7 +120,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
 		return
 	}
-	
+
 	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
