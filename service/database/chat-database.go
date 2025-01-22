@@ -3,12 +3,12 @@ package database
 import (
 	"fmt"
 	"errors"
+	"github.com/sirupsen/logrus"
 )
 
 func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
 	var chatExists bool
-	var err error
-	err = db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM chats WHERE chatId = ?)", chatId).Scan(&chatExists)
+	err := db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM chats WHERE chatId = ?)", chatId).Scan(&chatExists)
 	if err != nil {
 		return fmt.Errorf("error checking chat existence: %w", err)
 	}
@@ -25,8 +25,7 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
 }
 func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
 	var chatExists bool
-	var err error
-	err = db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM chats WHERE chatId = ?)", chatId).Scan(&chatExists)
+	err := db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM chats WHERE chatId = ?)", chatId).Scan(&chatExists)
 	if err != nil {
 		return fmt.Errorf("error checking chat existence: %w", err)
 	}
@@ -45,7 +44,6 @@ func (db *appdbimpl) LeaveGroup(chatId uint64, userId uint64) error {
 
 func (db *appdbimpl) SetGroupPhoto(ch Chat, chatPhoto string) (Chat, error) {
 
-	var err error
 
 	res, err := db.c.Exec(`UPDATE chats SET ChatPhoto=?, ChatName=? WHERE ChatId=?`, chatPhoto, ch.ChatName, ch.ChatId)
 	if err != nil {
@@ -61,7 +59,6 @@ func (db *appdbimpl) SetGroupPhoto(ch Chat, chatPhoto string) (Chat, error) {
 }
 func (db *appdbimpl) SetGroupName(ch Chat, chatName string) (Chat, error) {
 
-	var err error
 
 	res, err := db.c.Exec(`UPDATE chats SET ChatName=?, ChatPhoto=? WHERE ChatId=?`, chatName, ch.ChatPhoto, ch.ChatId)
 	if err != nil {
@@ -133,26 +130,26 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		if err == nil{ 
 		res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
 		if err != nil {
-			return 0, fmt.Errorf("failed to create chat: %v", err)
+			return 0, fmt.Errorf("failed to create chat: %w", err)
 		}
 		
 		lastInsertId, err := res.LastInsertId()
 		if err != nil {
-			return 0, fmt.Errorf("failed to create chat id: %v", err)
+			return 0, fmt.Errorf("failed to create chat id: %w", err)
 		}
 		chatId = uint64(lastInsertId)
 		err = db.AddUserToChat(chatId, userId)
 			if err != nil {
-				return 0, fmt.Errorf("failed to create chat id: %v", err)
+				return 0, fmt.Errorf("failed to create chat id: %w", err)
 			}
 			return chatId, nil
 		}
 		
-			fmt.Println("No chat found, creating new one")
+			ctx.Logger.Info("No chat found. creating a new one")
 			res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
 			lastInsertId, err := res.LastInsertId()
 			if err != nil {
-				return 0, fmt.Errorf("failed to retrieve last insert id: %v", err)
+				return 0, fmt.Errorf("failed to retrieve last insert id: %w", err)
 			}
 			chatId = uint64(lastInsertId)
 			return chatId, nil
