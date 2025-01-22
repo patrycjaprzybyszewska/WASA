@@ -3,7 +3,6 @@ package database
 import (
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 )
 
 func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
@@ -142,8 +141,7 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		}
 		return chatId, nil
 	}
-
-	ctx.Logger.Info("No chat found. creating a new one")
+	
 	res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
 	lastInsertId, err := res.LastInsertId()
 	if err != nil {
