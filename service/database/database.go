@@ -104,6 +104,10 @@ type appdbimpl struct {
 // `db` is required - an error will be returned if `db` is `nil`.
 
 func New(db *sql.DB) (AppDatabase, error) {
+	_, err := db.c.Exec("DROP TABLE IF EXISTS comments, messages, chat_users, chats, users;")
+	if err != nil {
+		return fmt.Errorf("error dropping tables: %w", err)
+	}
 	if db == nil {
 		return nil, errors.New("database is required when building a AppDatabase")
 	}
