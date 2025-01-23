@@ -22,7 +22,6 @@ export default {
             usertoad: null,
             errormsg: null,
             view: "main",
-            showSettings: false,
     };
   },
   created() {
@@ -256,7 +255,7 @@ export default {
 
 <template>
 <div>
-  <template v-if="view === 'main'">
+  <div v-if="view === 'main'">
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
 <ul v-if="!loading && !error">
@@ -321,14 +320,12 @@ export default {
   <button @click="setComment">Comment</button>
      
 </div>
-</template>
 
 
+</div>
 
 
-
-
-<template v-if="view === 'settings'">
+<div v-if="view === 'settings'">
       <div v-if="showSettings">
       <h2> Chat: {{ this.chatId }}</h2>
       <button @click="showSettings = false">Close</button>
@@ -368,6 +365,6 @@ export default {
         </div>
       </div>
     </div>
-  </template>
+  </div>
   </div>
 </template>
