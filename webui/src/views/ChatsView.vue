@@ -25,10 +25,11 @@ export default {
             errormsg: null,
             showSettings: false,
             showForward: false,
-            showChat: true,
+            showChat: null,
     };
   },
   created() {
+    this.showChat = true;
 		this.getConversations();
 	},
 	methods: {
