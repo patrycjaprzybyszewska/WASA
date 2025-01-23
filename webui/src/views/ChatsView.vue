@@ -321,14 +321,13 @@ export default {
      
 </div>
 
-
 </div>
 
 
+
 <div v-if="view === 'settings'">
-      <div v-if="showSettings">
-      <h2> Chat: {{ this.chatId }}</h2>
-      <button @click="showSettings = false">Close</button>
+      <h2> Chat: {{ chatId }}</h2>
+      <button @click="view = 'main'">Close</button>
       <div class="user-profile">
         <div class="user-details">
           <h1 class="h2">CHAT</h1>
@@ -365,6 +364,5 @@ export default {
         </div>
       </div>
     </div>
-
   </div>
 </template>
