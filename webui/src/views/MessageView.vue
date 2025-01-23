@@ -65,7 +65,7 @@ methods: {
 					id="chatName"
 					class="form-control"
 					v-model="chatName"
-					placeholder="type here name of user,chat if chat does not exist it will be created"
+					placeholder="type here name of existing user or chat, if chat does not exist it will be created"
 				/>
 				</div>
     </div>

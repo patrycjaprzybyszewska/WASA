@@ -92,7 +92,8 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 }
 
 func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]MessageandComments, error) {
-	_, err := db.c.Exec(`UPDATE chat_users SET read = 1 WHERE chatId = ? AND userId = ?`, chatId, userId)
+	var read int = 1
+	_, err := db.c.Exec(`UPDATE chat_users SET read = ? WHERE chatId = ? AND userId = ?`, read, chatId, userId)
 	if err != nil {
     	return nil, fmt.Errorf("error %w", err)
 	}	
