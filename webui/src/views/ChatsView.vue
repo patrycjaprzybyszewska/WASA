@@ -264,8 +264,7 @@ export default {
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
     <button @click="leaveGroup(chat.chatId)">Leave Group</button>
-    
-
+  
   </li>
 </ul>
   <div v-if="selectedChat">
@@ -312,7 +311,8 @@ export default {
     <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
 
     <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
-</div><div v-if="MessagetoComment">
+</div>
+<div v-if="MessagetoComment">
     <h2>Select Comment</h2>
         <div v-for="(comment, index) in comments" :key="index">
     <button @click="selectedComment = comment">{{ comment }}</button>
@@ -321,8 +321,8 @@ export default {
      
 </div>
 
-</div>
 
+</div>
 
 
 <div v-if="view === 'settings'">
