@@ -22,6 +22,7 @@ export default {
             usertoad: null,
             errormsg: null,
             showSettings: false,
+            mainView: true,
     };
   },
   created() {
@@ -239,12 +240,19 @@ export default {
         this.error = ` Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
+    mainView()
+    {
+this.showSettings = false;
+this.mainView = true;
+    },
     toggleSettings(chatId) {
 
       this.showSettings = !this.showSettings;
       if (this.showSettings) {
         this.chatId = chatId; 
-      }
+        this.mainView = false;
+      } else {
+        this.mainView = true;}
     },
 },
 
@@ -255,6 +263,7 @@ export default {
 <div>
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
+<div v-if="showMainView">
 <ul v-if="!loading && !error">
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
@@ -293,10 +302,11 @@ export default {
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
-      </ul>
+      </ul>>
+    </div>
       <div v-if="showSettings">
       <h2> Chat: {{ chatId }}</h2>
-      <button @click="showSettings = false">Close</button>
+      <button @click="mainView">Close</button>
       <div class="user-profile">
         <div class="user-details">
           <h1 class="h2">CHAT</h1>
