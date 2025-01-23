@@ -280,7 +280,7 @@ export default {
             <button @click="addToGroup(selectedChat)">Add user</button>
       <ul>
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>Sender Name: {{ message.senderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
+          <p><strong>Sender Name: {{ message.SenderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
           <span v-if="message.state === 'delivered'">☑</span>
           <span v-else>{☑☑}</span>
         </p>
