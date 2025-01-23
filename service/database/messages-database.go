@@ -17,7 +17,7 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	}
 
 	m.MessageId = uint64(lastInsertID)
-	var sent int  = 0
+	var sent int = 0
 	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId, read) VALUES (?, ?, ?)", m.ChatId, m.SenderId, sent)
 	if err != nil {
 		return m, fmt.Errorf("error adding user to chat: %w", err)
@@ -95,8 +95,8 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 	var read int = 1
 	_, err := db.c.Exec(`UPDATE chat_users SET read = ? WHERE chatId = ? AND userId = ?`, read, chatId, userId)
 	if err != nil {
-    	return nil, fmt.Errorf("error %w", err)
-	}	
+		return nil, fmt.Errorf("error %w", err)
+	}
 	rows, err := db.c.Query(`UPDATE messages SET state = 'delivered'  WHERE chatId = ? AND NOT EXISTS (SELECT 1 FROM chat_users WHERE chatId = messages.chatId AND read = 0)`, chatId)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching messages: %w", err)
@@ -132,8 +132,6 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rows: %w", err)
 	}
-	
-
 
 	return conversation, nil
 }
