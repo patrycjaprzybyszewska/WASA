@@ -107,35 +107,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if db == nil {
 		return nil, errors.New("database is required when building a AppDatabase")
 	}
-	_, err := db.c.Exec("DROP TABLE IF EXISTS comments")
-	if err != nil {
-		return fmt.Errorf("error dropping 'comments' table: %w", err)
-	}
-
-	_, err = db.c.Exec("DROP TABLE IF EXISTS messages")
-	if err != nil {
-		return fmt.Errorf("error dropping 'messages' table: %w", err)
-	}
-
-	_, err = db.c.Exec("DROP TABLE IF EXISTS chat_users")
-	if err != nil {
-		return fmt.Errorf("error dropping 'chat_users' table: %w", err)
-	}
-
-	_, err = db.c.Exec("DROP TABLE IF EXISTS chats")
-	if err != nil {
-		return fmt.Errorf("error dropping 'chats' table: %w", err)
-	}
-
-	_, err = db.c.Exec("DROP TABLE IF EXISTS users")
-	if err != nil {
-		return fmt.Errorf("error dropping 'users' table: %w", err)
-	}
-
-	_, err := db.Exec("PRAGMA foreign_keys = ON")
-	if err != nil {
-		return nil, err
-	}
+	
 
 	sqlStmt := `
 		CREATE TABLE IF NOT EXISTS users (
