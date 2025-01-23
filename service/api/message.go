@@ -31,6 +31,13 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
+
+	message.SenderName, err := rt.db.GetUserNameById(message.SenderId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	if requestBody.Content == "" || requestBody.ChatName == "" {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
@@ -108,6 +115,11 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.SenderId, err = auth(authHeader)
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+	message.SenderName, err := rt.db.GetUserNameById(message.SenderId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	currentTime := time.Now()

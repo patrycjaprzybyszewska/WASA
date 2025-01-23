@@ -14,7 +14,6 @@ export default {
             messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
-            selectedChatName: "",
             MessagetoForward: null,
             MessagetoComment: null,
             chattoforwardId: null,
@@ -64,7 +63,6 @@ export default {
                   }));
 
                 this.selectedChat = chatId;
-                this.selectedChatName = chatName;
             } catch (err) {
         console.error("Error fetching messages:", err);
         this.error = `Unable to fetch messages for chatId ${chatId}. Error: ${
@@ -246,7 +244,6 @@ export default {
       this.showSettings = !this.showSettings;
       if (this.showSettings) {
         this.chatId = chatId; 
-        this.selectedChatName = chatName;
       }
     },
 },
@@ -269,8 +266,8 @@ export default {
   </li>
 </ul>
   <div v-if="selectedChat">
-      <h2>Messages for Chat: {{ selectedChatName }}</h2>
-      <button @click="toggleSettings(selectedChat, selectedChatName)">Settings</button>
+      <h2>Messages for Chat: {{ selectedChat }}</h2>
+      <button @click="toggleSettings(selectedChat)">Settings</button>
 
       <label for="usertoad" class="form-label">User id: </label>
             <input
@@ -301,7 +298,7 @@ export default {
 
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
-      <h2> Chat: {{ selectedChatName }}</h2>
+      <h2> Chat: {{  }}</h2>
       <button @click="showSettings = false">Close</button>
       <div class="user-profile">
         <div class="user-details">

@@ -43,6 +43,7 @@ type User struct {
 }
 type Message struct {
 	MessageId   uint64 `json:"messageId"`
+	SenderName 	string `json:"senderName`
 	SenderId    uint64 `json:"senderId"`
 	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`
@@ -149,6 +150,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS messages (
 			messageId INTEGER NOT NULL PRIMARY KEY,
+			senderName TEXT,
 			senderId INTEGER,
 			content TEXT,
 			messageDate TEXT,

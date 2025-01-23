@@ -8,8 +8,8 @@ import (
 func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	// trzeba dodac tworzenie czatu tutaj
 
-	res, err := db.c.Exec(`INSERT INTO messages (senderId, chatId, content, messageDate, messageTime, state) 
-                        VALUES (?, ?, ?, ?, ?, ?)`, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
+	res, err := db.c.Exec(`INSERT INTO messages (senderName, senderId, chatId, content, messageDate, messageTime, state) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)`, m.SenderName, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
 
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {
@@ -37,8 +37,8 @@ func (db *appdbimpl) Removemessage(messageId uint64) error {
 func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	var message Message
 
-	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
-	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
+	query := `SELECT messageId, senderName, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
+	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderName, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return Message{}, fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
@@ -51,8 +51,8 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 func (db *appdbimpl) CheckMessageById(messageId uint64) error {
 	var message Message
 
-	query := `SELECT messageId, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
-	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
+	query := `SELECT messageId, senderName, senderId, chatId, content, messageDate, messageTime, state FROM messages WHERE messageId = ?`
+	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderName, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
@@ -92,7 +92,7 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 
 func (db *appdbimpl) GetConversation(chatId uint64) ([]MessageandComments, error) {
 
-	rows, err := db.c.Query(`SELECT messageId, senderId, content, messageDate, messageTime, state, chatId 
+	rows, err := db.c.Query(`SELECT messageId, senderName, senderId, content, messageDate, messageTime, state, chatId 
 								FROM messages 
 								WHERE chatId = ? 
 								ORDER BY messageDate, messageTime`, chatId)
@@ -105,7 +105,7 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]MessageandComments, error
 
 	for rows.Next() {
 		var message Message
-		if err := rows.Scan(&message.MessageId, &message.SenderId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId); err != nil {
+		if err := rows.Scan(&message.MessageId, &message.SenderName, &message.SenderId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State, &message.ChatId); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 		comments, err := db.GetCommentsById(message.MessageId)
