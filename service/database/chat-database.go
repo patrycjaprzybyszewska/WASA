@@ -14,8 +14,8 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
 	if !chatExists {
 		return fmt.Errorf("chat with ID %d does not exist", chatId)
 	}
-
-	_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, 0, userId)
+	var sent int = 0
+	_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, sent, userId)
 	if err != nil {
 		return fmt.Errorf("error adding user to chat: %w", err)
 	}
@@ -129,7 +129,8 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		if err != nil {
 			return 0, fmt.Errorf("failed to create chat: %w", err)
 		}
-		_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, 0, userId)
+		var sent int = 0
+		_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, sent, userId)
 		if err != nil {
 		return 0,fmt.Errorf("error adding user to chat: %w", err)
 		}
