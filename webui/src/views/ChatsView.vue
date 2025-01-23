@@ -248,7 +248,7 @@ this.mainView = true;
     toggleSettings(chatId) {
 
       this.showSettings = true;
-        this.chatId = chatId; 
+        this.selectedChat = chatId; 
         this.mainView = false;
   
     },
