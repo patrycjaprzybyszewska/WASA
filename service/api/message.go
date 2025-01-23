@@ -3,7 +3,6 @@ package api
 import (
 	// "git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"encoding/json"
-	"fmt"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
@@ -219,7 +218,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	userId, err = auth(r.Header.Get("Authorization"))
+	userId, err := auth(r.Header.Get("Authorization"))
 	if err != nil {
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
