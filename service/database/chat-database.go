@@ -131,7 +131,7 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		}
 		_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, 0, userId)
 		if err != nil {
-		return fmt.Errorf("error adding user to chat: %w", err)
+		return 0,fmt.Errorf("error adding user to chat: %w", err)
 		}
 		
 		lastInsertId, err := res.LastInsertId()
