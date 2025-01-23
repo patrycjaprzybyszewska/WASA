@@ -118,7 +118,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	DROP TABLE IF EXISTS chats;
 	DROP TABLE IF EXISTS users;
 `
-_, err := db.Exec(sqlStmt)
+_, err = db.Exec(sqlStmt)
 if err != nil {
 	return fmt.Errorf("error dropping tables: %w", err)
 }
