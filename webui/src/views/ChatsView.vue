@@ -10,6 +10,7 @@ export default {
 			error: null,
             chatId: null,
             chatName: "",
+            name: "",
             chatPhoto: "",
             messageId: null,
 			userId: localStorage.getItem("userId"),
@@ -52,7 +53,7 @@ export default {
         this.loading = false;
       }
 		},
-        async getConversation(chatId){
+        async getConversation(chatId, chatName){
             this.loading = true;
             this.error = null;
             try{
@@ -63,7 +64,7 @@ export default {
                  ...item.message,
                  comments: item.comments || [], 
                   }));
-
+                this.name = chatName;
                 this.selectedChat = chatId;
             } catch (err) {
         console.error("Error fetching messages:", err);
@@ -264,14 +265,14 @@ export default {
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
-    <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
+    <p>Chat ID: <button @click="getConversation(chat.chatId, chat.chatName)">{{ chat.chatId }}</button></p>
     <button @click="leaveGroup(chat.chatId)">Leave Group</button>
     
 
   </li>
 </ul>
   <div v-if="selectedChat">
-      <h2>Messages for Chat: {{ selectedChat }}</h2>
+      <h2>Messages for Chat: {{ name }}</h2>
       <button @click="toggleSettings(selectedChat)">Settings</button>
 
       <label for="usertoad" class="form-label">User id: </label>
@@ -304,7 +305,7 @@ export default {
 </div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
-      <h2> Chat: {{  }}</h2>
+      <h2> Chat: {{  name }}</h2>
       <button @click="showSettings = false">Close</button>
       <div class="user-profile">
         <div class="user-details">
