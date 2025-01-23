@@ -294,7 +294,10 @@ export default {
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
-      <div v-if="showSettings">
+
+
+       <transition name="fade">
+        <div v-if="showSettings" class="settings-window">
       <h2> Chat: {{ chatId }}</h2>
       <button @click="showSettings = false">Close</button>
       <div class="user-profile">
@@ -333,6 +336,7 @@ export default {
         </div>
       </div>
     </div>
+  </transition>
     </div><div v-if="MessagetoForward">
       <h2>Select Chat</h2>
       <ul>
@@ -356,3 +360,28 @@ export default {
      
 </div>
 </template>
+
+
+<style scoped>
+.settings-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 500px;
+}
+
+.settings-window h2 {
+  margin-bottom: 20px;
+}
+
+.settings-window button {
+  margin-top: 10px;
+}
+
+</style>
