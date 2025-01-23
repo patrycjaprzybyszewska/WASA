@@ -99,7 +99,7 @@ paths:
         "404":
           description: |
             Message to comment is not found.
-  /message/forward/{messageId}/{chatId}:
+  /message/forward/{messageId}:
     put:
       tags: ["Message"]
       description: Forwards message to antoher user
@@ -112,12 +112,6 @@ paths:
         - name: messageId
           in: path
           description: ID of message that is being forwarded.
-          required: true
-          schema:
-            type: integer
-        - name: chatId
-          in: path
-          description: ID of chat that is being forwarded to.
           required: true
           schema:
             type: integer

@@ -95,18 +95,24 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-	message.ChatId, err = strconv.ParseUint(ps.ByName("chatId"), 10, 64)
-	if err != nil {
-		http.Error(w, "Invalid message ID", http.StatusBadRequest)
-		return
-	}
 
 	dbmessage, err := rt.db.GetMessageById(messageId)
 	if err != nil {
 		http.Error(w, "Forwarded message does not exist", http.StatusNotFound)
 		return
 	}
-
+	var requestBody struct {
+		ChatName string `json:"chatName"`
+	}
+	if requestBody.ChatName == "" {
+		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
+		return
+	}
+	message.ChatId, err = rt.db.GetChatIdbyName(requestBody.ChatName)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing authorization", http.StatusUnauthorized)

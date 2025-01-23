@@ -22,6 +22,7 @@ export default {
             usertoad: null,
             errormsg: null,
             showSettings: false,
+            showForward: false,
     };
   },
   created() {
@@ -86,18 +87,20 @@ export default {
      },
      setMessagetoForward(messageId) {
       this.MessagetoForward = { messageId };
+      this.showForward = true;
     },
 
-     async forwardMessage(chattoforwardId){
+     async forwardMessage(){
             this.loading = true;
             this.error = null;
             this.successmsg = null;
             this.errormsg = null;
             try{
-                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}/${chattoforwardId}`, 
+                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}`, {chatName: this.chatName},
                 {}, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
-       		 });
+       		 })
+		this.chatName = response.data.chatName;
                 this.successmsg = "Message forwarded!";
                 this.MessagetoForward = null;
             } catch (err) {
@@ -290,12 +293,13 @@ export default {
             </li>
           </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
-          <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">{{ message.messageId }}Forward</button></p>
+          <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
+         
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
 
-
+</div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
       <h2> Chat: {{  }}</h2>
@@ -336,20 +340,33 @@ export default {
       </div>
     </div>
   </transition>
-    </div><div v-if="MessagetoForward">
-      <h2>Select Chat</h2>
-      <ul>
-        <li v-for="chat in chats" :key="chat.chatId">
-          <button @click="forwardMessage(chat.chatId)">
-            Forward to {{ chat.chatName }} (Chat ID: {{ chat.chatId }})
-          </button>
-        </li>
-      </ul>
-      <button @click="MessagetoForward = null">Cancel</button>
-    </div>
-    <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
 
-    <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+  <transition name="fade">
+        <div v-if="MessagetoForward" class="settings-window">
+      <button @click="showForward = false">Close</button>
+      <div class="mb-3">
+				<label for="chatName" class="form-label">Name: </label>
+				<input
+					type="text"
+					id="chatName"
+					class="form-control"
+					v-model="chatName"
+					placeholder="type here name of user,chat or new chat name to forward message"
+				/>
+        <button @click="forwardMessage()">OK</button>
+				</div>
+
+      <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
+      <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+
+
+    </div>
+  </transition>
+
+
+
+
 </div><div v-if="MessagetoComment">
     <h2>Select Comment</h2>
         <div v-for="(comment, index) in comments" :key="index">
