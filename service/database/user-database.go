@@ -34,7 +34,7 @@ func (db *appdbimpl) GetUserPhotoById(userId uint64) (string, error) {
 }
 func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	var userName string
-	err := db.c.QueryRow(`SELECT UserName FROM users WHERE userId = ?`, userId).Scan(&userName)
+	err := db.c.QueryRow(`SELECT userName FROM users WHERE userId = ?`, userId).Scan(&userName)
 	if err != nil {
 		return "", err
 	}
