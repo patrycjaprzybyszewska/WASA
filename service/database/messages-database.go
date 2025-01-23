@@ -91,13 +91,13 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 }
 
 func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]MessageandComments, error) {
-	_, err = db.c.Exec(`UPDATE chat_users SET read = 1 WHERE chatId = ? AND userId = ?`, chatId, userId)
+	err = db.c.Exec(`UPDATE chat_users SET read = 1 WHERE chatId = ? AND userId = ?`, chatId, userId)
 	if err != nil {
-    	return nil, fmt.Errorf("error %w", err)
+    	return nil, fmt.Errorf("error %w")
 	}	
 	rows, err := db.c.Query(`UPDATE messages SET state = 'delivered'  WHERE chatId = ? AND NOT EXISTS (SELECT 1 FROM chat_users WHERE chatId = messages.chatId AND read = 0)`, chatId)
 	if err != nil {
-	return nil, fmt.Errorf("error %w", err)
+		return nil, fmt.Errorf("error fetching messages: %w", err)
 	}
 	defer rows.Close()
 
