@@ -117,7 +117,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			userName STRING NOT NULL, 
 			userPhoto STRING	
 		);`
-	_, err := db.Exec(sqlStmt)
+	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		return nil, fmt.Errorf("error creating 'users' table: %w", err)
 	}
