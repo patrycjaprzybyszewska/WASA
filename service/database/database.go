@@ -122,7 +122,7 @@ _, err = db.Exec(sqlStmt)
 if err != nil {
 	return nil, fmt.Errorf("error dropping tables: %w", err)
 }
-	sqlStmt := `
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
