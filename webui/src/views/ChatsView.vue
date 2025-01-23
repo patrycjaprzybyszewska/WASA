@@ -240,7 +240,7 @@ export default {
         this.error = ` Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
-    mainView()
+    goBack()
     {
 this.showSettings = false;
 this.mainView = true;
@@ -306,7 +306,7 @@ this.mainView = true;
     </div>
       <div v-if="showSettings">
       <h2> Chat: {{ chatId }}</h2>
-      <button @click="mainView">Close</button>
+      <button @click="goBack">Close</button>
       <div class="user-profile">
         <div class="user-details">
           <h1 class="h2">CHAT</h1>
