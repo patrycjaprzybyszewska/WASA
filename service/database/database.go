@@ -110,19 +110,8 @@ func New(db *sql.DB) (AppDatabase, error) {
 	_, err := db.Exec("PRAGMA foreign_keys = ON")
 	if err != nil {
 		return nil, err
-	}
+	} 
 	sqlStmt := `
-	DROP TABLE IF EXISTS comments;
-	DROP TABLE IF EXISTS messages;
-	DROP TABLE IF EXISTS chat_users;
-	DROP TABLE IF EXISTS chats;
-	DROP TABLE IF EXISTS users;
-`
-	_, err = db.Exec(sqlStmt)
-	if err != nil {
-		return nil, fmt.Errorf("error creating 'users' table: %w", err)
-	}
-	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
