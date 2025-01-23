@@ -247,12 +247,10 @@ this.mainView = true;
     },
     toggleSettings(chatId) {
 
-      this.showSettings = !this.showSettings;
-      if (this.showSettings) {
+      this.showSettings = true;
         this.chatId = chatId; 
         this.mainView = false;
-      } else {
-        this.mainView = true;}
+  
     },
 },
 
