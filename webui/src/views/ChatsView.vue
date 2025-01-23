@@ -103,6 +103,7 @@ export default {
        		 })
 		            this.forwardchatName = response.data.forwardchatName;
                 this.successmsg = "Message forwarded!";
+                this.showForward - false;
                 this.MessagetoForward = null;
             } catch (err) {
         console.error("Error deleteing messages:", err);
