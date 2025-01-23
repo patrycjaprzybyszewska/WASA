@@ -141,7 +141,7 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		}
 		return chatId, nil
 	}
-	
+
 	res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
 	lastInsertId, err := res.LastInsertId()
 	if err != nil {

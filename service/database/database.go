@@ -43,7 +43,7 @@ type User struct {
 }
 type Message struct {
 	MessageId   uint64 `json:"messageId"`
-	SenderName 	string `json:"senderName`
+	SenderName  string `json:"senderName`
 	SenderId    uint64 `json:"senderId"`
 	ChatId      uint64 `json:"chatId"`
 	Content     string `json:"content"`

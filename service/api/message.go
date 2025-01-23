@@ -140,7 +140,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	if dbmessage.Content == "" {
 		http.Error(w, "Message content is empty", http.StatusBadRequest)
 		return
-	}	
+	}
 	message.Content = dbmessage.Content
 	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
