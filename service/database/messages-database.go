@@ -17,7 +17,7 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	}
 
 	m.MessageId = uint64(lastInsertID)
-	var int sent = 0
+	var sent int  = 0
 	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId, read) VALUES (?, ?, ?)", m.ChatId, m.SenderId, sent)
 	if err != nil {
 		return m, fmt.Errorf("error adding user to chat: %w", err)
