@@ -137,14 +137,18 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.MessageDate = currentTime.Format("2006-01-02")
 	message.MessageTime = currentTime.Format("15:04")
 	message.State = "send"
+	if dbmessage.Content == "" {
+		http.Error(w, "Message content is empty", http.StatusBadRequest)
+		return
+	}	
 	message.Content = dbmessage.Content
-	fdbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
+	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
 		return
 	}
 
-	message.MessageFromDatabase(fdbmessage)
+	message.MessageFromDatabase(dbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
 }
