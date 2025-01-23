@@ -246,7 +246,7 @@ this.showSettings = false;
 this.mainView = true;
     },
     toggleSettings(chatId) {
-
+      console.log("Toggling settings for chat:", chatId);
       this.showSettings = true;
         this.selectedChat = chatId; 
         this.mainView = false;
@@ -303,7 +303,7 @@ this.mainView = true;
       </ul>>
     </div>
       <div v-if="showSettings">
-      <h2> Chat: {{ chatId }}</h2>
+      <h2> Chat: {{ selectedChat }}</h2>
       <button @click="goBack">Close</button>
       <div class="user-profile">
         <div class="user-details">
