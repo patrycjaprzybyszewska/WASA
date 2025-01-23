@@ -17,7 +17,7 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	}
 
 	m.MessageId = uint64(lastInsertID)
-	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId) VALUES (?, ?)", m.ChatId, m.SenderId)
+	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId, read) VALUES (?, ?, ?)", m.ChatId, m.SenderId, 0)
 	if err != nil {
 		return m, fmt.Errorf("error adding user to chat: %w", err)
 	}
@@ -90,7 +90,16 @@ func (db *appdbimpl) Removecomment(commentId uint64) error {
 
 }
 
-func (db *appdbimpl) GetConversation(chatId uint64) ([]MessageandComments, error) {
+func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]MessageandComments, error) {
+	_, err = db.c.Exec(`UPDATE chat_users SET read = 1 WHERE chatId = ? AND userId = ?`, chatId, userId)
+	if err != nil {
+    	return fmt.Errorf("error : %w", err)
+	}	
+	rows, err := db.c.Query(`UPDATE messages SET state = 'delivered'  WHERE chatId = ? AND NOT EXISTS (SELECT 1 FROM chat_users WHERE chatId = messages.chatId AND read = 0)`, chatId)
+	if err != nil {
+	return nil, fmt.Errorf("error : %w", err)
+	}
+	defer rows.Close()
 
 	rows, err := db.c.Query(`SELECT messageId, senderName, senderId, content, messageDate, messageTime, state, chatId 
 								FROM messages 
@@ -121,6 +130,9 @@ func (db *appdbimpl) GetConversation(chatId uint64) ([]MessageandComments, error
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rows: %w", err)
 	}
+	
+
+
 	return conversation, nil
 }
 

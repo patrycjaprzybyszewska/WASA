@@ -90,7 +90,7 @@ type AppDatabase interface {
 	LeaveGroup(uint64, uint64) error
 	SetGroupName(Chat, string) (Chat, error)
 	SetGroupPhoto(Chat, string) (Chat, error)
-	GetConversation(uint64) ([]MessageandComments, error)
+	GetConversation(uint64, uint64) ([]MessageandComments, error)
 	GetChats(uint64) ([]Chat, error)
 	Removecomment(uint64) error
 	Ping() error
@@ -111,8 +111,18 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	sqlStmt := `
+	DROP TABLE IF EXISTS comments;
+	DROP TABLE IF EXISTS messages;
+	DROP TABLE IF EXISTS chat_users;
+	DROP TABLE IF EXISTS chats;
+	DROP TABLE IF EXISTS users;
+`
+_, err := db.Exec(sqlStmt)
+if err != nil {
+	return fmt.Errorf("error dropping tables: %w", err)
+}
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
@@ -137,6 +147,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS chat_users (
   			chatId INTEGER,
+			read   INTEGER,
   			userId INTEGER,
    			PRIMARY KEY (chatId, userId),
    			FOREIGN KEY (chatId) REFERENCES chats(chatId),

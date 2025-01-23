@@ -15,7 +15,7 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
 		return fmt.Errorf("chat with ID %d does not exist", chatId)
 	}
 
-	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId) VALUES (?, ?)", chatId, userId)
+	_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, userId, 0)
 	if err != nil {
 		return fmt.Errorf("error adding user to chat: %w", err)
 	}

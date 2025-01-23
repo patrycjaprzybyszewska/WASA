@@ -219,15 +219,15 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		http.Error(w, "Missing authorization", http.StatusUnauthorized)
+	userId, err = auth(r.Header.Get("Authorization"))
+	if err != nil {
+		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
 
-	conversation, err := rt.db.GetConversation(chatId)
+	conversation, err := rt.db.GetConversation(chatId, userId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
