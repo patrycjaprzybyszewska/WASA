@@ -14,7 +14,7 @@ export default {
             messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
-            forwardchatName = "",
+            forwardchatName: "",
             MessagetoForward: null,
             MessagetoComment: null,
             chattoforwardId: null,
