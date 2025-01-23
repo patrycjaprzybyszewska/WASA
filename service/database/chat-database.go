@@ -129,16 +129,17 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 		if err != nil {
 			return 0, fmt.Errorf("failed to create chat: %w", err)
 		}
-
+		_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, 0, userId)
+		if err != nil {
+		return fmt.Errorf("error adding user to chat: %w", err)
+		}
+		
 		lastInsertId, err := res.LastInsertId()
 		if err != nil {
 			return 0, fmt.Errorf("failed to create chat id: %w", err)
 		}
 		chatId = uint64(lastInsertId)
-		err = db.AddUserToChat(chatId, userId)
-		if err != nil {
-			return 0, fmt.Errorf("failed to create chat id: %w", err)
-		}
+
 		return chatId, nil
 	}
 
