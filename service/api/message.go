@@ -104,6 +104,12 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	var requestBody struct {
 		ChatName string `json:"chatName"`
 	}
+	err := json.NewDecoder(r.Body).Decode(&requestBody)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
 	if requestBody.ChatName == "" {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
