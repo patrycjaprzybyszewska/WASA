@@ -109,7 +109,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-
 	if requestBody.ChatName == "" {
 		http.Error(w, "Message cannot be sent, missing informations", http.StatusBadRequest)
 		return
@@ -139,13 +138,13 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.MessageTime = currentTime.Format("15:04")
 	message.State = "send"
 	message.Content = dbmessage.Content
-	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
+	fdbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
 		return
 	}
 
-	message.MessageFromDatabase(dbmessage)
+	message.MessageFromDatabase(fdbmessage)
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(message)
 }
