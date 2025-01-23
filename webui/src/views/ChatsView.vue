@@ -305,10 +305,10 @@ export default {
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
-          <button @click="return">Back</button>
+
         </li>
       </ul>
-
+      <button @click="return">Back</button>
 </div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
