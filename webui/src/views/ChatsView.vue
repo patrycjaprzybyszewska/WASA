@@ -261,7 +261,7 @@ this.mainView = true;
 <div>
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
-<div v-if="mainView">
+<div v-show="mainView">
 <ul v-if="!loading && !error">
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
@@ -302,7 +302,7 @@ this.mainView = true;
         </li>
       </ul>>
     </div>
-      <div v-if="showSettings">
+      <div v-show="showSettings">
       <h2> Chat: {{ selectedChat }}</h2>
       <button @click="goBack">Close</button>
       <div class="user-profile">
