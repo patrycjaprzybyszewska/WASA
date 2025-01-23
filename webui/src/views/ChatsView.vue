@@ -228,6 +228,9 @@ export default {
         this.error = `Unable to add user to group. Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
+    async return(){
+      this.selectedChat = null;
+    },
     async uncommentMessage (commentId){
         this.successmsg = null;
         this.loading = true;
@@ -299,6 +302,7 @@ export default {
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
+          <button @click="return">Back</button>
         </li>
       </ul>
 
