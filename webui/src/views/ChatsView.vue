@@ -14,6 +14,7 @@ export default {
             messageId: null,
 			userId: localStorage.getItem("userId"),
             selectedChat: null,
+            forwardchatName = "",
             MessagetoForward: null,
             MessagetoComment: null,
             chattoforwardId: null,
@@ -96,11 +97,11 @@ export default {
             this.successmsg = null;
             this.errormsg = null;
             try{
-                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}`, {chatName: this.chatName},
+                const response = await this.$axios.put(`/message/forward/${this.MessagetoForward.messageId}`, {chatName: this.forwardchatName},
                 {}, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 })
-		this.chatName = response.data.chatName;
+		            this.forwardchatName = response.data.forwardchatName;
                 this.successmsg = "Message forwarded!";
                 this.MessagetoForward = null;
             } catch (err) {
@@ -343,17 +344,18 @@ export default {
 
   <transition name="fade">
         <div v-if="MessagetoForward" class="settings-window">
-      <button @click="showForward = false">Close</button>
+
       <div class="mb-3">
-				<label for="chatName" class="form-label">Name: </label>
+				<label for="forwardchatName" class="form-label">Name: </label>
 				<input
 					type="text"
-					id="chatName"
+					id="forwardchatName"
 					class="form-control"
-					v-model="chatName"
+					v-model="forwadchatName"
 					placeholder="type here name of user,chat or new chat name to forward message"
 				/>
         <button @click="forwardMessage()">OK</button>
+        <button @click="showForward = false">Close</button>
 				</div>
 
       <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
