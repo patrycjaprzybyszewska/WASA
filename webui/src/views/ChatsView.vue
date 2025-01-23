@@ -105,11 +105,11 @@ export default {
                 this.successmsg = "Message forwarded!";
                 this.showForward = false;
                 this.MessagetoForward = null;
-            } catch (err) {
-        console.error("Error deleteing messages:", err);
-        this.errormsg = `Unable to delete message with ID ${messageId}. Error: $${
-          err.response ? err.response.status : err.message
-        }`;}},
+            }  catch (err) {
+    console.error("Error forwarding message:", err);
+    this.errormsg = `Unable to forward message. Error: ${err.response ? err.response.status : err.message}`;
+  } finally {
+    this.loading = false;}},
         setMessagetoComment(messageId) {
       this.MessagetoComment = { messageId };
     },
