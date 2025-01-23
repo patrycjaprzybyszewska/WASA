@@ -245,10 +245,10 @@ export default {
 this.showSettings = false;
 this.mainView = true;
     },
-    toggleSettings(chatId) {
+    toggleSettings() {
       console.log("Toggling settings for chat:", chatId);
       this.showSettings = true;
-        this.selectedChat = chatId; 
+      //  this.selectedChat = chatId; 
         this.mainView = false;
   
     },
@@ -274,7 +274,7 @@ this.mainView = true;
 </ul>
   <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
-      <button @click="toggleSettings(this.selectedChat)">Settings</button>
+      <button @click="toggleSettings">Settings</button>
 
       <label for="usertoad" class="form-label">User id: </label>
             <input
@@ -303,43 +303,8 @@ this.mainView = true;
       </ul>>
     </div>
       <div v-show="showSettings">
-      <h2> Chat: {{ selectedChat }}</h2>
-      <button @click="goBack">Close</button>
-      <div class="user-profile">
-        <div class="user-details">
-          <h1 class="h2">CHAT</h1>
-          <p class="h3">ChatId: {{ userId }}</p>
-          <div class="mb-3">
-            <label for="chatname" class="form-label">Change ChatName: </label>
-            <input
-              type="text"
-              id="chatname"
-              class="form-control"
-              v-model="newname"
-              placeholder="new chatname"
-            />
-            <button @click="setMyGroupName">OK</button>
-          </div>
-          <p class="h3">ChatName: {{ chatName }}</p>
-        </div>
-        <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
-        <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
-
-        <div class="chat-photo">
-          <img v-if="chatPhoto" :src="chatPhoto" alt="Chat Photo" style="width: 200px; height: 200px; object-fit: cover;" />
-          <div v-else>
-            <p>Photo</p>
-          </div>
-          <label for="chatPhoto" class="form-label">Change UserPhoto: </label>
-          <input
-            type="file"
-            id="chatPhoto"
-            class="form-control"
-            @change="input"
-          />
-          <button @click="setGroupPhoto">OK</button>
-        </div>
-      </div>
+      <h2> Chat:</h2>
+     
     </div>
     </div><div v-if="MessagetoForward">
       <h2>Select Chat</h2>
