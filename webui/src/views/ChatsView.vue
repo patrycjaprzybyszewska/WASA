@@ -103,7 +103,7 @@ export default {
        		 })
 		            this.forwardchatName = response.data.forwardchatName;
                 this.successmsg = "Message forwarded!";
-                this.showForward - false;
+                this.showForward = false;
                 this.MessagetoForward = null;
             } catch (err) {
         console.error("Error deleteing messages:", err);
@@ -352,7 +352,7 @@ export default {
 					type="text"
 					id="forwardchatName"
 					class="form-control"
-					v-model="forwadchatName"
+					v-model="forwardchatName"
 					placeholder="type here name of user,chat or new chat name to forward message"
 				/>
         <button @click="forwardMessage()">OK</button>
