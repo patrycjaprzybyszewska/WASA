@@ -263,7 +263,7 @@ this.mainView = true;
 <div>
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
-<div v-if="MainView">
+<div v-if="mainView">
 <ul v-if="!loading && !error">
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
