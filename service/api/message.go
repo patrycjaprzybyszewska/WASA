@@ -32,7 +32,7 @@ func (rt *_router) sendMessage(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	message.SenderName, err := rt.db.GetUserNameById(message.SenderId)
+	message.SenderName, err = rt.db.GetUserNameById(message.SenderId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -117,7 +117,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
-	message.SenderName, err := rt.db.GetUserNameById(message.SenderId)
+	message.SenderName, err = rt.db.GetUserNameById(message.SenderId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
