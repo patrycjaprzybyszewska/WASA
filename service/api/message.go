@@ -141,6 +141,7 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 	message.Content = dbmessage.Content
 	dbmessage, err = rt.db.Sendmessage(message.MessageToDatabase())
 	if err != nil {
+		log.Printf("Error in sending message: %v", err)
 		http.Error(w, "Error forwarding message", http.StatusInternalServerError)
 		return
 	}
