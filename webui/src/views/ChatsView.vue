@@ -21,7 +21,7 @@ export default {
             successmsg: null, 
             usertoad: null,
             errormsg: null,
-            view: "main",
+            showSettings: false,
     };
   },
   created() {
@@ -240,22 +240,19 @@ export default {
      ;}
     },
     toggleSettings(chatId) {
-      this.view = this.view === "settings" ? "main" : "settings";
-      if (this.view === "settings") {
-        this.chatId = chatId;
+
+      this.showSettings = !this.showSettings;
+      if (this.showSettings) {
+        this.chatId = chatId; 
       }
     },
-  
 },
 
 
 };
 </script>
-
-
 <template>
 <div>
-  <div v-if="view === 'main'">
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
 <ul v-if="!loading && !error">
@@ -264,7 +261,8 @@ export default {
     <p><strong>{{ chat.chatName }}</strong></p>
     <p>Chat ID: <button @click="getConversation(chat.chatId)">{{ chat.chatId }}</button></p>
     <button @click="leaveGroup(chat.chatId)">Leave Group</button>
-  
+    
+
   </li>
 </ul>
   <div v-if="selectedChat">
@@ -296,38 +294,9 @@ export default {
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
-</div>
-<div v-if="MessagetoForward">
-      <h2>Select Chat</h2>
-      <ul>
-        <li v-for="chat in chats" :key="chat.chatId">
-          <button @click="forwardMessage(chat.chatId)">
-            Forward to {{ chat.chatName }} (Chat ID: {{ chat.chatId }})
-          </button>
-        </li>
-      </ul>
-      <button @click="MessagetoForward = null">Cancel</button>
-    </div>
-    <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
-
-    <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
-</div>
-<div v-if="MessagetoComment">
-    <h2>Select Comment</h2>
-        <div v-for="(comment, index) in comments" :key="index">
-    <button @click="selectedComment = comment">{{ comment }}</button>
-  </div>
-  <button @click="setComment">Comment</button>
-     
-</div>
-
-
-</div>
-
-
-<div v-if="view === 'settings'">
+      <div v-if="showSettings">
       <h2> Chat: {{ chatId }}</h2>
-      <button @click="view = 'main'">Close</button>
+      <button @click="showSettings = false">Close</button>
       <div class="user-profile">
         <div class="user-details">
           <h1 class="h2">CHAT</h1>
@@ -364,5 +333,26 @@ export default {
         </div>
       </div>
     </div>
+    </div><div v-if="MessagetoForward">
+      <h2>Select Chat</h2>
+      <ul>
+        <li v-for="chat in chats" :key="chat.chatId">
+          <button @click="forwardMessage(chat.chatId)">
+            Forward to {{ chat.chatName }} (Chat ID: {{ chat.chatId }})
+          </button>
+        </li>
+      </ul>
+      <button @click="MessagetoForward = null">Cancel</button>
+    </div>
+    <div v-if="errormsg" class="alert alert-danger">{{ errormsg }}</div>
+
+    <div v-if="successmsg" class="alert alert-success">{{ successmsg }}</div>
+</div><div v-if="MessagetoComment">
+    <h2>Select Comment</h2>
+        <div v-for="(comment, index) in comments" :key="index">
+    <button @click="selectedComment = comment">{{ comment }}</button>
   </div>
+  <button @click="setComment">Comment</button>
+     
+</div>
 </template>
