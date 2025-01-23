@@ -119,7 +119,9 @@ func New(db *sql.DB) (AppDatabase, error) {
 	DROP TABLE IF EXISTS users;
 `
 	_, err = db.Exec(sqlStmt)
-
+	if err != nil {
+		return nil, fmt.Errorf("error creating 'users' table: %w", err)
+	}
 	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
