@@ -274,7 +274,7 @@ this.mainView = true;
 </ul>
   <div v-if="selectedChat">
       <h2>Messages for Chat: {{ selectedChat }}</h2>
-      <button @click="toggleSettings(chat.chatId)">Settings</button>
+      <button @click="toggleSettings(selectedChat)">Settings</button>
 
       <label for="usertoad" class="form-label">User id: </label>
             <input
