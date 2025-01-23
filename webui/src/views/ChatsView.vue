@@ -25,16 +25,14 @@ export default {
             errormsg: null,
             showSettings: false,
             showForward: false,
-            showChat: null,
     };
   },
   created() {
-    this.showChat = true;
 		this.getConversations();
 	},
 	methods: {
 		async getConversations(){
-       this.showChat = null;
+       
 			this.loading = true;
       		this.error = null;
      			 try {
@@ -230,7 +228,6 @@ export default {
         this.error = `Unable to add user to group. Error: ${err.response ? err.response.status : err.message}`
      ;}
     },
-
     async uncommentMessage (commentId){
         this.successmsg = null;
         this.loading = true;
@@ -255,10 +252,6 @@ export default {
         this.chatId = chatId; 
       }
     },
-    goBack() {
-    this.selectedChat = null;
-    this.showChat = true;
-  },
 },
 
 
@@ -268,7 +261,7 @@ export default {
 <div>
     <h1>Chats</h1>
 <div v-if="error" class="error">{{ error }}</div>
-<ul v-if="!loading && !error" && showChat>
+<ul v-if="!loading && !error">
   <li v-for="chat in chats" :key="chat.chatId">
     <img :src="chat.chatPhoto" alt="Chat photo" v-if="chat.chatPhoto" />
     <p><strong>{{ chat.chatName }}</strong></p>
@@ -306,10 +299,9 @@ export default {
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
-
         </li>
       </ul>
-      <button @click="return">Back</button>
+
 </div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
