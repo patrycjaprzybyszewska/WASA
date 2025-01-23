@@ -120,7 +120,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 `
 _, err = db.Exec(sqlStmt)
 if err != nil {
-	return fmt.Errorf("error dropping tables: %w", err)
+	return nil, fmt.Errorf("error dropping tables: %w", err)
 }
 	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
