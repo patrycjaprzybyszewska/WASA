@@ -12,11 +12,6 @@ import (
 
 func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		http.Error(w, "Missing authorization", http.StatusUnauthorized)
-		return
-	}
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
 	if err != nil {
@@ -47,11 +42,6 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 
 func (rt *_router) leaveGroup(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		http.Error(w, "Missing authorization", http.StatusUnauthorized)
-		return
-	}
 	chatId, err := strconv.ParseUint(ps.ByName("chatId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid chat ID", http.StatusBadRequest)
@@ -119,11 +109,6 @@ func (rt *_router) setGroupName(w http.ResponseWriter, r *http.Request, ps httpr
 	_ = json.NewEncoder(w).Encode(chat)
 }
 func (rt *_router) setGroupPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		http.Error(w, "Missing authorization", http.StatusUnauthorized)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	var chat Chat
 	err := json.NewDecoder(r.Body).Decode(&chat)
