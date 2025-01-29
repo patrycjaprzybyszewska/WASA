@@ -85,8 +85,8 @@ methods: {
 						<div class="mb-3">
 				<label for="username" class="form-label">Change UserName: </label>
 				<input
-					type="text"
-					id="username"
+				  type="text"
+				  id="username"
 					class="form-control"
 					v-model="newname"
 					placeholder="new username"
@@ -112,7 +112,7 @@ OK			</button>
         @change="input"
 				/>
         				<button @click="setMyPhoto">
-OK					</button>
+OK	</button>
     </div>
   </div>
 </template>
