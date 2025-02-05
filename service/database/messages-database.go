@@ -130,7 +130,7 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 		conversation = append(conversation, messageandComments)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating rows: %w", err)
+		return nil, err
 	}
 
 	return conversation, nil
