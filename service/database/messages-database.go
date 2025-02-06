@@ -30,7 +30,6 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 		}
 	}
 
-
 	return m, nil
 }
 

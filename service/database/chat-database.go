@@ -15,13 +15,13 @@ func (db *appdbimpl) AddUserToChat(chatId uint64, userId uint64) error {
 		return fmt.Errorf("chat with ID %w does not exist", chatId)
 	}
 	var userExists bool
-    err = db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE userId = ?)", userId).Scan(&userExists)
-    if err != nil {
-        return fmt.Errorf("error checking user existence: %w", err)
-    }
-    if !userExists {
-        return fmt.Errorf("user with ID %w does not exist", userId)
-    }
+	err = db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE userId = ?)", userId).Scan(&userExists)
+	if err != nil {
+		return fmt.Errorf("error checking user existence: %w", err)
+	}
+	if !userExists {
+		return fmt.Errorf("user with ID %w does not exist", userId)
+	}
 	var sent int = 0
 	_, err = db.c.Exec("INSERT INTO chat_users (chatId, read, userId) VALUES (?, ?, ?)", chatId, sent, userId)
 	if err != nil {

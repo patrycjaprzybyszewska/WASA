@@ -24,9 +24,9 @@ type Message struct {
 }
 
 type Comment struct {
-	CommentId uint64 `json:"commentId"`
-	MessageId uint64 `json:"messageId"`
-	Content   string `json:"content"`
+	CommentId     uint64 `json:"commentId"`
+	MessageId     uint64 `json:"messageId"`
+	Content       string `json:"content"`
 	Commentername string `json:"commentername"`
 }
 type Chat struct {
@@ -83,8 +83,8 @@ func (c *Comment) CommentFromDatabase(comment database.Comment) {
 
 func (c *Comment) CommentToDatabase() database.Comment {
 	return database.Comment{
-		MessageId: c.MessageId,
-		Content:   c.Content,
+		MessageId:     c.MessageId,
+		Content:       c.Content,
 		Commentername: c.Commentername,
 	}
 }

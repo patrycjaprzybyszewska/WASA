@@ -52,9 +52,9 @@ type Message struct {
 	MessageTime string `json:"messageTime"`
 }
 type Comment struct {
-	CommentId uint64 `json:"commentId"`
-	MessageId uint64 `json:"messageId"`
-	Content   string `json:"content"`
+	CommentId     uint64 `json:"commentId"`
+	MessageId     uint64 `json:"messageId"`
+	Content       string `json:"content"`
 	Commentername string `json:"commentername"`
 }
 
