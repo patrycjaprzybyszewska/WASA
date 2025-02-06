@@ -304,7 +304,7 @@ export default {
                 </button>
               </li>
             </ul>
-          <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.SenderId)">{{ message.messageId }}</button></p>
+          <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.senderId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
