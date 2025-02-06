@@ -30,8 +30,25 @@ export default {
   },
   created() {
 		this.getConversations();
-	},
+    this.AutoRefresh();
+  },
+  beforeUnmount() {
+    this.stopAutoRefresh();
+  },
 	methods: {
+    AutoRefresh() {
+      this.intervalId = setInterval(() => {
+        this.getConversations();
+        if (this.selectedChat) {
+          this.getConversation(this.selectedChat, this.chatName);
+        }
+      }, 5000);
+    },
+    stopAutoRefresh() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+      }
+    },
 		async getConversations(){
        
 			this.loading = true;
