@@ -166,7 +166,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	comment.commentername, err = rt.db.GetUserNameById(comenterid)
+	comment.Commentername, err = rt.db.GetUserNameById(comenterid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
