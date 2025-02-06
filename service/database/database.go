@@ -124,7 +124,7 @@ if err != nil {
 	return nil, fmt.Errorf("error creating 'users' table: %w", err)
 }
 
-	sqlStmt := `
+	sqlStmt = `
 		CREATE TABLE IF NOT EXISTS users (
 			userId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 			userName STRING NOT NULL, 
