@@ -127,7 +127,6 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 	var userId uint64
 	err := db.c.QueryRow(`SELECT ChatId FROM chats WHERE ChatName = ?`, chatName).Scan(&chatId)
 	if err == nil {
-		// Czat już istnieje, zwróć jego ID
 		return chatId, nil
 	}
 
