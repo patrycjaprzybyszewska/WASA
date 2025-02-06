@@ -291,10 +291,12 @@ export default {
           <span v-else>{☑☑}</span>
         </p>
           <ul>
-             <li v-for="(comment, index) in message.comments" :key="index">
-                 <button @click="uncommentMessage(comment.commentId)">{{ comment.content }}<br> {{ comment.comentername }}</button>
-            </li>
-          </ul>
+              <li v-for="(comment, index) in message.comments" :key="index">
+                <button @click="uncommentMessage(comment.commentId)">
+                  {{ comment.content }} - {{ comment.comentername }}
+                </button>
+              </li>
+            </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
