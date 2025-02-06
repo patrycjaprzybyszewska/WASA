@@ -12,6 +12,6 @@ EXPOSE 3000
 
 
 WORKDIR /app/
-COPY --from=builder /src/webapi /app/
+COPY --from=builder /src/webapi /app/webapi ./
 
 CMD ["/src/webapi"]

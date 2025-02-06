@@ -1,10 +1,9 @@
 FROM node:lts as builder
 
 WORKDIR /app
-COPY webui webui
+COPY ./webui .
 
 
-WORKDIR /app/webui
 
 RUN npm install
 RUN yarn install
