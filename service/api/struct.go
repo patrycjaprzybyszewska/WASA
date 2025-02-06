@@ -27,6 +27,7 @@ type Comment struct {
 	CommentId uint64 `json:"commentId"`
 	MessageId uint64 `json:"messageId"`
 	Content   string `json:"content"`
+	Commentername string `json:"commentername"`
 }
 type Chat struct {
 	ChatId    uint64 `json:"chatId"`
@@ -75,7 +76,8 @@ func (m *Message) MessageToDatabase() database.Message {
 func (c *Comment) CommentFromDatabase(comment database.Comment) {
 	c.MessageId = comment.MessageId
 	c.Content = comment.Content
-	c.CommentId = comment.CommentId // mozliwe ze teho tu nike trzeba
+	c.CommentId = comment.CommentId
+	c.Commentername = comment.Commentername // mozliwe ze teho tu nike trzeba
 
 }
 
@@ -83,6 +85,7 @@ func (c *Comment) CommentToDatabase() database.Comment {
 	return database.Comment{
 		MessageId: c.MessageId,
 		Content:   c.Content,
+		Commentername: c.Commentername
 	}
 }
 
