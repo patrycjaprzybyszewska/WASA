@@ -25,6 +25,7 @@ export default {
             errormsg: null,
             showSettings: false,
             showForward: false,
+            senderId: null,
     };
   },
   created() {
@@ -72,9 +73,15 @@ export default {
           err.response ? err.response.status : err.message
         }`;}
      },
-     async deleteMessage(messageId){
+     async deleteMessage(messageId, senderId){
             this.loading = true;
             this.error = null;
+            if (senderId !== this.userId) {
+              console.error("you cannot remove not yours message");
+               this.error = "you cannot remove not yours message";
+                this.loading = false;
+        return;
+    }
             try{
                 const response = await this.$axios.delete(`/message/${messageId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
@@ -297,7 +304,7 @@ export default {
                 </button>
               </li>
             </ul>
-          <p>deleteMessage: <button @click="deleteMessage(message.messageId)">{{ message.messageId }}</button></p>
+          <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.SenderId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
          
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
