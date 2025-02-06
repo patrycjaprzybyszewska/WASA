@@ -161,7 +161,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid message ID", http.StatusBadRequest)
 		return
 	}
-	comenterid, err = auth(r.Header.Get("Authorization"))
+	comenterid, err := auth(r.Header.Get("Authorization"))
 	if err != nil {
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
