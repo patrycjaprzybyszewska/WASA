@@ -117,7 +117,7 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 		}
 	}
 
-	rows, err = db.c.Query(`SELECT messageId, senderName, senderId, content, messageDate, messageTime, state, chatId 
+	rows, err := db.c.Query(`SELECT messageId, senderName, senderId, content, messageDate, messageTime, state, chatId 
 								FROM messages 
 								WHERE chatId = ? 
 								ORDER BY messageDate, messageTime`, chatId)
