@@ -316,7 +316,7 @@ export default {
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>Sender Name: {{ message.SenderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br>
             <span v-if="message.senderId == userId">
-            <span v-if="message.state === 'delivered'">☑☑</span>
+            <span v-if="message.state === 'read'">☑☑</span>
             <span v-else>☑</span>
           </span>
         </p>

@@ -111,7 +111,7 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 		return nil, fmt.Errorf("error %w", err)
 	}
 	if count == 0 {
-		_, err = db.c.Exec(`UPDATE messages SET state = 'delivered' WHERE chatId = ?`, chatId)
+		_, err = db.c.Exec(`UPDATE messages SET state = 'read' WHERE chatId = ?`, chatId)
 		if err != nil {
 			return nil, fmt.Errorf("error %w", err)
 		}
