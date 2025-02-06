@@ -67,7 +67,7 @@ func (db *appdbimpl) CheckMessageById(messageId uint64) error {
 func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 
 	query := `INSERT INTO comments (messageId,  content, commentername) 
-	VALUES (?, ?)`
+	VALUES (?, ?, ?)`
 	result, err := db.c.Exec(query, c.MessageId, c.Content, c.Commentername)
 	if err != nil {
 		return c, err
