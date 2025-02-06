@@ -85,7 +85,7 @@ func (c *Comment) CommentToDatabase() database.Comment {
 	return database.Comment{
 		MessageId: c.MessageId,
 		Content:   c.Content,
-		Commentername: c.Commentername
+		Commentername: c.Commentername,
 	}
 }
 
