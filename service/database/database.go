@@ -75,6 +75,7 @@ type AppDatabase interface {
 	SetUserphoto(User, string) (User, error)
 	GetUserPhotoById(uint64) (string, error)
 	GetUserNameById(uint64) (string, error)
+	GetUserIdByName(string) (uint64, error)
 	GetChatIdbyName(string) (uint64, error)
 	GetChatPhotoById(uint64) (string, error)
 	GetChatNameById(uint64) (string, error)

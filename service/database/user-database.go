@@ -40,6 +40,14 @@ func (db *appdbimpl) GetUserNameById(userId uint64) (string, error) {
 	}
 	return userName, nil
 }
+func (db *appdbimpl) GetUserIdByName(username string) (uint64, error) {
+	var userid uint64
+	err := db.c.QueryRow(`SELECT userId FROM users WHERE userName = ?`, username).Scan(&userId)
+	if err != nil {
+		return "", err
+	}
+	return userid, nil
+}
 func (db *appdbimpl) SetUsername(u User, username string) (User, error) {
 	var Id uint64
 	err := db.c.QueryRow(`SELECT userId FROM users WHERE userName = ?`, username).Scan(&Id)

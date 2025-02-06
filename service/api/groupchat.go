@@ -24,13 +24,12 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 		return
 	}
 
-	userIdStr := ps.ByName("userId")
-	userId, err := strconv.ParseUint(userIdStr, 10, 64)
+	userName := ps.ByName("userId")
+	userId, err = rt.db.GetUserNameById(userName)
 	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	err = rt.db.AddUserToChat(chatId, userId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
