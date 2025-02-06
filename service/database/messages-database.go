@@ -17,11 +17,19 @@ func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	}
 
 	m.MessageId = uint64(lastInsertID)
-	var sent int = 0
-	_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId, read) VALUES (?, ?, ?)", m.ChatId, m.SenderId, sent)
+	var count int
+	err = db.c.QueryRow("SELECT COUNT(*) FROM chat_users WHERE chatId = ? AND userId = ?", m.ChatId, m.SenderId).Scan(&count)
 	if err != nil {
-		return m, fmt.Errorf("error adding user to chat: %w", err)
+		return m, fmt.Errorf("error checking user participation in chat: %w", err)
 	}
+
+	if count == 0 {
+		_, err = db.c.Exec("INSERT INTO chat_users (chatId, userId, read) VALUES (?, ?, ?)", m.ChatId, m.SenderId, 0)
+		if err != nil {
+			return m, fmt.Errorf("error adding user to chat: %w", err)
+		}
+	}
+
 
 	return m, nil
 }
