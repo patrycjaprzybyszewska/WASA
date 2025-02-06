@@ -193,18 +193,32 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 } // 201 404
 
 func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+	userId, err := auth(r.Header.Get("Authorization"))
+	if err != nil {
+		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
+		return
+	}
+	username, err = rt.db.GetUserNameById(userId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	commentId, err := strconv.ParseInt(ps.ByName("commentId"), 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid comment ID", http.StatusBadRequest)
 		return
 	}
 	// sprawdzic czy kom istnieje
-	err = rt.db.CheckCommentById(uint64(commentId))
+	comment, err = rt.db.CheckCommentById(uint64(commentId))
 	if err != nil {
 		http.Error(w, "Comment not found", http.StatusNotFound)
 		return
 	}
-
+	if comment.Commentername != username {
+		http.Error(w, "you can not delete not yours comment", http.StatusForbidden)
+		return
+	}
 	err = rt.db.Removecomment(uint64(commentId))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
