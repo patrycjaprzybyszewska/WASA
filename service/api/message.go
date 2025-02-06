@@ -199,7 +199,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	username, err = rt.db.GetUserNameById(userId)
+	username, err := rt.db.GetUserNameById(userId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -210,7 +210,7 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 		return
 	}
 	// sprawdzic czy kom istnieje
-	comment, err = rt.db.CheckCommentById(uint64(commentId))
+	comment, err := rt.db.CheckCommentById(uint64(commentId))
 	if err != nil {
 		http.Error(w, "Comment not found", http.StatusNotFound)
 		return
