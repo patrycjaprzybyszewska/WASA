@@ -166,11 +166,6 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
 		return
 	}
-	comment.Commentername, err = rt.db.GetUserNameById(comenterid)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 	err = rt.db.CheckMessageById(messageId)
 	if err != nil {
 		http.Error(w, "Message to comment not found", http.StatusNotFound)
@@ -181,7 +176,11 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 		http.Error(w, "Invalid or empty comment content", http.StatusBadRequest)
 		return
 	}
-
+	comment.Commentername, err = rt.db.GetUserNameById(comenterid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	dbcomment, err := rt.db.Commentmessage(comment.CommentToDatabase())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
