@@ -303,7 +303,7 @@ export default {
       <h2>Messages for Chat: {{ name }}</h2>
       <button @click="toggleSettings(selectedChat)">Settings</button>
 
-      <label for="usertoad" class="form-label">Uer id: </label>
+      <label for="usertoad" class="form-label">User name: </label>
             <input
               type="text"
               id="usertoad"
@@ -315,8 +315,10 @@ export default {
       <ul>
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>Sender Name: {{ message.SenderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br> Status: 
-          <span v-if="message.state === 'delivered'">☑</span>
-          <span v-else>{☑☑}</span>
+            <span v-if="message.senderId == userId">
+            <span v-if="message.state === 'delivered'">☑</span>
+            <span v-else>☑☑</span>
+          </span>
         </p>
           <ul>
               <li v-for="(comment, index) in message.comments" :key="index">
