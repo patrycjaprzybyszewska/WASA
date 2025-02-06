@@ -138,8 +138,8 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 
 func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
 	var comment Comment
-	query := `SELECT commentId, messageId, content FROM comments WHERE commentId = ?`
-	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
+	query := `SELECT commentId, messageId, content, commentername FROM comments WHERE commentId = ?`
+	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content, &comment.Commentername)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return Comment{}, fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
@@ -167,7 +167,7 @@ func (db *appdbimpl) GetCommentsById(messageId uint64) ([]Comment, error) {
 	var comments []Comment
 
 	query := `
-	SELECT commentId, messageId, content
+	SELECT commentId, messageId, content, commentername
 	FROM comments
 	WHERE messageId = ?
     `
@@ -181,7 +181,7 @@ func (db *appdbimpl) GetCommentsById(messageId uint64) ([]Comment, error) {
 	for rows.Next() {
 		var comment Comment
 
-		err := rows.Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
+		err := rows.Scan(&comment.CommentId, &comment.MessageId, &comment.Content, &comment.Commentername)
 		if err != nil {
 			return nil, err
 		}
