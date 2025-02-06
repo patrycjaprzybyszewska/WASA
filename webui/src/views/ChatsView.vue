@@ -293,7 +293,7 @@ export default {
           <ul>
               <li v-for="(comment, index) in message.comments" :key="index">
                 <button @click="uncommentMessage(comment.commentId)">
-                  {{ comment.content }} - {{ comment.comentername }}
+                  {{ comment.content }} - {{ comment.commentername }}
                 </button>
               </li>
             </ul>
