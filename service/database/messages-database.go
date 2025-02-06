@@ -105,11 +105,17 @@ func (db *appdbimpl) GetConversation(chatId uint64, userId uint64) ([]Messageand
 	if err != nil {
 		return nil, fmt.Errorf("error %w", err)
 	}
-	rows, err := db.c.Query(`UPDATE messages SET state = 'delivered'  WHERE chatId = ? AND NOT EXISTS (SELECT 1 FROM chat_users WHERE chatId = messages.chatId AND read = 0)`, chatId)
+	var count int
+	err = db.c.QueryRow(`SELECT COUNT(*) FROM chat_users WHERE chatId = ? AND read = 0`, chatId).Scan(&count)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching messages: %w", err)
+		return nil, fmt.Errorf("error %w", err)
 	}
-	defer rows.Close()
+	if count == 0 {
+		_, err = db.c.Exec(`UPDATE messages SET state = 'delivered' WHERE chatId = ?`, chatId)
+		if err != nil {
+			return nil, fmt.Errorf("error %w", err)
+		}
+	}
 
 	rows, err = db.c.Query(`SELECT messageId, senderName, senderId, content, messageDate, messageTime, state, chatId 
 								FROM messages 
