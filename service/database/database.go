@@ -169,6 +169,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 			commentId INTEGER NOT NULL PRIMARY KEY,
 			content STRING,
 			messageId INTEGER,
+			commenterId INTEGER,
 			FOREIGN KEY (messageId) REFERENCES messages(messageId)
 	);`
 	_, err = db.Exec(sqlStmt)
