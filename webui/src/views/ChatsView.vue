@@ -25,7 +25,7 @@ export default {
             errormsg: null,
             showSettings: false,
             showForward: false,
-            senderId: null,
+            senderId: "",
     };
   },
   created() {
@@ -76,7 +76,7 @@ export default {
      async deleteMessage(messageId, senderId){
             this.loading = true;
             this.error = null;
-            if (senderId !== this.userId) {
+            if (String(senderId) !== String(this.userId)) {
               console.error("you cannot remove not yours message");
                this.error = "you cannot remove not yours message";
                 this.loading = false;
