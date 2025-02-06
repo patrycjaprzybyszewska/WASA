@@ -155,12 +155,6 @@ func (rt *_router) forwardMessage(w http.ResponseWriter, r *http.Request, ps htt
 // 201 404
 
 func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	w.Header().Set("Content-Type", "application/json")
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		http.Error(w, "Missing authorization", http.StatusUnauthorized)
-		return
-	}
 	var comment Comment
 	messageId, err := strconv.ParseUint(ps.ByName("messageId"), 10, 64)
 	if err != nil {
@@ -212,6 +206,12 @@ func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps h
 } // 204 404
 
 func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	w.Header().Set("Content-Type", "application/json")
+	userId, err := auth(r.Header.Get("Authorization"))
+	if err != nil {
+		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
+		return
+	}
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
 
