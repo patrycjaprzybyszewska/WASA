@@ -275,7 +275,7 @@ export default {
       <h2>Messages for Chat: {{ name }}</h2>
       <button @click="toggleSettings(selectedChat)">Settings</button>
 
-      <label for="usertoad" class="form-label">User id: </label>
+      <label for="usertoad" class="form-label">Uer id: </label>
             <input
               type="text"
               id="usertoad"
