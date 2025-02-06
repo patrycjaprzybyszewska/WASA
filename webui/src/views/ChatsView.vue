@@ -247,10 +247,14 @@ export default {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
                 this.successmsg = "User added!";
-            } catch (err) {
-   console.error("Error adding user to group:", err);
-        this.error = `Unable to add user to group. Error: ${err.response ? err.response.status : err.message}`
-     ;}
+              }	catch (e){ 		
+    console.error("error adding user:", e);
+				if (e.response && e.response.status === 500) {
+          console.error("user arleady in the chat");
+
+					}else{
+            this.errormsg = e.toString();						
+					}}
     },
     async uncommentMessage (commentId){
         this.successmsg = null;
