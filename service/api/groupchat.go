@@ -25,7 +25,7 @@ func (rt *_router) addToGroup(w http.ResponseWriter, r *http.Request, ps httprou
 	}
 
 	userName := ps.ByName("userId")
-	userId, err = rt.db.GetUserNameById(userName)
+	userId, err := rt.db.GetUserIdByName(userName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
