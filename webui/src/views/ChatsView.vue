@@ -42,7 +42,7 @@ export default {
         if (this.selectedChat) {
           this.getConversation(this.selectedChat, this.chatName);
         }
-      }, 5000);
+      }, 15000);
     },
     stopAutoRefresh() {
       if (this.intervalId) {
