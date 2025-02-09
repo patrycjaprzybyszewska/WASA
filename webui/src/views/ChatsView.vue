@@ -250,7 +250,11 @@ export default {
                 const response = await this.$axios.put(`/groupchat/${selectedChat}/add/${this.usertoad}`, {}, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
-                this.successmsg = "User added!";
+            this.successmsg = ""; 
+            this.$nextTick(() => {
+               this.successmsg = "User added!";
+              });
+
               }	catch (e){ 		
     console.error("error adding user:", e);
 				if (e.response && e.response.status === 500) {
