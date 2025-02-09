@@ -237,7 +237,10 @@ func (rt *_router) getConversation(w http.ResponseWriter, r *http.Request, ps ht
 	}
 	chatIdStr := ps.ByName("chatId")
 	chatId, err := strconv.ParseUint(chatIdStr, 10, 64)
-
+	if err != nil {
+		http.Error(w, "not given chatid", http.StatusUnauthorized)
+		return
+	}
 	conversation, err := rt.db.GetConversation(chatId, userId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
