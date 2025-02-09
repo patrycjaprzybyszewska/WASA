@@ -239,6 +239,7 @@ export default {
     },
     async addToGroup (selectedChat){
         this.successmsg = null;
+        this.error = null;
         this.loading = true;
         if (!this.usertoad) {
         this.error = "User ID to add is required.";
