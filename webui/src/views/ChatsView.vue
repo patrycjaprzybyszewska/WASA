@@ -312,7 +312,7 @@ export default {
               placeholder="user to add"
             />
             <button @click="addToGroup(selectedChat)">Add user, give username to add</button>
-      <ul>
+      <ul v-if="messages.length > 0">
         <li v-for="message in messages" :key="message.messageId">
           <p><strong>Sender Name: {{ message.SenderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br>
             <span v-if="message.senderId == userId">
@@ -328,12 +328,11 @@ export default {
               </li>
             </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.senderId)">{{ message.messageId }}</button></p>
-          <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>
-         
+          <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>   
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
-
+      <p v-else>TNo messages tp be shown.</p>
 </div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
