@@ -262,7 +262,8 @@ export default {
 					}else{
             this.errormsg = e.toString();						
 					}}
-    },
+        finally {
+      this.loading = false;}},
     async uncommentMessage (commentId){
         this.successmsg = null;
         this.loading = true;
