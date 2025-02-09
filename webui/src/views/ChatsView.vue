@@ -78,10 +78,14 @@ export default {
                 const response = await this.$axios.get(`/conversation/${chatId}`, {
        				   headers: { Authorization: `Bearer ${localStorage.getItem("userId")}` },
        		 });
+            if (response.data && response.data.length > 0) {
                 this.messages = response.data.map(item => ({
                  ...item.message,
                  comments: item.comments || [], 
-                  }));
+                  }));}
+                  else{
+                    this.messages = [];     
+                  }
                 this.name = chatName;
                 this.selectedChat = chatId;
             } catch (err) {
@@ -332,7 +336,7 @@ export default {
           <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
         </li>
       </ul>
-      <p v-else>TNo messages tp be shown.</p>
+      <p v-else>No messages to be shown.</p>
 </div>
        <transition name="fade">
         <div v-if="showSettings" class="settings-window">
