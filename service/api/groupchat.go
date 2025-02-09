@@ -160,7 +160,7 @@ func (rt *_router) getConversations(w http.ResponseWriter, r *http.Request, ps h
 	w.Header().Set("Content-Type", "application/json")
 	userId, err := auth(r.Header.Get("Authorization"))
 	if err != nil {
-		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
+		http.Error(w, " access", http.StatusUnauthorized)
 		return
 	}
 
