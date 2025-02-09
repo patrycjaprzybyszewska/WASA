@@ -8,8 +8,10 @@ import (
 func (db *appdbimpl) Sendmessage(m Message) (Message, error) {
 	// trzeba dodac tworzenie czatu tutaj
 
-	res, err := db.c.Exec(`INSERT INTO messages (senderName, senderId, chatId, content, messageDate, messageTime, state) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)`, m.SenderName, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
+	res, err := db.c.Exec(`INSERT INTO messages (senderName, senderId, chatId, content, messageDate, messageTime, state) VALUES (?, ?, ?, ?, ?, ?, ?)`, m.SenderName, m.SenderId, m.ChatId, m.Content, m.MessageDate, m.MessageTime, m.State)
+	if err != nil {
+		return fmt.Errorf("error inserting chat: %w", err)
+	}					
 
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {

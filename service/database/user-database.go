@@ -11,7 +11,9 @@ func (db *appdbimpl) CreateLogin(u User) (User, error) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			res, err := db.c.Exec("INSERT INTO users(UserName, UserPhoto) VALUES (?,?)", u.UserName, u.UserPhoto)
-
+			if err != nil {
+				return fmt.Errorf("error inserting user: %w", err)
+			}
 			lastInsertID, err := res.LastInsertId()
 			if err != nil {
 				return u, err

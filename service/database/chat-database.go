@@ -152,6 +152,9 @@ func (db *appdbimpl) GetChatIdbyName(chatName string) (uint64, error) {
 	}
 
 	res, err := db.c.Exec(`INSERT INTO chats (ChatName, ChatPhoto) VALUES (?, ?)`, chatName, "")
+	if err != nil {
+		return fmt.Errorf("error inserting chat: %w", err)
+	}
 	lastInsertId, err := res.LastInsertId()
 	if err != nil {
 		return 0, fmt.Errorf("failed to retrieve last insert id: %w", err)
