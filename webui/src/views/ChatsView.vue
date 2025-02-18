@@ -322,7 +322,7 @@ export default {
             <button @click="addToGroup(selectedChat)">Add existing user, give username to add</button>
       <ul v-if="messages.length > 0">
         <li v-for="message in messages" :key="message.messageId">
-          <p><strong>Sender Name: {{ message.SenderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br>
+          <p><strong>Sender Name: {{ message.senderName }}</strong><br>Content: {{ message.content }}<br>Date: {{ message.messageDate }}<br>Time: {{ message.messageTime }}<br>
             <span v-if="message.senderId == userId">
             <span v-if="message.state === 'read'">☑☑</span>
             <span v-else>☑</span>
