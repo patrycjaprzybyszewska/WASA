@@ -156,7 +156,7 @@ func (db *appdbimpl) GetCommentById(commentId uint64) (Comment, error) {
 	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content, &comment.Commentername)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return Comment{}, fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
+			return Comment{}, fmt.Errorf("comment with id %d not found", commentId) 
 		}
 		return Comment{}, fmt.Errorf("could not get comment: %w", err)
 	}
@@ -169,7 +169,7 @@ func (db *appdbimpl) CheckCommentById(commentId uint64) error {
 	err := db.c.QueryRow(query, commentId).Scan(&comment.CommentId, &comment.MessageId, &comment.Content)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return fmt.Errorf("comment with id %d not found", commentId) // Nie znaleziono komentarza
+			return fmt.Errorf("comment with id %d not found", commentId) 
 		}
 		return fmt.Errorf("could not get comment: %w", err)
 	}
@@ -180,11 +180,7 @@ func (db *appdbimpl) CheckCommentById(commentId uint64) error {
 func (db *appdbimpl) GetCommentsById(messageId uint64) ([]Comment, error) {
 	var comments []Comment
 
-	query := `
-	SELECT commentId, messageId, content, commentername
-	FROM comments
-	WHERE messageId = ?
-    `
+	query := `SELECT commentId, messageId, content, commentername FROM comments WHERE messageId = ?`
 
 	rows, err := db.c.Query(query, messageId)
 	if err != nil {

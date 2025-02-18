@@ -10,8 +10,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/context", rt.wrap(rt.getContextReply))
 
 	rt.router.GET("/liveness", rt.liveness)
-	rt.router.POST("/session", rt.wrap(rt.doLogin)) // to vheck if it ckecks if user is logged
-	// user
+	rt.router.POST("/session", rt.wrap(rt.doLogin)) 
 	rt.router.PUT("/session/:userId/userName", rt.wrap(rt.setMyUserName))
 	rt.router.PUT("/session/:userId/userPhoto", rt.wrap(rt.setMyPhoto))
 
