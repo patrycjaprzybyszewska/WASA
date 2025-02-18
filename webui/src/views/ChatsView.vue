@@ -337,8 +337,8 @@ export default {
             </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.senderId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>   
-          <p v-if="message.senderName !== userId">commentMessage: 
-         <button @click="setMessagetoComment(message.messageId)">Comment</button>
+          <p v-if="message.senderId !== userId">commentMessage: 
+          <button @click="setMessagetoComment(message.messageId)">Comment</button>
           </p>
         </li>
       </ul>
