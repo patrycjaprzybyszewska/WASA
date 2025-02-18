@@ -16,6 +16,10 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	if user.UserName == "" {
+        w.WriteHeader(http.StatusBadRequest)
+        return
+    }
 	dbuser, err := rt.db.CreateLogin(user.ToDatabase())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
