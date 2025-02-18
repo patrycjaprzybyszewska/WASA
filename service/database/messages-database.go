@@ -51,7 +51,7 @@ func (db *appdbimpl) GetMessageById(messageId uint64) (Message, error) {
 	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderName, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return Message{}, fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
+			return Message{}, fmt.Errorf("message with id %d not found", messageId) 
 		}
 		return Message{}, fmt.Errorf("could not get message: %w", err)
 	}
@@ -65,7 +65,7 @@ func (db *appdbimpl) CheckMessageById(messageId uint64) error {
 	err := db.c.QueryRow(query, messageId).Scan(&message.MessageId, &message.SenderName, &message.SenderId, &message.ChatId, &message.Content, &message.MessageDate, &message.MessageTime, &message.State)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return fmt.Errorf("message with id %d not found", messageId) // Nie znaleziono wiadomości
+			return fmt.Errorf("message with id %d not found", messageId) 
 		}
 		return fmt.Errorf("could not get message: %w", err)
 	}
@@ -75,8 +75,7 @@ func (db *appdbimpl) CheckMessageById(messageId uint64) error {
 
 func (db *appdbimpl) Commentmessage(c Comment) (Comment, error) {
 
-	query := `INSERT INTO comments (messageId,  content, commentername) 
-	VALUES (?, ?, ?)`
+	query := `INSERT INTO comments (messageId,  content, commentername) VALUES (?, ?, ?)`
 	result, err := db.c.Exec(query, c.MessageId, c.Content, c.Commentername)
 	if err != nil {
 		return c, err

@@ -13,7 +13,7 @@ export default {
             name: "",
             chatPhoto: "",
             messageId: null,
-			userId: localStorage.getItem("userId"),
+		      	userId: localStorage.getItem("userId"),
             selectedChat: null,
             forwardchatName: "",
             MessagetoForward: null,
@@ -337,7 +337,9 @@ export default {
             </ul>
           <p>deleteMessage: <button @click="deleteMessage(message.messageId, message.senderId)">{{ message.messageId }}</button></p>
           <p>forwardMessage: <button @click="setMessagetoForward(message.messageId)">Forward</button></p>   
-          <p>commmentMessage:<button @click="setMessagetoComment(message.messageId)">Comment</button></p>
+          <p v-if="message.senderName !== userId">commentMessage: 
+         <button @click="setMessagetoComment(message.messageId)">Comment</button>
+          </p>
         </li>
       </ul>
       <p v-else>No messages to be shown.</p>
