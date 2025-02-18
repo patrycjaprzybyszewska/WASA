@@ -12,7 +12,7 @@ func (rt *_router) doLogin(w http.ResponseWriter, r *http.Request, ps httprouter
 
 	w.Header().Set("content-Type", "application/json")
 	var user User
-	if r.Body == nil {
+	if r.Body == "" {
         w.WriteHeader(http.StatusBadRequest)
         return
     }
