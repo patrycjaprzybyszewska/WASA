@@ -190,7 +190,7 @@ func (rt *_router) commentMessage(w http.ResponseWriter, r *http.Request, ps htt
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(comment)
 
-} // 201 404
+} 
 
 func (rt *_router) uncommentMessage(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	w.Header().Set("Content-Type", "application/json")

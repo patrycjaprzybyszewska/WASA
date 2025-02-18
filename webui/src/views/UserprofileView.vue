@@ -135,7 +135,9 @@ OK	</button>
   border-radius: 50%;
   border: 2px solid #ccc;
 }
-
+.user-profile {
+  text-align: center;
+}
 h2 {
   text-align: left;
   font-size: 24px;
